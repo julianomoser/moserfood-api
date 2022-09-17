@@ -1,0 +1,121 @@
+{
+  "groups": [
+    {
+      "name": "moserfood.email",
+      "type": "com.moser.moserfood.core.email.EmailProperties",
+      "sourceType": "com.moser.moserfood.core.email.EmailProperties"
+    },
+    {
+      "name": "moserfood.email.sandbox",
+      "type": "com.moser.moserfood.core.email.EmailProperties$SandBox",
+      "sourceType": "com.moser.moserfood.core.email.EmailProperties",
+      "sourceMethod": "getSandbox()"
+    },
+    {
+      "name": "moserfood.sms",
+      "type": "com.moser.moserfood.core.sms.SmsProperties",
+      "sourceType": "com.moser.moserfood.core.sms.SmsProperties"
+    },
+    {
+      "name": "moserfood.sms.twilio",
+      "type": "com.moser.moserfood.core.sms.SmsProperties$Twilio",
+      "sourceType": "com.moser.moserfood.core.sms.SmsProperties",
+      "sourceMethod": "getTwilio()"
+    },
+    {
+      "name": "moserfood.storage",
+      "type": "com.moser.moserfood.core.storage.StorageProperties",
+      "sourceType": "com.moser.moserfood.core.storage.StorageProperties"
+    },
+    {
+      "name": "moserfood.storage.local",
+      "type": "com.moser.moserfood.core.storage.StorageProperties$Local",
+      "sourceType": "com.moser.moserfood.core.storage.StorageProperties",
+      "sourceMethod": "getLocal()"
+    },
+    {
+      "name": "moserfood.storage.s3",
+      "type": "com.moser.moserfood.core.storage.StorageProperties$S3",
+      "sourceType": "com.moser.moserfood.core.storage.StorageProperties",
+      "sourceMethod": "getS3()"
+    }
+  ],
+  "properties": [
+    {
+      "name": "moserfood.email.impl",
+      "type": "com.moser.moserfood.core.email.EmailProperties$Implementacao",
+      "sourceType": "com.moser.moserfood.core.email.EmailProperties"
+    },
+    {
+      "name": "moserfood.email.remetente",
+      "type": "java.lang.String",
+      "sourceType": "com.moser.moserfood.core.email.EmailProperties"
+    },
+    {
+      "name": "moserfood.email.sandbox.destinatario",
+      "type": "java.lang.String",
+      "sourceType": "com.moser.moserfood.core.email.EmailProperties$SandBox"
+    },
+    {
+      "name": "moserfood.sms.impl",
+      "type": "com.moser.moserfood.core.sms.SmsProperties$Implementacao",
+      "sourceType": "com.moser.moserfood.core.sms.SmsProperties"
+    },
+    {
+      "name": "moserfood.sms.twilio.key",
+      "type": "java.lang.String",
+      "sourceType": "com.moser.moserfood.core.sms.SmsProperties$Twilio"
+    },
+    {
+      "name": "moserfood.sms.twilio.phone-from",
+      "type": "java.lang.String",
+      "sourceType": "com.moser.moserfood.core.sms.SmsProperties$Twilio"
+    },
+    {
+      "name": "moserfood.sms.twilio.phone-to",
+      "type": "java.lang.String",
+      "sourceType": "com.moser.moserfood.core.sms.SmsProperties$Twilio"
+    },
+    {
+      "name": "moserfood.sms.twilio.sid",
+      "type": "java.lang.String",
+      "sourceType": "com.moser.moserfood.core.sms.SmsProperties$Twilio"
+    },
+    {
+      "name": "moserfood.storage.local.diretorio-fotos",
+      "type": "java.nio.file.Path",
+      "sourceType": "com.moser.moserfood.core.storage.StorageProperties$Local"
+    },
+    {
+      "name": "moserfood.storage.s3.bucket",
+      "type": "java.lang.String",
+      "sourceType": "com.moser.moserfood.core.storage.StorageProperties$S3"
+    },
+    {
+      "name": "moserfood.storage.s3.chave-acesso-secreta",
+      "type": "java.lang.String",
+      "sourceType": "com.moser.moserfood.core.storage.StorageProperties$S3"
+    },
+    {
+      "name": "moserfood.storage.s3.diretorio-fotos",
+      "type": "java.lang.String",
+      "sourceType": "com.moser.moserfood.core.storage.StorageProperties$S3"
+    },
+    {
+      "name": "moserfood.storage.s3.id-chave-acesso",
+      "type": "java.lang.String",
+      "sourceType": "com.moser.moserfood.core.storage.StorageProperties$S3"
+    },
+    {
+      "name": "moserfood.storage.s3.regiao",
+      "type": "com.amazonaws.regions.Regions",
+      "sourceType": "com.moser.moserfood.core.storage.StorageProperties$S3"
+    },
+    {
+      "name": "moserfood.storage.tipo",
+      "type": "com.moser.moserfood.core.storage.StorageProperties$TipoStorage",
+      "sourceType": "com.moser.moserfood.core.storage.StorageProperties"
+    }
+  ],
+  "hints": []
+}

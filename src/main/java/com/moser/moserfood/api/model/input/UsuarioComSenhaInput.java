@@ -1,5 +1,6 @@
 package com.moser.moserfood.api.model.input;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,6 +13,7 @@ import javax.validation.constraints.NotBlank;
 @Setter
 public class UsuarioComSenhaInput extends UsuarioInput {
 
+    @ApiModelProperty(example = "teste123")
     @NotBlank
     private String senha;
 }

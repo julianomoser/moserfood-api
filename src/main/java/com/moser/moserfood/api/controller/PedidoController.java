@@ -16,6 +16,7 @@ import com.moser.moserfood.domain.repository.PedidoRepository;
 import com.moser.moserfood.domain.filter.PedidoFilter;
 import com.moser.moserfood.domain.service.EmissaoPedidoService;
 import com.moser.moserfood.infrastructure.repository.spec.PedidoSpecs;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -30,6 +31,7 @@ import java.util.List;
 /**
  * @author Juliano Moser
  */
+@Api(tags = "Order")
 @RestController
 @RequestMapping("/pedidos")
 public class PedidoController {

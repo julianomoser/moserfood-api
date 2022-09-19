@@ -2,6 +2,7 @@ package com.moser.moserfood.api.controller;
 
 import com.moser.moserfood.api.assembler.FormaPagamentoDTOAssembler;
 import com.moser.moserfood.api.assembler.FormaPagamentoInputDisassembler;
+import com.moser.moserfood.api.exceptionhandler.Problem;
 import com.moser.moserfood.api.model.FormaPagamentoDTO;
 import com.moser.moserfood.api.model.input.FormaPagamentoInput;
 import com.moser.moserfood.domain.exception.EstadoNaoEncontradoException;
@@ -9,6 +10,12 @@ import com.moser.moserfood.domain.exception.NegocioException;
 import com.moser.moserfood.domain.model.FormaPagamento;
 import com.moser.moserfood.domain.repository.FormaPagamentoRepository;
 import com.moser.moserfood.domain.service.FormaPagamentoService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
@@ -25,6 +32,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * @author Juliano Moser
  */
+@Api(tags = "Payment method")
 @RestController
 @RequestMapping("/formas-pagamento")
 public class FormaPagamentoController {
@@ -40,6 +48,7 @@ public class FormaPagamentoController {
     @Autowired
     private FormaPagamentoInputDisassembler formaPagamentoInputDisassembler;
 
+    @ApiOperation("Lista as formas de pagamento")
     @GetMapping
     public ResponseEntity<List<FormaPagamentoDTO>> listar(ServletWebRequest request) {
         ShallowEtagHeaderFilter.disableContentCaching(request.getRequest());
@@ -67,6 +76,12 @@ public class FormaPagamentoController {
     }
 
 
+    @ApiOperation("Busca uma forma de pagamento por Id")
+    @ApiResponses({
+            @ApiResponse(responseCode = "400", description = "ID da forma de pagamento inválido", content = @Content(schema =
+            @Schema(implementation = Problem.class))),
+            @ApiResponse(responseCode = "404", description = "Forma de pagamento não encontrada", content = @Content(schema =
+            @Schema(implementation = Problem.class)))  })
     @GetMapping("/{formaPagamentoId}")
     public ResponseEntity<FormaPagamentoDTO> buscar(@PathVariable Long formaPagamentoId,
                                                     ServletWebRequest request) {
@@ -99,6 +114,7 @@ public class FormaPagamentoController {
         return eTag;
     }
 
+    @ApiOperation("Cadastra uma forma de pagamento")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public FormaPagamentoDTO salvar(@RequestBody @Valid FormaPagamentoInput formaPagamentoInput) {
@@ -113,7 +129,7 @@ public class FormaPagamentoController {
         }
     }
 
-
+    @ApiOperation("Atualiza uma forma de pagamento por Id")
     @PutMapping("/{formaPagamentoId}")
     public FormaPagamentoDTO atualizar(@PathVariable Long formaPagamentoId,
                                        @RequestBody @Valid FormaPagamentoInput formaPagamentoInput) {
@@ -130,6 +146,7 @@ public class FormaPagamentoController {
         }
     }
 
+    @ApiOperation("Exclui uma forma de pagamento por Id")
     @DeleteMapping("/{formaPagamentoId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void remover(@PathVariable Long formaPagamentoId) {

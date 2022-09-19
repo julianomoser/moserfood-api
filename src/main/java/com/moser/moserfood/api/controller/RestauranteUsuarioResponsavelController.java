@@ -4,6 +4,8 @@ import com.moser.moserfood.api.assembler.UsuarioDTOAssembler;
 import com.moser.moserfood.api.model.UsuarioDTO;
 import com.moser.moserfood.domain.model.Restaurante;
 import com.moser.moserfood.domain.service.RestauranteService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +15,7 @@ import java.util.List;
 /**
  * @author Juliano Moser
  */
+@Api(tags = "Restaurant user")
 @RestController
 @RequestMapping("/restaurantes/{restauranteId}/responsaveis")
 public class RestauranteUsuarioResponsavelController {
@@ -23,18 +26,21 @@ public class RestauranteUsuarioResponsavelController {
     @Autowired
     private UsuarioDTOAssembler usuarioDTOAssembler;
 
+    @ApiOperation("Lista os responsáveis")
     @GetMapping
     public List<UsuarioDTO> listar(@PathVariable Long restauranteId) {
         Restaurante restaurante = restauranteService.findOrFail(restauranteId);
         return usuarioDTOAssembler.toCollectionDTO(restaurante.getResponsaveis());
     }
 
+    @ApiOperation("Associar responsável a um restaurante")
     @PutMapping("/{usuarioId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void associar(@PathVariable Long restauranteId, @PathVariable Long usuarioId) {
         restauranteService.associarResponsavel(restauranteId, usuarioId);
     }
 
+    @ApiOperation("Desassociar responsável de um restaurante")
     @DeleteMapping("/{usuarioId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void desassociar(@PathVariable Long restauranteId, @PathVariable Long usuarioId) {

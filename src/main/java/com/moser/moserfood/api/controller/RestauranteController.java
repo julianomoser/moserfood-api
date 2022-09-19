@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.moser.moserfood.api.assembler.RestauranteDTOAssembler;
 import com.moser.moserfood.api.assembler.RestauranteInputDisassembler;
+import com.moser.moserfood.api.exceptionhandler.Problem;
 import com.moser.moserfood.api.model.RestauranteDTO;
 import com.moser.moserfood.api.model.input.RestauranteInput;
 import com.moser.moserfood.api.model.view.RestauranteView;
@@ -15,6 +16,12 @@ import com.moser.moserfood.domain.exception.RestauranteNaoEncontradaException;
 import com.moser.moserfood.domain.model.Restaurante;
 import com.moser.moserfood.domain.repository.RestauranteRepository;
 import com.moser.moserfood.domain.service.RestauranteService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -40,6 +47,7 @@ import static com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKN
 /**
  * @author Juliano Moser
  */
+@Api(tags = "Restaurant")
 @RestController
 @RequestMapping("/restaurantes")
 public class RestauranteController {
@@ -58,12 +66,14 @@ public class RestauranteController {
     @Autowired
     private RestauranteInputDisassembler restauranteInputDisassembler;
 
+    @ApiOperation("Lista os restaurantes")
     @JsonView(RestauranteView.Resumo.class)
     @GetMapping()
     public List<RestauranteDTO> listar() {
         return restauranteDTOAssembler.toCollectionDTO(restauranteRepository.findAll());
     }
 
+    @ApiOperation("Lista somente os restaurantes")
     @JsonView(RestauranteView.ApenasNome.class)
     @GetMapping(params = "projecao=apenas-nome")
     public List<RestauranteDTO> listarApenaNomes() {
@@ -105,12 +115,19 @@ public class RestauranteController {
 //        return listar();
 //    }
 
+    @ApiOperation("Busca um restaurante por Id")
+    @ApiResponses({
+            @ApiResponse(responseCode = "400", description = "ID da restaurante inválido", content = @Content(schema =
+            @Schema(implementation = Problem.class))),
+            @ApiResponse(responseCode = "404", description = "Restaurante não encontrada", content = @Content(schema =
+            @Schema(implementation = Problem.class)))  })
     @GetMapping("/{restauranteId}")
     public RestauranteDTO buscar(@PathVariable Long restauranteId) {
         Restaurante restaurante = restauranteService.findOrFail(restauranteId);
         return restauranteDTOAssembler.toDTO(restaurante);
     }
 
+    @ApiOperation("Cadastra um restaurante")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public RestauranteDTO salvar(@RequestBody @Valid RestauranteInput restauranteInput) {
@@ -122,6 +139,7 @@ public class RestauranteController {
         }
     }
 
+    @ApiOperation("Atualiza um restaurante por Id")
     @PutMapping("/{restauranteId}")
     public RestauranteDTO atualizar(@PathVariable Long restauranteId,
                                     @RequestBody @Valid RestauranteInput restauranteInput) {
@@ -136,18 +154,21 @@ public class RestauranteController {
         }
     }
 
+    @ApiOperation("Ativar um restaurante por Id")
     @PutMapping("/{restauranteId}/ativo")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void ativar(@PathVariable Long restauranteId) {
         restauranteService.ativar(restauranteId);
     }
 
+    @ApiOperation("Inativar um restaurante por Id")
     @DeleteMapping("/{restauranteId}/ativo")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void inativar(@PathVariable Long restauranteId) {
         restauranteService.inativar(restauranteId);
     }
 
+    @ApiOperation("Ativar múltiplos restaurantes por IDs")
     @PutMapping("/ativacoes")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void ativarMultiplos(@RequestBody List<Long> restauranteIds) {
@@ -158,6 +179,7 @@ public class RestauranteController {
         }
     }
 
+    @ApiOperation("Inativar múltiplos restaurantes por IDs")
     @DeleteMapping("/ativacoes")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void inativarMultiplos(@RequestBody List<Long> restauranteIds) {
@@ -168,12 +190,14 @@ public class RestauranteController {
         }
     }
 
+    @ApiOperation("Abrir um restaurantes por ID")
     @PutMapping("/{restauranteId}/abertura")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void abrir(@PathVariable Long restauranteId) {
         restauranteService.abrir(restauranteId);
     }
 
+    @ApiOperation("Fechar um restaurantes por ID")
     @PutMapping("/{restauranteId}/fechamento")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void fechar(@PathVariable Long restauranteId) {
@@ -222,31 +246,42 @@ public class RestauranteController {
         }
     }
 
+    @ApiOperation("Exclui um restaurante por Id")
+    @ApiResponses({
+            @ApiResponse(responseCode = "400", description = "ID do resrautante inválido", content = @Content(schema =
+            @Schema(implementation = Problem.class))),
+            @ApiResponse(responseCode = "404", description = "Restaurante não encontrado", content = @Content(schema =
+            @Schema(implementation = Problem.class)))  })
     @DeleteMapping("/{restauranteId}")
     public void remover(@PathVariable Long restauranteId) {
         restauranteService.excluir(restauranteId);
     }
 
+    @ApiOperation("Lista restaurantes por taxa frete")
     @GetMapping("/por-taxa-frete")
     public List<Restaurante> restaurantePorTaxaFrete(BigDecimal taxaInicial, BigDecimal taxaFinal) {
         return restauranteRepository.queryByTaxaFreteBetween(taxaInicial, taxaFinal);
     }
 
+    @ApiOperation("Lista restaurantes por nome")
     @GetMapping("/por-nome")
     public List<Restaurante> restaurantePorNome(String nome, Long cozinhaId) {
         return restauranteRepository.consultByNome(nome, cozinhaId);
     }
 
+    @ApiOperation("Lista primiero restaurante por nome")
     @GetMapping("/primeiro-por-nome")
     public Optional<Restaurante> restauranteFirstByNome(String nome) {
         return restauranteRepository.getFirstByNomeContaining(nome);
     }
 
+    @ApiOperation("Lista os dois primeiros restaurantes")
     @GetMapping("/top2-por-nome")
     public List<Restaurante> restaurantesTopTwo(String nome) {
         return restauranteRepository.findTop2ByNomeContaining(nome);
     }
 
+    @ApiOperation("Busca restaurante existente por nome")
     @GetMapping("/exists")
     public ResponseEntity<Restaurante> restauranteExistsByNome(String nome) {
         final boolean exists = restauranteRepository.existsByNome(nome);
@@ -256,22 +291,26 @@ public class RestauranteController {
         return ResponseEntity.notFound().build();
     }
 
+    @ApiOperation("Conta cozinhas por Id")
     @GetMapping("/count-by-cozinha")
     public int restauranteCountByCozinha(Long conzinhaId) {
         return restauranteRepository.countByCozinhaId(conzinhaId);
     }
 
+    @ApiOperation("Busca restaurante por nome e frete")
     @GetMapping("/count-by-nome-and-frete")
     public List<Restaurante> restauranteByNomeAndFrete(String nome,
                                                        BigDecimal taxaFreteInicial, BigDecimal taxaFreteFinal) {
         return restauranteRepository.find(nome, taxaFreteInicial, taxaFreteFinal);
     }
 
+    @ApiOperation("Busca restaurante por frete grátis")
     @GetMapping("/count-by-free-shipping")
     public List<Restaurante> restauranteByFreeShipping(String name) {
         return restauranteRepository.findByFreeShipping(name);
     }
 
+    @ApiOperation("Busca o primeiro restaurante")
     @GetMapping("/first")
     public Optional<Restaurante> firstRestaurante() {
         return restauranteRepository.findFirst();

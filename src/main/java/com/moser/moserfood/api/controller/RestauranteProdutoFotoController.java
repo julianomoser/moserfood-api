@@ -1,6 +1,7 @@
 package com.moser.moserfood.api.controller;
 
 import com.moser.moserfood.api.assembler.FotoProdutoDTOAssembler;
+import com.moser.moserfood.api.exceptionhandler.Problem;
 import com.moser.moserfood.api.model.FotoProdutoDTO;
 import com.moser.moserfood.api.model.input.FotoProdutoInput;
 import com.moser.moserfood.domain.exception.EntidadeNaoEncontradaException;
@@ -10,6 +11,12 @@ import com.moser.moserfood.domain.service.CatalagoFotoProdutoService;
 import com.moser.moserfood.domain.service.FotoStorageService;
 import com.moser.moserfood.domain.service.FotoStorageService.FotoRecuperada;
 import com.moser.moserfood.domain.service.ProdutoService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -27,6 +34,7 @@ import java.util.List;
 /**
  * @author Juliano Moser
  */
+@Api(tags = "Product photo")
 @RestController
 @RequestMapping("/restaurantes/{restauranteId}/produtos/{produtoId}/foto")
 public class RestauranteProdutoFotoController {
@@ -44,6 +52,7 @@ public class RestauranteProdutoFotoController {
     @Autowired
     private FotoProdutoDTOAssembler fotoProdutoDTOAssembler;
 
+    @ApiOperation("Atualiza uma foto")
     @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public FotoProdutoDTO atualizarFoto(@PathVariable Long restauranteId,
                                         @PathVariable Long produtoId, @Valid FotoProdutoInput fotoProdutoInput) throws IOException {
@@ -66,6 +75,7 @@ public class RestauranteProdutoFotoController {
         return foto;
     }
 
+    @ApiOperation("Busca informações de uma foto")
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public FotoProdutoDTO buscar(@PathVariable Long restauranteId,
                                  @PathVariable Long produtoId) {
@@ -73,6 +83,7 @@ public class RestauranteProdutoFotoController {
         return fotoProdutoDTOAssembler.toDTO(foto);
     }
 
+    @ApiOperation("Busca uma foto")
     @GetMapping
     public ResponseEntity<?> servir(@PathVariable Long restauranteId,
                                                       @PathVariable Long produtoId,
@@ -113,6 +124,12 @@ public class RestauranteProdutoFotoController {
         }
     }
 
+    @ApiOperation("Exclui uma foto por Id")
+    @ApiResponses({
+            @ApiResponse(responseCode = "400", description = "ID da foto inválida", content = @Content(schema =
+            @Schema(implementation = Problem.class))),
+            @ApiResponse(responseCode = "404", description = "Foto não encontrada", content = @Content(schema =
+            @Schema(implementation = Problem.class)))  })
     @DeleteMapping()
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long restauranteId,

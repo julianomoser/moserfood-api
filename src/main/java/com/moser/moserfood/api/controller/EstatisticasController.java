@@ -4,6 +4,8 @@ import com.moser.moserfood.domain.filter.VendaDiariaFilter;
 import com.moser.moserfood.domain.model.dto.VendaDiaria;
 import com.moser.moserfood.domain.service.VendaQueryService;
 import com.moser.moserfood.infrastructure.service.report.PdfVendaReportService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -18,6 +20,7 @@ import java.util.List;
 /**
  * @author Juliano Moser
  */
+@Api(tags = "Statistic")
 @RestController
 @RequestMapping("/estatisticas")
 public class EstatisticasController {
@@ -28,12 +31,14 @@ public class EstatisticasController {
     @Autowired
     private PdfVendaReportService pdfVendaReportService;
 
+    @ApiOperation("Lista as vendas diárias")
     @GetMapping(path = "/vendas-diarias", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<VendaDiaria> consultarVendasDiasrias(VendaDiariaFilter filter,
             @RequestParam(required = false, defaultValue = "+00:00") String timeOffset) {
         return vendaQueryService.consultarVendasDiarias(filter, timeOffset);
     }
 
+    @ApiOperation("Lista em pdf as vendas diárias")
     @GetMapping(path = "/vendas-diarias", produces = MediaType.APPLICATION_PDF_VALUE)
     public ResponseEntity<byte[]> consultarVendasDiasriasPdf(VendaDiariaFilter filter,
                                                      @RequestParam(required = false, defaultValue = "+00:00") String timeOffset) {

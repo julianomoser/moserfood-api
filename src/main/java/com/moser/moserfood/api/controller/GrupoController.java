@@ -2,7 +2,7 @@ package com.moser.moserfood.api.controller;
 
 import com.moser.moserfood.api.assembler.GrupoDTOAssembler;
 import com.moser.moserfood.api.assembler.GrupoInputDisassembler;
-import com.moser.moserfood.api.controller.openapi.GrupoControllerOpenApi;
+import com.moser.moserfood.api.openapi.controller.GrupoControllerOpenApi;
 import com.moser.moserfood.api.model.GrupoDTO;
 import com.moser.moserfood.api.model.input.GrupoInput;
 import com.moser.moserfood.domain.model.Grupo;

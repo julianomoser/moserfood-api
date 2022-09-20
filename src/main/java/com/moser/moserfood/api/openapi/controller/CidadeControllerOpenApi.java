@@ -1,4 +1,4 @@
-package com.moser.moserfood.api.controller.openapi;
+package com.moser.moserfood.api.openapi.controller;
 
 import com.moser.moserfood.api.exceptionhandler.Problem;
 import com.moser.moserfood.api.model.CidadeDTO;

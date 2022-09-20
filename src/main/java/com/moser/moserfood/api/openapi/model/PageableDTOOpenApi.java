@@ -1,4 +1,4 @@
-package com.moser.moserfood.core.openapi.model;
+package com.moser.moserfood.api.openapi.model;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

@@ -2,7 +2,7 @@ package com.moser.moserfood.api.controller;
 
 import com.moser.moserfood.api.assembler.CidadeDTOAssembler;
 import com.moser.moserfood.api.assembler.CidadeInputDisassembler;
-import com.moser.moserfood.api.controller.openapi.CidadeControllerOpenApi;
+import com.moser.moserfood.api.openapi.controller.CidadeControllerOpenApi;
 import com.moser.moserfood.api.model.CidadeDTO;
 import com.moser.moserfood.api.model.input.CidadeInput;
 import com.moser.moserfood.domain.exception.EstadoNaoEncontradoException;

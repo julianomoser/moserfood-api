@@ -3,16 +3,22 @@ package com.moser.moserfood.core.openapi;
 import com.fasterxml.classmate.TypeResolver;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.moser.moserfood.api.exceptionhandler.Problem;
-import com.moser.moserfood.core.openapi.model.PageableDTOOpenApi;
+import com.moser.moserfood.api.model.CozinhaDTO;
+import com.moser.moserfood.api.model.PedidoResumoDTO;
+import com.moser.moserfood.api.openapi.model.PageableDTOOpenApi;
+import com.moser.moserfood.api.openapi.model.PagedModelOpenApi;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
 import springfox.documentation.builders.*;
+import springfox.documentation.schema.AlternateTypeRule;
+import springfox.documentation.schema.AlternateTypeRules;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
 import springfox.documentation.service.Response;
@@ -54,8 +60,16 @@ public class SpringFoxConfig {
                 .globalResponses(HttpMethod.DELETE, globalDeleteResponseMessages())
                 .additionalModels(typeResolver.resolve(Problem.class))
                 .directModelSubstitute(Pageable.class, PageableDTOOpenApi.class)
+                .alternateTypeRules(buildPageTypeRole(typeResolver, CozinhaDTO.class))
+                .alternateTypeRules(buildPageTypeRole(typeResolver, PedidoResumoDTO.class))
                 .apiInfo(apiInfo())
                 .tags(tags()[0], tags());
+    }
+
+    private static <T> AlternateTypeRule buildPageTypeRole(TypeResolver typeResolver, Class<T> classModel) {
+        return AlternateTypeRules.newRule(
+                typeResolver.resolve(Page.class, classModel),
+                typeResolver.resolve(PagedModelOpenApi.class, classModel));
     }
 
     private List<Response> globalGetResponseMessages() {
@@ -153,4 +167,6 @@ public class SpringFoxConfig {
                 new Tag("User group", "Manage the users groups")
         };
     }
+
+
 }

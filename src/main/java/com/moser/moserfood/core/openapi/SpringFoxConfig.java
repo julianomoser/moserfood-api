@@ -167,6 +167,4 @@ public class SpringFoxConfig {
                 new Tag("User group", "Manage the users groups")
         };
     }
-
-
 }

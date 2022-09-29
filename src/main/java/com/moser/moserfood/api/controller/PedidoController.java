@@ -11,13 +11,15 @@ import com.moser.moserfood.api.model.input.PedidoInput;
 import com.moser.moserfood.core.data.PageableTranslator;
 import com.moser.moserfood.domain.exception.EntidadeNaoEncontradaException;
 import com.moser.moserfood.domain.exception.NegocioException;
+import com.moser.moserfood.domain.filter.PedidoFilter;
 import com.moser.moserfood.domain.model.Pedido;
 import com.moser.moserfood.domain.model.Usuario;
 import com.moser.moserfood.domain.repository.PedidoRepository;
-import com.moser.moserfood.domain.filter.PedidoFilter;
 import com.moser.moserfood.domain.service.EmissaoPedidoService;
 import com.moser.moserfood.infrastructure.repository.spec.PedidoSpecs;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -53,10 +55,13 @@ public class PedidoController {
     @Autowired
     private PedidoResumoDTOAssembler pedidoResumoDTOAssembler;
 
+    @ApiImplicitParams({
+            @ApiImplicitParam(value = "Nomes das propriedades para filtrar na resposta, separados por vírgula",
+            name = "campos", paramType = "query", type = "string")
+    })
     @GetMapping
     public Page<PedidoResumoDTO> pesquisar(PedidoFilter filtro,
                                            @PageableDefault(10) Pageable pageable) {
-
         pageable = traduzirPageable(pageable);
 
         Page<Pedido> pedidosPage = pedidoRepository.findAll(PedidoSpecs.usingFilter(filtro), pageable);
@@ -116,6 +121,10 @@ public class PedidoController {
         }
     }
 
+    @ApiImplicitParams({
+            @ApiImplicitParam(value = "Nomes das propriedades para filtrar na resposta, separados por vírgula",
+                    name = "campos", paramType = "query", type = "string")
+    })
     @ApiOperation("Busca um pedido por Id")
     @ApiResponses({
             @ApiResponse(responseCode = "400", description = "ID do pedido inválido", content = @Content(schema =

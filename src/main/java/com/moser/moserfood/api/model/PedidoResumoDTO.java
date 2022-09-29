@@ -26,6 +26,7 @@ public class PedidoResumoDTO {
     private BigDecimal valorTotal;
     @ApiModelProperty(example = "CRIADO")
     private StatusPedido status;
+    @ApiModelProperty(example = "2022-09-29T16:52:04Z")
     private OffsetDateTime dataCriacao;
     private RestauranteResumoDTO restaurante;
     private UsuarioDTO cliente;

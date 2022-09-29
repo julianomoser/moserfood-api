@@ -15,18 +15,18 @@ import javax.validation.constraints.NotNull;
 @Setter
 public class EnderecoInput {
 
-    @ApiModelProperty(example = "00000-000")
+    @ApiModelProperty(example = "00000-000", required = true)
     @NotBlank
     private String cep;
-    @ApiModelProperty(example = "Rua Dos Testes")
+    @ApiModelProperty(example = "Rua Dos Testes", required = true)
     @NotBlank
     private String logradouro;
-    @ApiModelProperty(example = "900")
+    @ApiModelProperty(example = "900", required = true)
     @NotBlank
     private String numero;
-    @ApiModelProperty(example = "Apartamento 00")
+    @ApiModelProperty(example = "Apartamento 00", required = true)
     private String complemento;
-    @ApiModelProperty(example = "Centro")
+    @ApiModelProperty(example = "Centro", required = true)
     @NotBlank
     private String bairro;
     @Valid

@@ -14,15 +14,15 @@ import javax.validation.constraints.PositiveOrZero;
 @Setter
 public class ItemPedidoInput {
 
-    @ApiModelProperty(example = "1")
+    @ApiModelProperty(example = "1", required = true)
     @NotNull
     private Long produtoId;
 
-    @ApiModelProperty(example = "5")
+    @ApiModelProperty(example = "5", required = true)
     @NotNull
     @PositiveOrZero
     private Integer quantidade;
 
-    @ApiModelProperty(example = "Retirar as cebolas")
+    @ApiModelProperty(example = "Menos picante, por favor")
     private String observacao;
 }

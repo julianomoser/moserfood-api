@@ -14,7 +14,7 @@ import javax.validation.constraints.NotNull;
 public class RestauranteIdInput {
 
 
-    @ApiModelProperty(example = "1")
+    @ApiModelProperty(example = "1", required = true)
     @NotNull
     private Long id;
 }

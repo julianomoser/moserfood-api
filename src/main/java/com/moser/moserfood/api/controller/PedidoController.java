@@ -4,10 +4,10 @@ import com.google.common.collect.ImmutableMap;
 import com.moser.moserfood.api.assembler.PedidoDTOAssembler;
 import com.moser.moserfood.api.assembler.PedidoInputDisassembler;
 import com.moser.moserfood.api.assembler.PedidoResumoDTOAssembler;
-import com.moser.moserfood.api.exceptionhandler.Problem;
 import com.moser.moserfood.api.model.PedidoDTO;
 import com.moser.moserfood.api.model.PedidoResumoDTO;
 import com.moser.moserfood.api.model.input.PedidoInput;
+import com.moser.moserfood.api.openapi.controller.PedidoControllerOpenApi;
 import com.moser.moserfood.core.data.PageableTranslator;
 import com.moser.moserfood.domain.exception.EntidadeNaoEncontradaException;
 import com.moser.moserfood.domain.exception.NegocioException;
@@ -18,19 +18,13 @@ import com.moser.moserfood.domain.repository.PedidoRepository;
 import com.moser.moserfood.domain.service.EmissaoPedidoService;
 import com.moser.moserfood.infrastructure.repository.spec.PedidoSpecs;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -41,8 +35,8 @@ import java.util.List;
  */
 @Api(tags = "Order")
 @RestController
-@RequestMapping("/pedidos")
-public class PedidoController {
+@RequestMapping(path = "/pedidos", produces = MediaType.APPLICATION_JSON_VALUE)
+public class PedidoController implements PedidoControllerOpenApi {
 
     @Autowired
     private PedidoRepository pedidoRepository;
@@ -55,11 +49,11 @@ public class PedidoController {
     @Autowired
     private PedidoResumoDTOAssembler pedidoResumoDTOAssembler;
 
-    @ApiImplicitParams({
-            @ApiImplicitParam(value = "Nomes das propriedades para filtrar na resposta, separados por vírgula",
-            name = "campos", paramType = "query", type = "string")
-    })
-    @GetMapping
+    @Autowired
+    private PedidoInputDisassembler pedidoInputDisassembler;
+
+
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public Page<PedidoResumoDTO> pesquisar(PedidoFilter filtro,
                                            @PageableDefault(10) Pageable pageable) {
         pageable = traduzirPageable(pageable);
@@ -91,8 +85,6 @@ public class PedidoController {
 //        return pedidosWrapper;
 //    }
 
-    @Autowired
-    private PedidoInputDisassembler pedidoInputDisassembler;
 
 //    @GetMapping
 //    public List<PedidoResumoDTO> listar() {
@@ -101,9 +93,7 @@ public class PedidoController {
 //        return pedidoResumoDTOAssembler.toCollectionModel(todasPedidos);
 //    }
 
-    @ApiOperation("Adiciona um pedido")
-    @ApiResponses(@ApiResponse(responseCode = "201", description = "Pedido cadastrado"))
-    @PostMapping
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public PedidoDTO adicionar(@RequestBody @Valid PedidoInput pedidoInput) {
         try {
@@ -121,17 +111,7 @@ public class PedidoController {
         }
     }
 
-    @ApiImplicitParams({
-            @ApiImplicitParam(value = "Nomes das propriedades para filtrar na resposta, separados por vírgula",
-                    name = "campos", paramType = "query", type = "string")
-    })
-    @ApiOperation("Busca um pedido por Id")
-    @ApiResponses({
-            @ApiResponse(responseCode = "400", description = "ID do pedido inválido", content = @Content(schema =
-            @Schema(implementation = Problem.class))),
-            @ApiResponse(responseCode = "404", description = "Pedido não encontrada", content = @Content(schema =
-            @Schema(implementation = Problem.class)))  })
-    @GetMapping("/{codigoPedido}")
+    @GetMapping(path = "/{codigoPedido}", produces = MediaType.APPLICATION_JSON_VALUE)
     public PedidoDTO buscar(@PathVariable String codigoPedido) {
         Pedido pedido = emissaoPedidoService.findOrFail(codigoPedido);
 

@@ -13,6 +13,7 @@ import com.moser.moserfood.domain.service.FormaPagamentoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.ServletWebRequest;
@@ -27,7 +28,7 @@ import java.util.concurrent.TimeUnit;
  * @author Juliano Moser
  */
 @RestController
-@RequestMapping("/formas-pagamento")
+@RequestMapping(path = "/formas-pagamento", produces = MediaType.APPLICATION_JSON_VALUE)
 public class FormaPagamentoController implements FromaPagamentoControllerOpenApi {
 
     @Autowired
@@ -41,7 +42,7 @@ public class FormaPagamentoController implements FromaPagamentoControllerOpenApi
     @Autowired
     private FormaPagamentoInputDisassembler formaPagamentoInputDisassembler;
 
-    @GetMapping
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<FormaPagamentoDTO>> listar(ServletWebRequest request) {
         ShallowEtagHeaderFilter.disableContentCaching(request.getRequest());
 
@@ -68,7 +69,7 @@ public class FormaPagamentoController implements FromaPagamentoControllerOpenApi
     }
 
 
-    @GetMapping("/{formaPagamentoId}")
+    @GetMapping(path = "/{formaPagamentoId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<FormaPagamentoDTO> buscar(@PathVariable Long formaPagamentoId,
                                                     ServletWebRequest request) {
 
@@ -100,7 +101,7 @@ public class FormaPagamentoController implements FromaPagamentoControllerOpenApi
         return eTag;
     }
 
-    @PostMapping
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public FormaPagamentoDTO salvar(@RequestBody @Valid FormaPagamentoInput formaPagamentoInput) {
         try {
@@ -114,7 +115,7 @@ public class FormaPagamentoController implements FromaPagamentoControllerOpenApi
         }
     }
 
-    @PutMapping("/{formaPagamentoId}")
+    @PutMapping(path = "/{formaPagamentoId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public FormaPagamentoDTO atualizar(@PathVariable Long formaPagamentoId,
                                        @RequestBody @Valid FormaPagamentoInput formaPagamentoInput) {
         try {

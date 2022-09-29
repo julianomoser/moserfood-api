@@ -13,7 +13,7 @@ import javax.validation.constraints.NotBlank;
 @Setter
 public class FormaPagamentoInput {
 
-    @ApiModelProperty(example = "Cartão de crédito")
+    @ApiModelProperty(example = "Cartão de crédito", required = true)
     @NotBlank
     private String descricao;
 }

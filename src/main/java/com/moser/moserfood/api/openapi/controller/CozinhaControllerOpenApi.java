@@ -35,7 +35,8 @@ public interface CozinhaControllerOpenApi {
 
     @ApiOperation("Cadastra uma cozinha")
     @ApiResponses(@ApiResponse(responseCode = "201", description = "Cozinha cadastrada"))
-    public CozinhaDTO savlar(CozinhaInput cozinhaInput);
+    public CozinhaDTO savlar(@ApiParam(name = "corpo", value = "Representação de uma nova cozinha")
+                             CozinhaInput cozinhaInput);
 
     @ApiOperation("Atualiza uma cozinha por Id")
     @ApiResponses({

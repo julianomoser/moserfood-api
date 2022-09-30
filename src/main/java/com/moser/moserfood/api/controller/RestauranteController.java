@@ -8,6 +8,7 @@ import com.moser.moserfood.api.exceptionhandler.Problem;
 import com.moser.moserfood.api.model.RestauranteDTO;
 import com.moser.moserfood.api.model.input.RestauranteInput;
 import com.moser.moserfood.api.model.view.RestauranteView;
+import com.moser.moserfood.api.openapi.model.RestauranteBasicoDTOOpenApi;
 import com.moser.moserfood.core.validation.ValidacaoException;
 import com.moser.moserfood.domain.exception.CidadeNaoEncontradaException;
 import com.moser.moserfood.domain.exception.CozinhaNaoEncontradaException;
@@ -16,8 +17,7 @@ import com.moser.moserfood.domain.exception.RestauranteNaoEncontradaException;
 import com.moser.moserfood.domain.model.Restaurante;
 import com.moser.moserfood.domain.repository.RestauranteRepository;
 import com.moser.moserfood.domain.service.RestauranteService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.*;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -66,14 +66,18 @@ public class RestauranteController {
     @Autowired
     private RestauranteInputDisassembler restauranteInputDisassembler;
 
-    @ApiOperation("Lista os restaurantes")
+    @ApiOperation(value = "Lista restaurantes", response = RestauranteBasicoDTOOpenApi.class)
+    @ApiImplicitParams({
+            @ApiImplicitParam(value = "Nome da projeção de pedidos", allowableValues = "apenas-nome",
+            name = "projecao", paramType = "query", type = "string")
+    })
     @JsonView(RestauranteView.Resumo.class)
     @GetMapping()
     public List<RestauranteDTO> listar() {
         return restauranteDTOAssembler.toCollectionDTO(restauranteRepository.findAll());
     }
 
-    @ApiOperation("Lista somente os restaurantes")
+    @ApiOperation(value = "Lista restaurantes", hidden = true)
     @JsonView(RestauranteView.ApenasNome.class)
     @GetMapping(params = "projecao=apenas-nome")
     public List<RestauranteDTO> listarApenaNomes() {

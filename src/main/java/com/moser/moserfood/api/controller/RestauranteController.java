@@ -46,6 +46,7 @@ import static com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKN
 public class RestauranteController implements RestauranteControllerOpenApi {
 
     @Autowired
+
     private RestauranteRepository restauranteRepository;
     @Autowired
     private RestauranteService restauranteService;

@@ -13,7 +13,7 @@ import javax.validation.constraints.NotBlank;
 @Setter
 public class EstadoInput {
 
-    @ApiModelProperty(example = "1")
+    @ApiModelProperty(example = "1", required = true)
     @NotBlank
     private String nome;
 }

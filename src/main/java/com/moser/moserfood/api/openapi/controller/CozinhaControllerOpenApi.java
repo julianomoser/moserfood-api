@@ -23,7 +23,7 @@ import java.util.Optional;
 public interface CozinhaControllerOpenApi {
 
     @ApiOperation("Lista as cozinhas")
-    public Page<CozinhaDTO> listar(Pageable pageable);
+    Page<CozinhaDTO> listar(Pageable pageable);
 
     @ApiOperation("Busca uma cozinha por Id")
     @ApiResponses({
@@ -31,11 +31,11 @@ public interface CozinhaControllerOpenApi {
             @Schema(implementation = Problem.class))),
             @ApiResponse(responseCode = "404", description = "Cozinha não encontrada", content = @Content(schema =
             @Schema(implementation = Problem.class)))  })
-    public CozinhaDTO buscar(@ApiParam(value = "ID de uma cozinha", example = "1", required = true) Long cozinhaId);
+    CozinhaDTO buscar(@ApiParam(value = "ID de uma cozinha", example = "1", required = true) Long cozinhaId);
 
     @ApiOperation("Cadastra uma cozinha")
     @ApiResponses(@ApiResponse(responseCode = "201", description = "Cozinha cadastrada"))
-    public CozinhaDTO savlar(@ApiParam(name = "corpo", value = "Representação de uma nova cozinha", required = true)
+    CozinhaDTO savlar(@ApiParam(name = "corpo", value = "Representação de uma nova cozinha", required = true)
                              CozinhaInput cozinhaInput);
 
     @ApiOperation("Atualiza uma cozinha por Id")
@@ -43,7 +43,7 @@ public interface CozinhaControllerOpenApi {
             @ApiResponse(responseCode = "200", description = "Cozinha atualizada"),
             @ApiResponse(responseCode = "404", description = "Cozinha não encontrada", content = @Content(schema =
             @Schema(implementation = Problem.class)))  })
-    public CozinhaDTO atualizar(@ApiParam(value = "ID de uma cozinha", example = "1", required = true)
+    CozinhaDTO atualizar(@ApiParam(value = "ID de uma cozinha", example = "1", required = true)
                                 Long cozinhaId,
                                 @ApiParam(name = "corpo", value = "Representação de uma cozinha com os novos dados", required = true)
                                 CozinhaInput cozinhaInput);
@@ -53,8 +53,8 @@ public interface CozinhaControllerOpenApi {
             @ApiResponse(responseCode = "204", description = "Cozinha excluída"),
             @ApiResponse(responseCode = "404", description = "Cozinha não encontrada", content = @Content(schema =
             @Schema(implementation = Problem.class)))  })
-    public void remover(@ApiParam(value = "ID de uma cozinha", example = "1", required = true) Long cozinhaId);
+    void remover(@ApiParam(value = "ID de uma cozinha", example = "1", required = true) Long cozinhaId);
 
     @ApiOperation("Busca o primeiro restaurante")
-    public Optional<Cozinha> firstRestaurante();
+    Optional<Cozinha> firstRestaurante();
 }

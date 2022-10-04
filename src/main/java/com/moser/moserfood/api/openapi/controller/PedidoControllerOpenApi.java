@@ -29,7 +29,7 @@ public interface PedidoControllerOpenApi {
 
     @ApiOperation("Registra um pedido")
     @ApiResponses(@ApiResponse(responseCode = "201", description = "Pedido cadastrado"))
-    public PedidoDTO adicionar(@ApiParam(name = "corpo", value = "Representação de um novo pedido")
+    public PedidoDTO adicionar(@ApiParam(name = "corpo", value = "Representação de um novo pedido", required = true)
                                    PedidoInput pedidoInput);
 
     @ApiImplicitParams({
@@ -42,5 +42,7 @@ public interface PedidoControllerOpenApi {
             @Schema(implementation = Problem.class))),
             @ApiResponse(responseCode = "404", description = "Pedido não encontrada", content = @Content(schema =
             @Schema(implementation = Problem.class)))  })
-    public PedidoDTO buscar(String codigoPedido);
+    public PedidoDTO buscar(@ApiParam(value = "Código de um pedido", example = "f9981ca4-5a5e-4da3-af04-933861df3e55",
+                            required = true)
+                            String codigoPedido);
 }

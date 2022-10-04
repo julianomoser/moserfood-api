@@ -28,11 +28,11 @@ public interface CidadeControllerOpenApi {
             @Schema(implementation = Problem.class))),
             @ApiResponse(responseCode = "404", description = "Cidade não encontrada", content = @Content(schema =
             @Schema(implementation = Problem.class)))})
-    public CidadeDTO buscar(@ApiParam(value = "ID de uma cidade", example = "1") Long cidadeId);
+    public CidadeDTO buscar(@ApiParam(value = "ID de uma cidade", example = "1", required = true) Long cidadeId);
 
     @ApiOperation("Cadastra uma cidade")
     @ApiResponses(@ApiResponse(responseCode = "201", description = "Cidade cadastrada"))
-    public CidadeDTO salvar(@ApiParam(name = "corpo", value = "Representação de uma nova cidade")
+    public CidadeDTO salvar(@ApiParam(name = "corpo", value = "Representação de uma nova cidade", required = true)
                             CidadeInput cidadeInput);
 
     @ApiOperation("Atualiza uma cidade por Id")
@@ -40,8 +40,8 @@ public interface CidadeControllerOpenApi {
             @ApiResponse(responseCode = "200", description = "Cidade atualizada"),
             @ApiResponse(responseCode = "404", description = "Cidade não encontrada", content = @Content(schema =
             @Schema(implementation = Problem.class)))})
-    public CidadeDTO atualizar(@ApiParam(value = "ID de uma cidade", example = "1") Long cidadeId,
-                               @ApiParam(name = "corpo", value = "Representação de uma cidade com os novos dados")
+    public CidadeDTO atualizar(@ApiParam(value = "ID de uma cidade", example = "1", required = true) Long cidadeId,
+                               @ApiParam(name = "corpo", value = "Representação de uma cidade com os novos dados", required = true)
                                CidadeInput cidadeInput);
 
     @ApiOperation("Exclui uma cidade por Id")
@@ -49,5 +49,5 @@ public interface CidadeControllerOpenApi {
             @ApiResponse(responseCode = "204", description = "Cidade excluída"),
             @ApiResponse(responseCode = "404", description = "Cidade não encontrada", content = @Content(schema =
             @Schema(implementation = Problem.class)))})
-    public void remover(@ApiParam(value = "ID de uma cidade", example = "1") Long cidadeId);
+    public void remover(@ApiParam(value = "ID de uma cidade", example = "1", required = true) Long cidadeId);
 }

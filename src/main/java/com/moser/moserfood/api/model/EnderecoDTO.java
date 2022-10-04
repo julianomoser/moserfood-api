@@ -15,7 +15,7 @@ public class EnderecoDTO {
     private String cep;
     @ApiModelProperty(example = "Rua Dos Testes")
     private String logradouro;
-    @ApiModelProperty(example = "900")
+    @ApiModelProperty(example = "\"900\"")
     private String numero;
     @ApiModelProperty(example = "Apartamento 00")
     private String complemento;

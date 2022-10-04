@@ -17,10 +17,10 @@ import java.math.BigDecimal;
 @Getter
 public class RestauranteInput {
 
-    @ApiModelProperty(example = "Java Veg")
+    @ApiModelProperty(example = "Java Veg", required = true)
     @NotBlank
     private String nome;
-    @ApiModelProperty(example = "12.00")
+    @ApiModelProperty(example = "12.00", required = true)
     @NotNull
     @PositiveOrZero
     private BigDecimal taxaFrete;

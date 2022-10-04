@@ -31,12 +31,12 @@ public interface FromaPagamentoControllerOpenApi {
             @ApiResponse(responseCode = "404", description = "Forma de pagamento não encontrada", content = @Content(schema =
             @Schema(implementation = Problem.class)))})
     public ResponseEntity<FormaPagamentoDTO> buscar(
-            @ApiParam(value = "ID de uma forma de pagamento", example = "1") Long formaPagamentoId,
+            @ApiParam(value = "ID de uma forma de pagamento", example = "1", required = true) Long formaPagamentoId,
             ServletWebRequest request);
 
     @ApiOperation("Cadastra um forma de pagamento")
     @ApiResponses(@ApiResponse(responseCode = "201", description = "Forma de pagamento cadastrada"))
-    public FormaPagamentoDTO salvar(@ApiParam(name = "corpo", value = "Representação de uma nova forma de pagamento")
+    public FormaPagamentoDTO salvar(@ApiParam(name = "corpo", value = "Representação de uma nova forma de pagamento", required = true)
                                         FormaPagamentoInput formaPagamentoInput);
 
     @ApiOperation("Atualiza um forma de pagamento por Id")
@@ -44,9 +44,9 @@ public interface FromaPagamentoControllerOpenApi {
             @ApiResponse(responseCode = "200", description = "FormaPagamentoDTO atualizado"),
             @ApiResponse(responseCode = "404", description = "FormaPagamentoDTO não encontrado", content = @Content(schema =
             @Schema(implementation = Problem.class)))})
-    public FormaPagamentoDTO atualizar(@ApiParam(value = "ID de uma forma de pagamento", example = "1")
+    public FormaPagamentoDTO atualizar(@ApiParam(value = "ID de uma forma de pagamento", example = "1", required = true)
                               Long formaPagamentoId,
-                              @ApiParam(name = "corpo", value = "Representação de uma forma de pagamento com os novos dados")
+                              @ApiParam(name = "corpo", value = "Representação de uma forma de pagamento com os novos dados", required = true)
                               FormaPagamentoInput formaPagamentoInput);
 
     @ApiOperation("Exclui um forma de pagamento por Id")
@@ -54,6 +54,6 @@ public interface FromaPagamentoControllerOpenApi {
             @ApiResponse(responseCode = "204", description = "FormaPagamentoDTO excluído"),
             @ApiResponse(responseCode = "404", description = "FormaPagamentoDTO não encontrada", content = @Content(schema =
             @Schema(implementation = Problem.class)))})
-    public void remover(@ApiParam(value = "ID de um formaPagamento", example = "1") Long formaPagamentoId);
+    public void remover(@ApiParam(value = "ID de um formaPagamento", example = "1", required = true) Long formaPagamentoId);
 
 }

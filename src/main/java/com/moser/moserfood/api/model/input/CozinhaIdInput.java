@@ -13,7 +13,7 @@ import javax.validation.constraints.NotNull;
 @Getter
 public class CozinhaIdInput {
 
-    @ApiModelProperty(example = "1")
+    @ApiModelProperty(example = "1", required = true)
     @NotNull
     private Long id;
 }

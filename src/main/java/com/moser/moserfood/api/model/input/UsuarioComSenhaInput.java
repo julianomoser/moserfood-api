@@ -13,7 +13,7 @@ import javax.validation.constraints.NotBlank;
 @Setter
 public class UsuarioComSenhaInput extends UsuarioInput {
 
-    @ApiModelProperty(example = "teste123")
+    @ApiModelProperty(example = "teste123", required = true)
     @NotBlank
     private String senha;
 }

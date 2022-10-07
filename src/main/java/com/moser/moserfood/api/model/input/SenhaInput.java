@@ -13,11 +13,11 @@ import javax.validation.constraints.NotBlank;
 @Setter
 public class SenhaInput {
 
-    @ApiModelProperty(example = "teste123")
+    @ApiModelProperty(example = "teste123", required = true)
     @NotBlank
     private String senhaAtual;
 
-    @ApiModelProperty(example = "teste321")
+    @ApiModelProperty(example = "teste321", required = true)
     @NotBlank
     private String novaSenha;
 }

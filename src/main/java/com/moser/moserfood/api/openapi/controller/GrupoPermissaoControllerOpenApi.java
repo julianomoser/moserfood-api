@@ -18,7 +18,7 @@ import java.util.List;
 @Api(tags = "Group")
 public interface GrupoPermissaoControllerOpenApi {
 
-    @ApiOperation(value = "Lista os produtos de um restaurantes")
+    @ApiOperation(value = "Lista permissões")
     @ApiResponses({
             @ApiResponse(responseCode = "400", description = "ID do grupo inválido", content = @Content(schema =
             @Schema(implementation = Problem.class))),

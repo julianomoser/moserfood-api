@@ -14,10 +14,10 @@ import javax.validation.constraints.NotBlank;
 @Setter
 public class UsuarioInput {
 
-    @ApiModelProperty(example = "Plini")
+    @ApiModelProperty(example = "Plini", required = true)
     @NotBlank
     private String nome;
-    @ApiModelProperty(example = "plini@teste.com")
+    @ApiModelProperty(example = "plini@teste.com", required = true)
     @NotBlank
     @Email
     private String email;

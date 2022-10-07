@@ -48,10 +48,11 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
 
     @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public FotoProdutoDTO atualizarFoto(@PathVariable Long restauranteId,
-                                        @PathVariable Long produtoId, @Valid FotoProdutoInput fotoProdutoInput) throws IOException {
+                                        @PathVariable Long produtoId, @Valid FotoProdutoInput fotoProdutoInput,
+                                        @RequestPart(required = true) MultipartFile arquivo) throws IOException {
         Produto produto = produtoService.findOrFail(restauranteId, produtoId);
 
-        MultipartFile arquivo = fotoProdutoInput.getArquivo();
+//        MultipartFile arquivo = fotoProdutoInput.getArquivo();
 
         FotoProduto foto = createFotoProduto(fotoProdutoInput, produto, arquivo);
 
@@ -78,14 +79,17 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
     @GetMapping()
     public ResponseEntity<?> servir(@PathVariable Long restauranteId,
                                     @PathVariable Long produtoId,
-                                    @RequestHeader(name = "accept") String accetpHeader)
+                                    @RequestHeader(name = "accept") String acceptHeader)
             throws HttpMediaTypeNotAcceptableException {
+        if (acceptHeader.equals(MediaType.APPLICATION_JSON_VALUE)) {
+            return recuperarFoto(restauranteId, produtoId);
+        }
         try {
             FotoProduto fotoProduto = catalagoFotoProdutoService.findOrFail(restauranteId, produtoId);
 
 
             MediaType mediaTypeFoto = MediaType.parseMediaType(fotoProduto.getContentType());
-            List<MediaType> mediaTypesAceitas = MediaType.parseMediaTypes(accetpHeader);
+            List<MediaType> mediaTypesAceitas = MediaType.parseMediaTypes(acceptHeader);
 
             verificarCompatibilidadeMediaType(mediaTypeFoto, mediaTypesAceitas);
 
@@ -102,6 +106,11 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
         } catch (EntidadeNaoEncontradaException e) {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    public ResponseEntity<?> recuperarFoto(@PathVariable Long restauranteId,@PathVariable Long produtoId)  {
+        FotoProdutoDTO fotoProdutoModel = fotoProdutoDTOAssembler.toDTO(catalagoFotoProdutoService.findOrFail(restauranteId, produtoId));
+        return ResponseEntity.ok(fotoProdutoModel);
     }
 
     private void verificarCompatibilidadeMediaType(MediaType mediaTypeFoto,

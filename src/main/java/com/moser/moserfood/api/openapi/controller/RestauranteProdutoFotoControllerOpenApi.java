@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpMediaTypeNotAcceptableException;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
@@ -30,7 +31,9 @@ public interface RestauranteProdutoFotoControllerOpenApi {
                                  Long restauranteId,
                                  @ApiParam(value = "ID do produto", example = "1", required = true)
                                  Long produtoId,
-                                 FotoProdutoInput fotoProdutoInput) throws IOException;
+                                 FotoProdutoInput fotoProdutoInput,
+                                 @ApiParam(value = "Arquivo da foto do produto (máximo 500KB, apenas JPG e PNG)", required = true)
+                                 MultipartFile arquivo) throws IOException;
 
     @ApiOperation(value = "Busca a foto do produto de um restaurante",
             produces = "application/json, image/jpeg, image/png")
@@ -48,10 +51,10 @@ public interface RestauranteProdutoFotoControllerOpenApi {
                           @ApiParam(value = "ID do produto", example = "1", required = true)
                           Long produtoId);
 
-    @ApiOperation(value = "Busca a foto do produto de um restaurante", hidden = true)
-    ResponseEntity<?> servir(Long restauranteId, Long produtoId, String acceptHeader)
-            throws HttpMediaTypeNotAcceptableException;
-
+//    @ApiOperation(value = "Busca a foto do produto de um restaurante", hidden = true)
+//    ResponseEntity<?> servir(Long restauranteId, Long produtoId, String acceptHeader)
+//            throws HttpMediaTypeNotAcceptableException;
+//
 
     @ApiOperation("Exclui uma foto por Id")
     @ApiResponses({

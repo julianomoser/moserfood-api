@@ -5,7 +5,6 @@ import com.moser.moserfood.api.model.FormaPagamentoDTO;
 import com.moser.moserfood.api.openapi.controller.RestauranteFormaPagamentoControllerOpenApi;
 import com.moser.moserfood.domain.model.Restaurante;
 import com.moser.moserfood.domain.service.RestauranteService;
-import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -16,7 +15,6 @@ import java.util.List;
 /**
  * @author Juliano Moser
  */
-@Api(tags = "Restaurant payment method")
 @RestController
 @RequestMapping(path = "/restaurantes/{restauranteId}/formas-pagamento", produces = MediaType.APPLICATION_JSON_VALUE)
 public class RestauranteFromaPagamentoController implements RestauranteFormaPagamentoControllerOpenApi {

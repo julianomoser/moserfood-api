@@ -16,17 +16,17 @@ import java.math.BigDecimal;
 @Setter
 public class ProdutoInput {
 
-    @ApiModelProperty(example = "NotBurguer")
+    @ApiModelProperty(example = "NotBurguer", required = true)
     @NotBlank
     private String nome;
-    @ApiModelProperty(example = "Delicioso hamburger de falafel")
+    @ApiModelProperty(example = "Delicioso hamburger de falafel", required = true)
     @NotBlank
     private String descricao;
-    @ApiModelProperty(example = "20.20")
+    @ApiModelProperty(example = "20.20", required = true)
     @NotNull
     @PositiveOrZero
     private BigDecimal preco;
-    @ApiModelProperty(example = "true")
+    @ApiModelProperty(example = "true", required = true)
     @NotNull
     private Boolean ativo;
 }

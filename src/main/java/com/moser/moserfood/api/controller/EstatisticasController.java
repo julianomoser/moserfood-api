@@ -1,5 +1,6 @@
 package com.moser.moserfood.api.controller;
 
+import com.moser.moserfood.api.openapi.controller.EstatisticasControllerOpenApi;
 import com.moser.moserfood.domain.filter.VendaDiariaFilter;
 import com.moser.moserfood.domain.model.dto.VendaDiaria;
 import com.moser.moserfood.domain.service.VendaQueryService;
@@ -20,10 +21,9 @@ import java.util.List;
 /**
  * @author Juliano Moser
  */
-@Api(tags = "Statistic")
 @RestController
 @RequestMapping("/estatisticas")
-public class EstatisticasController {
+public class EstatisticasController implements EstatisticasControllerOpenApi {
 
     @Autowired
     private VendaQueryService vendaQueryService;
@@ -31,14 +31,12 @@ public class EstatisticasController {
     @Autowired
     private PdfVendaReportService pdfVendaReportService;
 
-    @ApiOperation("Lista as vendas diárias")
     @GetMapping(path = "/vendas-diarias", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<VendaDiaria> consultarVendasDiasrias(VendaDiariaFilter filter,
             @RequestParam(required = false, defaultValue = "+00:00") String timeOffset) {
         return vendaQueryService.consultarVendasDiarias(filter, timeOffset);
     }
 
-    @ApiOperation("Lista em pdf as vendas diárias")
     @GetMapping(path = "/vendas-diarias", produces = MediaType.APPLICATION_PDF_VALUE)
     public ResponseEntity<byte[]> consultarVendasDiasriasPdf(VendaDiariaFilter filter,
                                                      @RequestParam(required = false, defaultValue = "+00:00") String timeOffset) {

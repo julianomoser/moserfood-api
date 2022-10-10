@@ -12,6 +12,7 @@ import com.moser.moserfood.domain.model.Cidade;
 import com.moser.moserfood.domain.repository.CidadeRepository;
 import com.moser.moserfood.domain.service.CidadeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.Link;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -54,8 +55,11 @@ public class CidadeController implements CidadeControllerOpenApi {
     @GetMapping(path = "/{cidadeId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public CidadeDTO buscar(@PathVariable Long cidadeId) {
         Cidade cidade = cidadeService.findOrFail(cidadeId);
-
-        return cidadeModelAssembler.toDTO(cidade);
+        CidadeDTO cidadeDTO = cidadeModelAssembler.toDTO(cidade);
+        cidadeDTO.add(Link.of("http://api.moserfood.local:8081/cidades/1"));
+        cidadeDTO.add(Link.of("http://api.moserfood.local:8081/cidades", "cidades"));
+        cidadeDTO.getEstado().add(Link.of("http://api.moserfood.local:8081/estados/1"));
+        return cidadeDTO;
     }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)

@@ -10,8 +10,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-
-import java.util.List;
+import org.springframework.hateoas.CollectionModel;
 
 /**
  * @author Juliano Moser
@@ -20,7 +19,7 @@ import java.util.List;
 public interface CidadeControllerOpenApi {
 
     @ApiOperation("Lista as cidades")
-    List<CidadeDTO> listar();
+    CollectionModel<CidadeDTO> listar();
 
     @ApiOperation("Busca uma cidade por Id")
     @ApiResponses({

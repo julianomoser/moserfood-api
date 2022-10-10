@@ -12,6 +12,7 @@ import com.moser.moserfood.domain.model.Cidade;
 import com.moser.moserfood.domain.repository.CidadeRepository;
 import com.moser.moserfood.domain.service.CidadeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -42,10 +43,20 @@ public class CidadeController implements CidadeControllerOpenApi {
     private CidadeInputDisassembler cidadeInputDisassembler;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<CidadeDTO> listar() {
+    public CollectionModel<CidadeDTO> listar() {
         List<Cidade> todasCidades = cidadeRepository.findAll();
+        List<CidadeDTO> cidadesDTO = cidadeModelAssembler.toCollectionDTO(todasCidades);
 
-        return cidadeModelAssembler.toCollectionDTO(todasCidades);
+        cidadesDTO.forEach(cidadeDTO -> {
+            cidadeDTO.add(linkTo(methodOn(CidadeController.class).buscar(cidadeDTO.getId())).withSelfRel());
+            cidadeDTO.add(linkTo(methodOn(CidadeController.class).listar()).withRel("cidades"));
+            cidadeDTO.getEstado().add(linkTo(methodOn(EstadoController.class)
+                    .buscar(cidadeDTO.getEstado().getId())).withSelfRel());
+        });
+
+        CollectionModel<CidadeDTO> cidadesCollectionModel = CollectionModel.of(cidadesDTO);
+        cidadesCollectionModel.add(linkTo(CidadeController.class).withSelfRel());
+        return cidadesCollectionModel;
     }
 
     @GetMapping(path = "/{cidadeId}", produces = MediaType.APPLICATION_JSON_VALUE)

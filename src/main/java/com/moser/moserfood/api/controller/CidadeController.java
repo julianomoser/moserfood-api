@@ -20,6 +20,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 /**
  * @author Juliano Moser
@@ -51,10 +52,10 @@ public class CidadeController implements CidadeControllerOpenApi {
     public CidadeDTO buscar(@PathVariable Long cidadeId) {
         Cidade cidade = cidadeService.findOrFail(cidadeId);
         CidadeDTO cidadeDTO = cidadeModelAssembler.toDTO(cidade);
-        cidadeDTO.add(linkTo(CidadeController.class).slash(cidadeDTO.getId()).withSelfRel());
-        cidadeDTO.add(linkTo(CidadeController.class).withRel("cidades"));
-        cidadeDTO.getEstado().add(linkTo(EstadoController.class)
-                .slash(cidadeDTO.getEstado().getId()).withSelfRel());
+        cidadeDTO.add(linkTo(methodOn(CidadeController.class).buscar(cidadeDTO.getId())).withSelfRel());
+        cidadeDTO.add(linkTo(methodOn(CidadeController.class).listar()).withRel("cidades"));
+        cidadeDTO.getEstado().add(linkTo(methodOn(EstadoController.class)
+                .buscar(cidadeDTO.getEstado().getId())).withSelfRel());
         return cidadeDTO;
     }
 

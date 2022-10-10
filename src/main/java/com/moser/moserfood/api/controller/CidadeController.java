@@ -3,28 +3,23 @@ package com.moser.moserfood.api.controller;
 import com.moser.moserfood.api.ResourceUriHelper;
 import com.moser.moserfood.api.assembler.CidadeDTOAssembler;
 import com.moser.moserfood.api.assembler.CidadeInputDisassembler;
-import com.moser.moserfood.api.openapi.controller.CidadeControllerOpenApi;
 import com.moser.moserfood.api.model.CidadeDTO;
 import com.moser.moserfood.api.model.input.CidadeInput;
+import com.moser.moserfood.api.openapi.controller.CidadeControllerOpenApi;
 import com.moser.moserfood.domain.exception.EstadoNaoEncontradoException;
 import com.moser.moserfood.domain.exception.NegocioException;
 import com.moser.moserfood.domain.model.Cidade;
 import com.moser.moserfood.domain.repository.CidadeRepository;
 import com.moser.moserfood.domain.service.CidadeService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.Link;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.net.URI;
 import java.util.List;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
 /**
  * @author Juliano Moser
@@ -56,9 +51,10 @@ public class CidadeController implements CidadeControllerOpenApi {
     public CidadeDTO buscar(@PathVariable Long cidadeId) {
         Cidade cidade = cidadeService.findOrFail(cidadeId);
         CidadeDTO cidadeDTO = cidadeModelAssembler.toDTO(cidade);
-        cidadeDTO.add(Link.of("http://api.moserfood.local:8081/cidades/1"));
-        cidadeDTO.add(Link.of("http://api.moserfood.local:8081/cidades", "cidades"));
-        cidadeDTO.getEstado().add(Link.of("http://api.moserfood.local:8081/estados/1"));
+        cidadeDTO.add(linkTo(CidadeController.class).slash(cidadeDTO.getId()).withSelfRel());
+        cidadeDTO.add(linkTo(CidadeController.class).withRel("cidades"));
+        cidadeDTO.getEstado().add(linkTo(EstadoController.class)
+                .slash(cidadeDTO.getEstado().getId()).withSelfRel());
         return cidadeDTO;
     }
 

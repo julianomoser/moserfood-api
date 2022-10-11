@@ -8,6 +8,7 @@ import com.moser.moserfood.api.model.PedidoDTO;
 import com.moser.moserfood.api.model.PedidoResumoDTO;
 import com.moser.moserfood.api.model.input.PedidoInput;
 import com.moser.moserfood.api.openapi.controller.PedidoControllerOpenApi;
+import com.moser.moserfood.core.data.PageWrapper;
 import com.moser.moserfood.core.data.PageableTranslator;
 import com.moser.moserfood.domain.exception.EntidadeNaoEncontradaException;
 import com.moser.moserfood.domain.exception.NegocioException;
@@ -61,9 +62,12 @@ public class PedidoController implements PedidoControllerOpenApi {
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public PagedModel<PedidoResumoDTO> pesquisar(PedidoFilter filtro,
                                                  @PageableDefault(10) Pageable pageable) {
-        pageable = traduzirPageable(pageable);
+        Pageable pageableTraduzido = traduzirPageable(pageable);
 
-        Page<Pedido> pedidosPage = pedidoRepository.findAll(PedidoSpecs.usingFilter(filtro), pageable);
+        Page<Pedido> pedidosPage = pedidoRepository
+                .findAll(PedidoSpecs.usingFilter(filtro), pageableTraduzido);
+        
+        pedidosPage = new PageWrapper<>(pedidosPage, pageable);
 
         return pagedResourcesAssembler.toModel(pedidosPage, pedidoResumoDTOAssembler);
     }

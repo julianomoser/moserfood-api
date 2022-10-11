@@ -9,6 +9,7 @@ import com.moser.moserfood.domain.model.Estado;
 import com.moser.moserfood.domain.repository.EstadoRepository;
 import com.moser.moserfood.domain.service.EstadoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -35,15 +36,15 @@ public class EstadoController implements EstadoControllerOpenApi {
     private EstadoInputDisassembler estadoInputDisassembler;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<EstadoDTO> listar() {
+    public CollectionModel<EstadoDTO> listar() {
         List<Estado> todosEstados = estadoRepository.findAll();
-        return estadoModelAssembler.toCollectionDTO(todosEstados);
+        return estadoModelAssembler.toCollectionModel(todosEstados);
     }
 
     @GetMapping(path = "/{estadoId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public EstadoDTO buscar(@PathVariable Long estadoId) {
         Estado estado = estadoService.findOrFail(estadoId);
-        return estadoModelAssembler.toDTO(estado);
+        return estadoModelAssembler.toModel(estado);
     }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
@@ -53,7 +54,7 @@ public class EstadoController implements EstadoControllerOpenApi {
 
         estado = estadoService.salvar(estado);
 
-        return estadoModelAssembler.toDTO(estado);
+        return estadoModelAssembler.toModel(estado);
     }
 
     @PutMapping(path = "/{estadoId}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -65,7 +66,7 @@ public class EstadoController implements EstadoControllerOpenApi {
 
         estadoAtual = estadoService.salvar(estadoAtual);
 
-        return estadoModelAssembler.toDTO(estadoAtual);
+        return estadoModelAssembler.toModel(estadoAtual);
     }
 
     @DeleteMapping("/{estadoId}")

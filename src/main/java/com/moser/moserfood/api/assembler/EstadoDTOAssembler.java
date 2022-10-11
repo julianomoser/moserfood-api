@@ -1,30 +1,41 @@
 package com.moser.moserfood.api.assembler;
 
+import com.moser.moserfood.api.controller.EstadoController;
+import com.moser.moserfood.api.controller.UsuarioController;
 import com.moser.moserfood.api.model.EstadoDTO;
 import com.moser.moserfood.domain.model.Estado;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 /**
  * @author Juliano Moser
  */
 @Component
-public class EstadoDTOAssembler {
+public class EstadoDTOAssembler extends RepresentationModelAssemblerSupport<Estado, EstadoDTO> {
 
     @Autowired
     private ModelMapper modelMapper;
 
-    public EstadoDTO toDTO(Estado estado) {
-        return modelMapper.map(estado, EstadoDTO.class);
+    public EstadoDTOAssembler() {
+        super(EstadoController.class, EstadoDTO.class);
     }
 
-    public List<EstadoDTO> toCollectionDTO(List<Estado> estados) {
-        return estados.stream()
-                .map(this::toDTO)
-                .collect(Collectors.toList());
+    @Override
+    public EstadoDTO toModel(Estado estado) {
+        EstadoDTO estadoDTO = createModelWithId(estado.getId(), estado);
+        modelMapper.map(estado, estadoDTO);
+        estadoDTO.add(linkTo(methodOn(EstadoController.class).listar()).withRel("estados"));
+        return estadoDTO;
+    }
+
+    @Override
+    public CollectionModel<EstadoDTO> toCollectionModel(Iterable<? extends Estado> entities) {
+        return super.toCollectionModel(entities).add(linkTo(EstadoController.class).withSelfRel());
     }
 }

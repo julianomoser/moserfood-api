@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.PagedModel;
 
 import java.util.Optional;
 
@@ -23,7 +24,7 @@ import java.util.Optional;
 public interface CozinhaControllerOpenApi {
 
     @ApiOperation("Lista as cozinhas")
-    Page<CozinhaDTO> listar(Pageable pageable);
+    PagedModel<CozinhaDTO> listar(Pageable pageable);
 
     @ApiOperation("Busca uma cozinha por Id")
     @ApiResponses({

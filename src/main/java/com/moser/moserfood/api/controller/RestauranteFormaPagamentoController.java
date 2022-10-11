@@ -36,11 +36,12 @@ public class RestauranteFormaPagamentoController implements RestauranteFormaPaga
         CollectionModel<FormaPagamentoDTO> formasPagamentosDTO = formaPagamentoDTOAssembler
                 .toCollectionModel(restaurante.getFormasPagamento())
                 .removeLinks()
-                .add(moserLinks.linkToRestauranteFormasPagamento(restauranteId));
+                .add(moserLinks.linkToRestauranteFormasPagamento(restauranteId))
+                .add(moserLinks.linkToRestauranteFormasPagamentoAssociacao(restauranteId, "associar"));
 
         formasPagamentosDTO.getContent().forEach(formaPagamentoDTO -> {
             formaPagamentoDTO.add(moserLinks.linkToRestauranteFormasPagamentoDesassociacao(
-                    restauranteId,formaPagamentoDTO.getId(),"desassociar"));
+                    restauranteId, formaPagamentoDTO.getId(), "desassociar"));
         });
 
         return formasPagamentosDTO;
@@ -48,8 +49,9 @@ public class RestauranteFormaPagamentoController implements RestauranteFormaPaga
 
     @PutMapping("/{formaPagamentoId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void associar(@PathVariable Long restauranteId, @PathVariable Long formaPagamentoId) {
+    public ResponseEntity<Void> associar(@PathVariable Long restauranteId, @PathVariable Long formaPagamentoId) {
         restauranteService.associarFormaPagamento(restauranteId, formaPagamentoId);
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{formaPagamentoId}")

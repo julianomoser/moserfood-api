@@ -170,6 +170,11 @@ public class MoserLinks {
                 .desassociar(restauranteId, formaPagamentoId)).withRel(rel);
     }
 
+    public Link linkToRestauranteFormasPagamentoAssociacao(Long restauranteId,String rel) {
+        return linkTo(methodOn(RestauranteFormaPagamentoController.class)
+                .associar(restauranteId, null)).withRel(rel);
+    }
+
     public Link linkToCozinha(Long cozinhaId, String rel) {
         return linkTo(methodOn(CozinhaController.class)
                 .buscar(cozinhaId)).withRel(rel);

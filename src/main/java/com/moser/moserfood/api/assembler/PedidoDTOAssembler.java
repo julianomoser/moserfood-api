@@ -30,15 +30,11 @@ public class PedidoDTOAssembler extends RepresentationModelAssemblerSupport<Pedi
         PedidoDTO pedidoDTO = createModelWithId(pedido.getCodigo(), pedido);
         modelMapper.map(pedido, pedidoDTO);
 
-        TemplateVariables pageVariables = new TemplateVariables(
-          new TemplateVariable("page", TemplateVariable.VariableType.REQUEST_PARAM),
-          new TemplateVariable("size", TemplateVariable.VariableType.REQUEST_PARAM),
-          new TemplateVariable("sort", TemplateVariable.VariableType.REQUEST_PARAM)
-        );
+        TemplateVariables templateVariables = getTemplateVariables();
 
         String pedidosUrl = linkTo(PedidoController.class).toUri().toString();
 
-        pedidoDTO.add(Link.of(UriTemplate.of(pedidosUrl, pageVariables), "pedidos"));
+        pedidoDTO.add(Link.of(UriTemplate.of(pedidosUrl, templateVariables), "pedidos"));
 
         pedidoDTO.getRestaurante().add(linkTo(methodOn(RestauranteController.class)
                 .buscar(pedido.getRestaurante().getId())).withSelfRel());
@@ -65,5 +61,20 @@ public class PedidoDTOAssembler extends RepresentationModelAssemblerSupport<Pedi
     @Override
     public CollectionModel<PedidoDTO> toCollectionModel(Iterable<? extends Pedido> entities) {
         return super.toCollectionModel(entities).add(linkTo(PedidoController.class).withSelfRel());
+    }
+
+    private static TemplateVariables getTemplateVariables() {
+        TemplateVariables pageVariables = new TemplateVariables(
+                new TemplateVariable("page", TemplateVariable.VariableType.REQUEST_PARAM),
+                new TemplateVariable("size", TemplateVariable.VariableType.REQUEST_PARAM),
+                new TemplateVariable("sort", TemplateVariable.VariableType.REQUEST_PARAM)
+        );
+        TemplateVariables filtroVariables = new TemplateVariables(
+                new TemplateVariable("clienteId", TemplateVariable.VariableType.REQUEST_PARAM),
+                new TemplateVariable("restauranteId", TemplateVariable.VariableType.REQUEST_PARAM),
+                new TemplateVariable("dataCriacaoInicio", TemplateVariable.VariableType.REQUEST_PARAM),
+                new TemplateVariable("dataCriacaoFim", TemplateVariable.VariableType.REQUEST_PARAM)
+        );
+        return pageVariables.concat(filtroVariables);
     }
 }

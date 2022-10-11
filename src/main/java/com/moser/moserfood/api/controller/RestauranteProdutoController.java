@@ -1,5 +1,6 @@
 package com.moser.moserfood.api.controller;
 
+import com.moser.moserfood.api.MoserLinks;
 import com.moser.moserfood.api.assembler.ProdutoDTOAssembler;
 import com.moser.moserfood.api.assembler.ProdutoInputDisassembler;
 import com.moser.moserfood.api.model.ProdutoDTO;
@@ -11,6 +12,7 @@ import com.moser.moserfood.domain.repository.ProdutoRepository;
 import com.moser.moserfood.domain.service.ProdutoService;
 import com.moser.moserfood.domain.service.RestauranteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -40,9 +42,12 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
     @Autowired
     private ProdutoInputDisassembler produtoInputDisassembler;
 
+    @Autowired
+    private MoserLinks moserLinks;
+
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<ProdutoDTO> listar(@PathVariable Long restauranteId,
-                                   @RequestParam(required = false) boolean incluirInativos) {
+    public CollectionModel<ProdutoDTO> listar(@PathVariable Long restauranteId,
+                                              @RequestParam(required = false) Boolean incluirInativos) {
         Restaurante restaurante = restauranteService.findOrFail(restauranteId);
         List<Produto> todosProtudos = null;
 
@@ -52,14 +57,15 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
             todosProtudos = produtoRepository.findAtivosByRestaurante(restaurante);
         }
 
-        return produtoDTOAssembler.toCollectionDTO(todosProtudos);
+        return produtoDTOAssembler.toCollectionModel(todosProtudos)
+                .add(moserLinks.linkToProdutos(restauranteId));
     }
 
     @GetMapping(path = "/{produtoId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ProdutoDTO buscar(@PathVariable Long restauranteId, @PathVariable Long produtoId) {
         Produto produto = produtoService.findOrFail(restauranteId, produtoId);
 
-        return produtoDTOAssembler.toDTO(produto);
+        return produtoDTOAssembler.toModel(produto);
     }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
@@ -71,7 +77,7 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
         produto.setRestaurante(restaurante);
 
         produto = produtoService.salvar(produto);
-        return produtoDTOAssembler.toDTO(produto);
+        return produtoDTOAssembler.toModel(produto);
     }
 
     @PutMapping(path = "/{produtoId}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -83,6 +89,6 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
         produtoInputDisassembler.copyToDomainObject(produtoInput, produto);
         produto = produtoService.salvar(produto);
 
-        return produtoDTOAssembler.toDTO(produto);
+        return produtoDTOAssembler.toModel(produto);
     }
 }

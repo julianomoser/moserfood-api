@@ -1,9 +1,15 @@
 package com.moser.moserfood.api.assembler;
 
+import com.moser.moserfood.api.MoserLinks;
+import com.moser.moserfood.api.controller.RestauranteProdutoController;
+import com.moser.moserfood.api.model.CidadeDTO;
 import com.moser.moserfood.api.model.ProdutoDTO;
+import com.moser.moserfood.domain.model.Cidade;
 import com.moser.moserfood.domain.model.Produto;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
@@ -14,19 +20,21 @@ import java.util.stream.Collectors;
  * @author Juliano Moser
  */
 @Component
-public class ProdutoDTOAssembler {
+public class ProdutoDTOAssembler extends RepresentationModelAssemblerSupport<Produto, ProdutoDTO> {
 
     @Autowired
-
     private ModelMapper modelMapper;
+    @Autowired
+    private MoserLinks moserLinks;
 
-    public ProdutoDTO toDTO(Produto produto) {
-        return modelMapper.map(produto, ProdutoDTO.class);
+    public ProdutoDTOAssembler() {
+        super(RestauranteProdutoController.class, ProdutoDTO.class);
     }
 
-    public List<ProdutoDTO> toCollectionDTO(Collection<Produto> produtos) {
-        return produtos.stream()
-                .map(this::toDTO)
-                .collect(Collectors.toList());
+    public ProdutoDTO toModel(Produto produto) {
+        ProdutoDTO produtoDTO = createModelWithId(produto.getId(), produto);
+        modelMapper.map(produto, produtoDTO);
+        produtoDTO.add(moserLinks.linkToProdutos(produto.getRestaurante().getId(), "produtos"));
+        return produtoDTO;
     }
 }

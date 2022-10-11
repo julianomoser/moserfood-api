@@ -29,6 +29,17 @@ public class MoserLinks {
         return Link.of(UriTemplate.of(pedidosUrl, PAGINACAO_VARIABLES.concat(filtroVariable)), "pedidos");
     }
 
+    public Link linkToConfimacaoPedido(String codigoPedido, String rel) {
+        return linkTo(methodOn(FluxoPedidoController.class).confirmar(codigoPedido)).withRel(rel);
+    }
+
+    public Link linkToEntregarPedido(String codigoPedido, String rel) {
+        return linkTo(methodOn(FluxoPedidoController.class).entregar(codigoPedido)).withRel(rel);
+    }
+
+    public Link linkToCancelarPedido(String codigoPedido, String rel) {
+        return linkTo(methodOn(FluxoPedidoController.class).cancelar(codigoPedido)).withRel(rel);
+    }
     public Link linkToRestaurante(Long restauranteId, String rel) {
         return linkTo(methodOn(RestauranteController.class)
                 .buscar(restauranteId)).withRel(rel);

@@ -34,6 +34,10 @@ public class PedidoDTOAssembler extends RepresentationModelAssemblerSupport<Pedi
 
         pedidoDTO.add(moserLinks.linkToPedidos());
 
+        pedidoDTO.add(moserLinks.linkToConfimacaoPedido(pedido.getCodigo(), "confirmar"));
+        pedidoDTO.add(moserLinks.linkToCancelarPedido(pedido.getCodigo(), "cancelar"));
+        pedidoDTO.add(moserLinks.linkToEntregarPedido(pedido.getCodigo(), "entregar"));
+
         pedidoDTO.getRestaurante().add(
                 moserLinks.linkToRestaurante(pedido.getRestaurante().getId()));
 

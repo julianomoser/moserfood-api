@@ -23,6 +23,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -52,17 +54,18 @@ public class PedidoController implements PedidoControllerOpenApi {
     @Autowired
     private PedidoInputDisassembler pedidoInputDisassembler;
 
+    @Autowired
+    private PagedResourcesAssembler<Pedido> pagedResourcesAssembler;
+
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public Page<PedidoResumoDTO> pesquisar(PedidoFilter filtro,
-                                           @PageableDefault(10) Pageable pageable) {
+    public PagedModel<PedidoResumoDTO> pesquisar(PedidoFilter filtro,
+                                                 @PageableDefault(10) Pageable pageable) {
         pageable = traduzirPageable(pageable);
 
         Page<Pedido> pedidosPage = pedidoRepository.findAll(PedidoSpecs.usingFilter(filtro), pageable);
 
-        List<PedidoResumoDTO> pedidosResumoDTO = pedidoResumoDTOAssembler.toCollectionDTO(pedidosPage.getContent());
-
-        return new PageImpl<>(pedidosResumoDTO, pageable, pedidosPage.getTotalElements());
+        return pagedResourcesAssembler.toModel(pedidosPage, pedidoResumoDTOAssembler);
     }
 
 //    @GetMapping
@@ -105,7 +108,7 @@ public class PedidoController implements PedidoControllerOpenApi {
 
             pedido = emissaoPedidoService.emitir(pedido);
 
-            return pedidoDTOAssembler.toDTO(pedido);
+            return pedidoDTOAssembler.toModel(pedido);
         } catch (EntidadeNaoEncontradaException e) {
             throw new NegocioException(e.getMessage(), e.getCause());
         }
@@ -115,7 +118,7 @@ public class PedidoController implements PedidoControllerOpenApi {
     public PedidoDTO buscar(@PathVariable String codigoPedido) {
         Pedido pedido = emissaoPedidoService.findOrFail(codigoPedido);
 
-        return pedidoDTOAssembler.toDTO(pedido);
+        return pedidoDTOAssembler.toModel(pedido);
     }
 
     private Pageable traduzirPageable(Pageable apiPageable) {

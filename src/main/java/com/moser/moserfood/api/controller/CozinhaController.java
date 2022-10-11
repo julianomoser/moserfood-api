@@ -50,10 +50,8 @@ public class CozinhaController implements CozinhaControllerOpenApi {
     public PagedModel<CozinhaDTO> listar(@PageableDefault(size = 10) Pageable pageable) {
         Page<Cozinha> cozinhasPage = cozinhaRepository.findAll(pageable);
 
-        PagedModel<CozinhaDTO> cozinhasPagedModel = pagedResourcesAssembler
+        return pagedResourcesAssembler
                 .toModel(cozinhasPage, cozinhaModelAssembler);
-
-        return cozinhasPagedModel;
     }
 
     @GetMapping(path = "/{cozinhaId}", produces = MediaType.APPLICATION_JSON_VALUE)

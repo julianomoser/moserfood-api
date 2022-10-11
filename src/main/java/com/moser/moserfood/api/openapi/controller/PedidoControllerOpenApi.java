@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.web.bind.annotation.PathVariable;
 
 /**
@@ -25,7 +26,7 @@ public interface PedidoControllerOpenApi {
                     name = "campos", paramType = "query", type = "string")
     })
     @ApiOperation("Pesquisa os pedidos")
-    Page<PedidoResumoDTO> pesquisar(PedidoFilter filtro, Pageable pageable);
+    PagedModel<PedidoResumoDTO> pesquisar(PedidoFilter filtro, Pageable pageable);
 
     @ApiOperation("Registra um pedido")
     @ApiResponses(@ApiResponse(responseCode = "201", description = "Pedido cadastrado"))

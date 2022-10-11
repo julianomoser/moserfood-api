@@ -11,6 +11,7 @@ import com.moser.moserfood.domain.model.FormaPagamento;
 import com.moser.moserfood.domain.repository.FormaPagamentoRepository;
 import com.moser.moserfood.domain.service.FormaPagamentoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -43,7 +44,7 @@ public class FormaPagamentoController implements FromaPagamentoControllerOpenApi
     private FormaPagamentoInputDisassembler formaPagamentoInputDisassembler;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<FormaPagamentoDTO>> listar(ServletWebRequest request) {
+    public ResponseEntity<CollectionModel<FormaPagamentoDTO>> listar(ServletWebRequest request) {
         ShallowEtagHeaderFilter.disableContentCaching(request.getRequest());
 
         OffsetDateTime dataUltimaAtualizacao = formaPagamentoRepository.getDataUltimaAtualizacao();
@@ -56,15 +57,11 @@ public class FormaPagamentoController implements FromaPagamentoControllerOpenApi
 
         List<FormaPagamento> todasFormaPagamentos = formaPagamentoRepository.findAll();
 
-        List<FormaPagamentoDTO> formasPagamentoDTO = formaPagamentoModelAssembler.toCollectionDTO(todasFormaPagamentos);
+        CollectionModel<FormaPagamentoDTO> formasPagamentoDTO = formaPagamentoModelAssembler.toCollectionModel(todasFormaPagamentos);
 
         return ResponseEntity.ok()
-//                .cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS))
-//                .cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS).cachePrivate())
                 .cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS).cachePublic())
                 .eTag(eTag)
-//                .cacheControl(CacheControl.noCache())
-//                .cacheControl(CacheControl.noStore())
                 .body(formasPagamentoDTO);
     }
 
@@ -84,7 +81,7 @@ public class FormaPagamentoController implements FromaPagamentoControllerOpenApi
         }
 
         FormaPagamento formaPagamento = formaPagamentoService.findOrFail(formaPagamentoId);
-        FormaPagamentoDTO formaPagamentoDTO = formaPagamentoModelAssembler.toDTO(formaPagamento);
+        FormaPagamentoDTO formaPagamentoDTO = formaPagamentoModelAssembler.toModel(formaPagamento);
 
         return ResponseEntity.ok()
                 .cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS))
@@ -109,7 +106,7 @@ public class FormaPagamentoController implements FromaPagamentoControllerOpenApi
 
             formaPagamento = formaPagamentoService.salvar(formaPagamento);
 
-            return formaPagamentoModelAssembler.toDTO(formaPagamento);
+            return formaPagamentoModelAssembler.toModel(formaPagamento);
         } catch (EstadoNaoEncontradoException e) {
             throw new NegocioException(e.getMessage(), e);
         }
@@ -125,7 +122,7 @@ public class FormaPagamentoController implements FromaPagamentoControllerOpenApi
 
             formaPagamentoAtual = formaPagamentoService.salvar(formaPagamentoAtual);
 
-            return formaPagamentoModelAssembler.toDTO(formaPagamentoAtual);
+            return formaPagamentoModelAssembler.toModel(formaPagamentoAtual);
         } catch (EstadoNaoEncontradoException e) {
             throw new NegocioException(e.getMessage(), e);
         }

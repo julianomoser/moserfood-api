@@ -9,8 +9,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-
-import java.util.List;
+import org.springframework.hateoas.CollectionModel;
 
 /**
  * @author Juliano Moser
@@ -22,7 +21,7 @@ public interface RestauranteFormaPagamentoControllerOpenApi {
     @ApiResponses({
             @ApiResponse(responseCode = "400", description = "ID do restaurante inválido", content = @Content(schema =
             @Schema(implementation = Problem.class)))})
-    List<FormaPagamentoDTO> listar(@ApiParam(value = "ID do restaurante", example = "1", required = true)
+    CollectionModel<FormaPagamentoDTO> listar(@ApiParam(value = "ID do restaurante", example = "1", required = true)
                                 Long restauranteId);
 
 

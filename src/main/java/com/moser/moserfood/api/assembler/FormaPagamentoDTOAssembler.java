@@ -1,31 +1,40 @@
 package com.moser.moserfood.api.assembler;
 
+import com.moser.moserfood.api.MoserLinks;
+import com.moser.moserfood.api.controller.FormaPagamentoController;
 import com.moser.moserfood.api.model.FormaPagamentoDTO;
 import com.moser.moserfood.domain.model.FormaPagamento;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
-
-import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author Juliano Moser
  */
 @Component
-public class FormaPagamentoDTOAssembler {
+public class FormaPagamentoDTOAssembler extends RepresentationModelAssemblerSupport<FormaPagamento, FormaPagamentoDTO> {
 
     @Autowired
     private ModelMapper modelMapper;
+    @Autowired
+    private MoserLinks moserLinks;
 
-    public FormaPagamentoDTO toDTO(FormaPagamento formaPagamento) {
-        return modelMapper.map(formaPagamento, FormaPagamentoDTO.class);
+    public FormaPagamentoDTOAssembler() {
+        super(FormaPagamentoController.class, FormaPagamentoDTO.class);
     }
 
-    public List<FormaPagamentoDTO> toCollectionDTO(Collection<FormaPagamento> formaPagamentos) {
-        return formaPagamentos.stream()
-                .map(this::toDTO)
-                .collect(Collectors.toList());
+    @Override
+    public FormaPagamentoDTO toModel(FormaPagamento formaPagamento) {
+        FormaPagamentoDTO formaPagamentoDTO = createModelWithId(formaPagamento.getId(), formaPagamento);
+        modelMapper.map(formaPagamento, formaPagamentoDTO);
+        formaPagamentoDTO.add(moserLinks.linkToFormasPagamento("formasPagamento"));
+        return formaPagamentoDTO;
+    }
+
+    @Override
+    public CollectionModel<FormaPagamentoDTO> toCollectionModel(Iterable<? extends FormaPagamento> entities) {
+        return super.toCollectionModel(entities).add(moserLinks.linkToFormasPagamento());
     }
 }

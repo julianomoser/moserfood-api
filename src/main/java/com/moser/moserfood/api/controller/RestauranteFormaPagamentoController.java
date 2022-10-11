@@ -1,16 +1,16 @@
 package com.moser.moserfood.api.controller;
 
+import com.moser.moserfood.api.MoserLinks;
 import com.moser.moserfood.api.assembler.FormaPagamentoDTOAssembler;
 import com.moser.moserfood.api.model.FormaPagamentoDTO;
 import com.moser.moserfood.api.openapi.controller.RestauranteFormaPagamentoControllerOpenApi;
 import com.moser.moserfood.domain.model.Restaurante;
 import com.moser.moserfood.domain.service.RestauranteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * @author Juliano Moser
@@ -25,11 +25,16 @@ public class RestauranteFormaPagamentoController implements RestauranteFormaPaga
     @Autowired
     private FormaPagamentoDTOAssembler formaPagamentoDTOAssembler;
 
+    @Autowired
+    private MoserLinks moserLinks;
+
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<FormaPagamentoDTO> listar(@PathVariable Long restauranteId) {
+    public CollectionModel<FormaPagamentoDTO> listar(@PathVariable Long restauranteId) {
         Restaurante restaurante = restauranteService.findOrFail(restauranteId);
 
-        return formaPagamentoDTOAssembler.toCollectionDTO(restaurante.getFormasPagamento());
+        return formaPagamentoDTOAssembler.toCollectionModel(restaurante.getFormasPagamento())
+                .removeLinks()
+                .add(moserLinks.linkToRestauranteFormasPagamento(restauranteId));
     }
 
     @PutMapping("/{formaPagamentoId}")

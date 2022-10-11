@@ -66,7 +66,7 @@ public class PedidoController implements PedidoControllerOpenApi {
 
         Page<Pedido> pedidosPage = pedidoRepository
                 .findAll(PedidoSpecs.usingFilter(filtro), pageableTraduzido);
-        
+
         pedidosPage = new PageWrapper<>(pedidosPage, pageable);
 
         return pagedResourcesAssembler.toModel(pedidosPage, pedidoResumoDTOAssembler);

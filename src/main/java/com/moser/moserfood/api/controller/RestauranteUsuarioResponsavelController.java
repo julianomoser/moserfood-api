@@ -7,6 +7,7 @@ import com.moser.moserfood.domain.service.RestauranteService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,9 +29,9 @@ public class RestauranteUsuarioResponsavelController {
 
     @ApiOperation("Lista os responsáveis")
     @GetMapping
-    public List<UsuarioDTO> listar(@PathVariable Long restauranteId) {
+    public CollectionModel<UsuarioDTO> listar(@PathVariable Long restauranteId) {
         Restaurante restaurante = restauranteService.findOrFail(restauranteId);
-        return usuarioDTOAssembler.toCollectionDTO(restaurante.getResponsaveis());
+        return usuarioDTOAssembler.toCollectionModel(restaurante.getResponsaveis());
     }
 
     @ApiOperation("Associar responsável a um restaurante")

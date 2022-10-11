@@ -12,8 +12,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-
-import java.util.List;
+import org.springframework.hateoas.CollectionModel;
 
 /**
  * @author Juliano Moser
@@ -22,7 +21,7 @@ import java.util.List;
 public interface UsuarioControllerOpenApi {
 
     @ApiOperation(value = "Lista os usuários")
-    List<UsuarioDTO> listar();
+    CollectionModel<UsuarioDTO> listar();
 
 
     @ApiOperation("Atualiza a foto do produto de um restaurante")

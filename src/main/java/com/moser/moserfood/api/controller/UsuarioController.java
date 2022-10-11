@@ -11,6 +11,7 @@ import com.moser.moserfood.domain.model.Usuario;
 import com.moser.moserfood.domain.repository.UsuarioRepository;
 import com.moser.moserfood.domain.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -37,17 +38,17 @@ public class UsuarioController implements UsuarioControllerOpenApi {
     private UsuarioInputDisassembler usuarioInputDisassembler;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<UsuarioDTO> listar() {
+    public CollectionModel<UsuarioDTO> listar() {
         List<Usuario> todasUsuarios = usuarioRepository.findAll();
 
-        return usuarioDTOAssembler.toCollectionDTO(todasUsuarios);
+        return usuarioDTOAssembler.toCollectionModel(todasUsuarios);
     }
 
     @GetMapping(path = "/{usuarioId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public UsuarioDTO buscar(@PathVariable Long usuarioId) {
         Usuario usuario = usuarioService.findOrFail(usuarioId);
 
-        return usuarioDTOAssembler.toDTO(usuario);
+        return usuarioDTOAssembler.toModel(usuario);
     }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
@@ -57,7 +58,7 @@ public class UsuarioController implements UsuarioControllerOpenApi {
 
         usuario = usuarioService.salvar(usuario);
 
-        return usuarioDTOAssembler.toDTO(usuario);
+        return usuarioDTOAssembler.toModel(usuario);
     }
 
     @PutMapping(path = "/{usuarioId}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -69,7 +70,7 @@ public class UsuarioController implements UsuarioControllerOpenApi {
 
         usuarioAtual = usuarioService.salvar(usuarioAtual);
 
-        return usuarioDTOAssembler.toDTO(usuarioAtual);
+        return usuarioDTOAssembler.toModel(usuarioAtual);
     }
 
     @PutMapping(path = "/{usuarioId}/senha", produces = MediaType.APPLICATION_JSON_VALUE)

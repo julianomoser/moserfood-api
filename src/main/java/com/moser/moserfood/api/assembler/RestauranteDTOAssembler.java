@@ -44,6 +44,25 @@ public class RestauranteDTOAssembler extends RepresentationModelAssemblerSupport
                 "formas-pagamento"));
         restauranteDTO.add(moserLinks.linkToResponsaveisRestaurante(restauranteDTO.getId(),
                 "responsáveis"));
+        if (restaurante.ativacaoPermitida()) {
+            restauranteDTO.add(
+                    moserLinks.linkToRestauranteAtivacao(restaurante.getId(), "ativar"));
+        }
+
+        if (restaurante.inativacaoPermitida()) {
+            restauranteDTO.add(
+                    moserLinks.linkToRestauranteInativacao(restaurante.getId(), "inativar"));
+        }
+
+        if (restaurante.aberturaPermitida()) {
+            restauranteDTO.add(
+                    moserLinks.linkToRestauranteAbertura(restaurante.getId(), "abrir"));
+        }
+
+        if (restaurante.fechamentoPermitido()) {
+            restauranteDTO.add(
+                    moserLinks.linkToRestauranteFechamento(restaurante.getId(), "fechar"));
+        }
         return restauranteDTO;
     }
 

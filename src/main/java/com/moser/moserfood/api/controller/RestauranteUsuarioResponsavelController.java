@@ -10,6 +10,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -32,22 +33,32 @@ public class RestauranteUsuarioResponsavelController {
     @GetMapping
     public CollectionModel<UsuarioDTO> listar(@PathVariable Long restauranteId) {
         Restaurante restaurante = restauranteService.findOrFail(restauranteId);
-        return usuarioDTOAssembler.toCollectionModel(restaurante.getResponsaveis())
+        final CollectionModel<UsuarioDTO> usuariosDTO = usuarioDTOAssembler.toCollectionModel(restaurante.getResponsaveis())
                 .removeLinks()
-                .add(moserLinks.linkToResponsaveisRestaurante(restauranteId));
+                .add(moserLinks.linkToResponsaveisRestaurante(restauranteId))
+                .add(moserLinks.linkToRestauranteResponsavelAssociacao(restauranteId, "associar"));
+
+        usuariosDTO.getContent().forEach(usuarioDTO -> {
+            usuarioDTO.add(moserLinks.linkToRestauranteResponsavelDesassociacao(
+                    restauranteId, usuarioDTO.getId(), "desassociar"));
+        });
+
+        return usuariosDTO;
     }
 
     @ApiOperation("Associar responsável a um restaurante")
     @PutMapping("/{usuarioId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void associar(@PathVariable Long restauranteId, @PathVariable Long usuarioId) {
+    public ResponseEntity<Void> associar(@PathVariable Long restauranteId, @PathVariable Long usuarioId) {
         restauranteService.associarResponsavel(restauranteId, usuarioId);
+        return ResponseEntity.noContent().build();
     }
 
     @ApiOperation("Desassociar responsável de um restaurante")
     @DeleteMapping("/{usuarioId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void desassociar(@PathVariable Long restauranteId, @PathVariable Long usuarioId) {
+    public ResponseEntity<Void> desassociar(@PathVariable Long restauranteId, @PathVariable Long usuarioId) {
         restauranteService.desassociarResponsavel(restauranteId, usuarioId);
+        return ResponseEntity.noContent().build();
     }
 }

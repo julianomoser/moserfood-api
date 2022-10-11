@@ -1,7 +1,7 @@
 package com.moser.moserfood.api.assembler;
 
+import com.moser.moserfood.api.MoserLinks;
 import com.moser.moserfood.api.controller.CidadeController;
-import com.moser.moserfood.api.controller.EstadoController;
 import com.moser.moserfood.api.model.CidadeDTO;
 import com.moser.moserfood.domain.model.Cidade;
 import org.modelmapper.ModelMapper;
@@ -11,7 +11,6 @@ import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSuppor
 import org.springframework.stereotype.Component;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 /**
  * @author Juliano Moser
@@ -21,6 +20,8 @@ public class CidadeDTOAssembler extends RepresentationModelAssemblerSupport<Cida
 
     @Autowired
     private ModelMapper modelMapper;
+    @Autowired
+    private MoserLinks moserLinks;
 
     public CidadeDTOAssembler() {
         super(CidadeController.class, CidadeDTO.class);
@@ -31,11 +32,8 @@ public class CidadeDTOAssembler extends RepresentationModelAssemblerSupport<Cida
 
         CidadeDTO cidadeDTO = createModelWithId(cidade.getId(), cidade);
         modelMapper.map(cidade, cidadeDTO);
-
-        cidadeDTO.add(linkTo(methodOn(CidadeController.class).listar()).withRel("cidades"));
-        cidadeDTO.getEstado().add(linkTo(methodOn(EstadoController.class)
-                .buscar(cidadeDTO.getEstado().getId())).withSelfRel());
-
+        cidadeDTO.add(moserLinks.linkToCidades("cidades"));
+        cidadeDTO.getEstado().add(moserLinks.linkToEstado(cidadeDTO.getEstado().getId()));
         return cidadeDTO;
     }
 

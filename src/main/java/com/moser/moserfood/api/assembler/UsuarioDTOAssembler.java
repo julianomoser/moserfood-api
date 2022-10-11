@@ -1,5 +1,6 @@
 package com.moser.moserfood.api.assembler;
 
+import com.moser.moserfood.api.MoserLinks;
 import com.moser.moserfood.api.controller.UsuarioController;
 import com.moser.moserfood.api.controller.UsuarioGrupoController;
 import com.moser.moserfood.api.model.UsuarioDTO;
@@ -21,6 +22,8 @@ public class UsuarioDTOAssembler extends RepresentationModelAssemblerSupport<Usu
 
     @Autowired
     private ModelMapper modelMapper;
+    @Autowired
+    private MoserLinks moserLinks;
 
     public UsuarioDTOAssembler() {
         super(UsuarioController.class, UsuarioDTO.class);
@@ -31,9 +34,8 @@ public class UsuarioDTOAssembler extends RepresentationModelAssemblerSupport<Usu
         UsuarioDTO usuarioDTO = createModelWithId(usuario.getId(), usuario);
         modelMapper.map(usuario, usuarioDTO);
 
-        usuarioDTO.add(linkTo(methodOn(UsuarioController.class).listar()).withRel("usuarios"));
-        usuarioDTO.add(linkTo(methodOn(UsuarioGrupoController.class)
-                .listar(usuario.getId())).withRel("grupos-usuario"));
+        usuarioDTO.add(moserLinks.linkToUsuarios("usuarios"));
+        usuarioDTO.add(moserLinks.linkToGruposUsuario(usuario.getId(),"grupos-usuario"));
 
         return usuarioDTO;
     }

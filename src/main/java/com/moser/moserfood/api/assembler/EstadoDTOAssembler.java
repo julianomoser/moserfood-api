@@ -1,5 +1,6 @@
 package com.moser.moserfood.api.assembler;
 
+import com.moser.moserfood.api.MoserLinks;
 import com.moser.moserfood.api.controller.EstadoController;
 import com.moser.moserfood.api.controller.UsuarioController;
 import com.moser.moserfood.api.model.EstadoDTO;
@@ -21,6 +22,8 @@ public class EstadoDTOAssembler extends RepresentationModelAssemblerSupport<Esta
 
     @Autowired
     private ModelMapper modelMapper;
+    @Autowired
+    private MoserLinks moserLinks;
 
     public EstadoDTOAssembler() {
         super(EstadoController.class, EstadoDTO.class);
@@ -30,7 +33,7 @@ public class EstadoDTOAssembler extends RepresentationModelAssemblerSupport<Esta
     public EstadoDTO toModel(Estado estado) {
         EstadoDTO estadoDTO = createModelWithId(estado.getId(), estado);
         modelMapper.map(estado, estadoDTO);
-        estadoDTO.add(linkTo(methodOn(EstadoController.class).listar()).withRel("estados"));
+        estadoDTO.add(moserLinks.linkToEstados("estados"));
         return estadoDTO;
     }
 

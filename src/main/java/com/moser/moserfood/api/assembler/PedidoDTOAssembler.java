@@ -1,7 +1,7 @@
 package com.moser.moserfood.api.assembler;
 
 import com.moser.moserfood.api.MoserLinks;
-import com.moser.moserfood.api.controller.*;
+import com.moser.moserfood.api.controller.PedidoController;
 import com.moser.moserfood.api.model.PedidoDTO;
 import com.moser.moserfood.domain.model.Pedido;
 import org.modelmapper.ModelMapper;
@@ -11,7 +11,6 @@ import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSuppor
 import org.springframework.stereotype.Component;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 /**
  * @author Juliano Moser
@@ -33,29 +32,24 @@ public class PedidoDTOAssembler extends RepresentationModelAssemblerSupport<Pedi
         PedidoDTO pedidoDTO = createModelWithId(pedido.getCodigo(), pedido);
         modelMapper.map(pedido, pedidoDTO);
 
-
-        String pedidosUrl = linkTo(PedidoController.class).toUri().toString();
-
         pedidoDTO.add(moserLinks.linkToPedidos());
 
-        pedidoDTO.getRestaurante().add(linkTo(methodOn(RestauranteController.class)
-                .buscar(pedido.getRestaurante().getId())).withSelfRel());
+        pedidoDTO.getRestaurante().add(
+                moserLinks.linkToRestaurante(pedido.getRestaurante().getId()));
 
-        pedidoDTO.getCliente().add(linkTo(methodOn(UsuarioController.class)
-                .buscar(pedido.getCliente().getId())).withSelfRel());
+        pedidoDTO.getCliente().add(
+                moserLinks.linkToUsuario(pedido.getCliente().getId()));
 
-        // Passamos null no segundo argumento, porque é indiferente para a
-        // construção da URL do recurso de forma de pagamento
-        pedidoDTO.getFormaPagamento().add(linkTo(methodOn(FormaPagamentoController.class)
-                .buscar(pedido.getFormaPagamento().getId(), null)).withSelfRel());
+        pedidoDTO.getFormaPagamento().add(
+                moserLinks.linkToFormaPagamento(pedido.getFormaPagamento().getId()));
 
-        pedidoDTO.getEnderecoEntrega().getCidade().add(linkTo(methodOn(CidadeController.class)
-                .buscar(pedido.getEnderecoEntrega().getCidade().getId())).withSelfRel());
+        pedidoDTO.getEnderecoEntrega().getCidade().add(
+                moserLinks.linkToCidade(pedido.getEnderecoEntrega().getCidade().getId()));
+
 
         pedidoDTO.getItens().forEach(item -> {
-            item.add(linkTo(methodOn(RestauranteProdutoController.class)
-                    .buscar(pedidoDTO.getRestaurante().getId(), item.getProdutoId()))
-                    .withRel("produto"));
+            item.add(moserLinks.linkToProduto(
+                    pedidoDTO.getRestaurante().getId(), item.getProdutoId(), "produto"));
         });
         return pedidoDTO;
     }

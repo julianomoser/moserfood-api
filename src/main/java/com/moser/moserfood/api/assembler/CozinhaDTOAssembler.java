@@ -1,11 +1,8 @@
 package com.moser.moserfood.api.assembler;
 
-import com.moser.moserfood.api.controller.CidadeController;
+import com.moser.moserfood.api.MoserLinks;
 import com.moser.moserfood.api.controller.CozinhaController;
-import com.moser.moserfood.api.controller.EstadoController;
-import com.moser.moserfood.api.model.CidadeDTO;
 import com.moser.moserfood.api.model.CozinhaDTO;
-import com.moser.moserfood.domain.model.Cidade;
 import com.moser.moserfood.domain.model.Cozinha;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,11 +10,7 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 /**
  * @author Juliano Moser
@@ -27,6 +20,8 @@ public class CozinhaDTOAssembler extends RepresentationModelAssemblerSupport<Coz
 
     @Autowired
     private ModelMapper modelMapper;
+    @Autowired
+    private MoserLinks moserLinks;
 
     public CozinhaDTOAssembler() {
         super(CozinhaController.class, CozinhaDTO.class);
@@ -35,9 +30,7 @@ public class CozinhaDTOAssembler extends RepresentationModelAssemblerSupport<Coz
     public CozinhaDTO toModel(Cozinha cozinha) {
         CozinhaDTO cozinhaDTO = createModelWithId(cozinha.getId(), cozinha);
         modelMapper.map(cozinha, cozinhaDTO);
-
-        cozinhaDTO.add(linkTo(CozinhaController.class).withRel("cozinhas"));
-
+        cozinhaDTO.add(moserLinks.linkToCozinhas("cozinhas"));
         return cozinhaDTO;
     }
 

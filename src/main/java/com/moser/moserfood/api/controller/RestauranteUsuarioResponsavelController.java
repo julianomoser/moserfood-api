@@ -1,5 +1,6 @@
 package com.moser.moserfood.api.controller;
 
+import com.moser.moserfood.api.MoserLinks;
 import com.moser.moserfood.api.assembler.UsuarioDTOAssembler;
 import com.moser.moserfood.api.model.UsuarioDTO;
 import com.moser.moserfood.domain.model.Restaurante;
@@ -10,9 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 /**
  * @author Juliano Moser
@@ -27,6 +25,8 @@ public class RestauranteUsuarioResponsavelController {
 
     @Autowired
     private UsuarioDTOAssembler usuarioDTOAssembler;
+    @Autowired
+    private MoserLinks moserLinks;
 
     @ApiOperation("Lista os responsáveis")
     @GetMapping
@@ -34,8 +34,7 @@ public class RestauranteUsuarioResponsavelController {
         Restaurante restaurante = restauranteService.findOrFail(restauranteId);
         return usuarioDTOAssembler.toCollectionModel(restaurante.getResponsaveis())
                 .removeLinks()
-                .add(linkTo(methodOn(RestauranteUsuarioResponsavelController.class)
-                        .listar(restauranteId)).withSelfRel());
+                .add(moserLinks.linkToResponsaveisRestaurante(restauranteId));
     }
 
     @ApiOperation("Associar responsável a um restaurante")

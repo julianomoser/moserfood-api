@@ -1,5 +1,6 @@
 package com.moser.moserfood.api.assembler;
 
+import com.moser.moserfood.api.MoserLinks;
 import com.moser.moserfood.api.controller.PedidoController;
 import com.moser.moserfood.api.controller.RestauranteController;
 import com.moser.moserfood.api.controller.UsuarioController;
@@ -22,6 +23,8 @@ public class PedidoResumoDTOAssembler extends RepresentationModelAssemblerSuppor
 
     @Autowired
     private ModelMapper modelMapper;
+    @Autowired
+    private MoserLinks moserLinks;
 
     public PedidoResumoDTOAssembler() {
         super(PedidoController.class, PedidoResumoDTO.class);
@@ -32,12 +35,10 @@ public class PedidoResumoDTOAssembler extends RepresentationModelAssemblerSuppor
         PedidoResumoDTO pedidoResumoDTO = createModelWithId(pedido.getId(), pedido);
         modelMapper.map(pedido, pedidoResumoDTO);
 
-        pedidoResumoDTO.add(linkTo(PedidoController.class).withRel("pedidos"));
-        pedidoResumoDTO.getRestaurante().add(linkTo(methodOn(RestauranteController.class)
-                .buscar(pedido.getRestaurante().getId())).withSelfRel());
+        pedidoResumoDTO.add(moserLinks.linkToPedidos());
+        pedidoResumoDTO.getRestaurante().add(moserLinks.linkToRestaurante(pedido.getRestaurante().getId()));
 
-        pedidoResumoDTO.getCliente().add(linkTo(methodOn(UsuarioController.class)
-                .buscar(pedido.getCliente().getId())).withSelfRel());
+        pedidoResumoDTO.getCliente().add(moserLinks.linkToUsuario(pedido.getCliente().getId()));
 
         return modelMapper.map(pedido, PedidoResumoDTO.class);
     }

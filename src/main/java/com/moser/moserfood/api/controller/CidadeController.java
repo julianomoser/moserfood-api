@@ -45,29 +45,13 @@ public class CidadeController implements CidadeControllerOpenApi {
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public CollectionModel<CidadeDTO> listar() {
         List<Cidade> todasCidades = cidadeRepository.findAll();
-        List<CidadeDTO> cidadesDTO = cidadeModelAssembler.toCollectionDTO(todasCidades);
-
-        cidadesDTO.forEach(cidadeDTO -> {
-            cidadeDTO.add(linkTo(methodOn(CidadeController.class).buscar(cidadeDTO.getId())).withSelfRel());
-            cidadeDTO.add(linkTo(methodOn(CidadeController.class).listar()).withRel("cidades"));
-            cidadeDTO.getEstado().add(linkTo(methodOn(EstadoController.class)
-                    .buscar(cidadeDTO.getEstado().getId())).withSelfRel());
-        });
-
-        CollectionModel<CidadeDTO> cidadesCollectionModel = CollectionModel.of(cidadesDTO);
-        cidadesCollectionModel.add(linkTo(CidadeController.class).withSelfRel());
-        return cidadesCollectionModel;
+        return cidadeModelAssembler.toCollectionModel(todasCidades);
     }
 
     @GetMapping(path = "/{cidadeId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public CidadeDTO buscar(@PathVariable Long cidadeId) {
         Cidade cidade = cidadeService.findOrFail(cidadeId);
-        CidadeDTO cidadeDTO = cidadeModelAssembler.toDTO(cidade);
-        cidadeDTO.add(linkTo(methodOn(CidadeController.class).buscar(cidadeDTO.getId())).withSelfRel());
-        cidadeDTO.add(linkTo(methodOn(CidadeController.class).listar()).withRel("cidades"));
-        cidadeDTO.getEstado().add(linkTo(methodOn(EstadoController.class)
-                .buscar(cidadeDTO.getEstado().getId())).withSelfRel());
-        return cidadeDTO;
+        return cidadeModelAssembler.toModel(cidade);
     }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
@@ -78,7 +62,7 @@ public class CidadeController implements CidadeControllerOpenApi {
 
             cidade = cidadeService.salvar(cidade);
 
-            CidadeDTO cidadeDTO = cidadeModelAssembler.toDTO(cidade);
+            CidadeDTO cidadeDTO = cidadeModelAssembler.toModel(cidade);
 
             ResourceUriHelper.addUriInResponseHeader(cidadeDTO.getId());
 
@@ -98,7 +82,7 @@ public class CidadeController implements CidadeControllerOpenApi {
 
             cidadeAtual = cidadeService.salvar(cidadeAtual);
 
-            return cidadeModelAssembler.toDTO(cidadeAtual);
+            return cidadeModelAssembler.toModel(cidadeAtual);
         } catch (EstadoNaoEncontradoException e) {
             throw new NegocioException(e.getMessage(), e);
         }

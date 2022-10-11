@@ -30,7 +30,7 @@ public class PedidoDTOAssembler extends RepresentationModelAssemblerSupport<Pedi
         PedidoDTO pedidoDTO = createModelWithId(pedido.getCodigo(), pedido);
         modelMapper.map(pedido, pedidoDTO);
 
-        pedidoDTO.add(moserLinks.linkToPedidos());
+        pedidoDTO.add(moserLinks.linkToPedidos("pedidos"));
 
         if (pedido.podeSerConfimado()) {
             pedidoDTO.add(moserLinks.linkToConfimacaoPedido(pedido.getCodigo(), "confirmar"));
@@ -66,7 +66,7 @@ public class PedidoDTOAssembler extends RepresentationModelAssemblerSupport<Pedi
 
     @Override
     public CollectionModel<PedidoDTO> toCollectionModel(Iterable<? extends Pedido> entities) {
-        return super.toCollectionModel(entities).add(moserLinks.linkToPedidos());
+        return super.toCollectionModel(entities).add(moserLinks.linkToPedidos("pedidos"));
     }
 
 

@@ -35,7 +35,7 @@ public class PedidoResumoDTOAssembler extends RepresentationModelAssemblerSuppor
         PedidoResumoDTO pedidoResumoDTO = createModelWithId(pedido.getId(), pedido);
         modelMapper.map(pedido, pedidoResumoDTO);
 
-        pedidoResumoDTO.add(moserLinks.linkToPedidos());
+        pedidoResumoDTO.add(moserLinks.linkToPedidos("pedidos"));
         pedidoResumoDTO.getRestaurante().add(moserLinks.linkToRestaurante(pedido.getRestaurante().getId()));
 
         pedidoResumoDTO.getCliente().add(moserLinks.linkToUsuario(pedido.getCliente().getId()));
@@ -45,6 +45,6 @@ public class PedidoResumoDTOAssembler extends RepresentationModelAssemblerSuppor
 
     @Override
     public CollectionModel<PedidoResumoDTO> toCollectionModel(Iterable<? extends Pedido> entities) {
-        return super.toCollectionModel(entities).add(linkTo(PedidoController.class).withSelfRel());
+        return super.toCollectionModel(entities).add(moserLinks.linkToPedidos("pedidos"));
     }
 }

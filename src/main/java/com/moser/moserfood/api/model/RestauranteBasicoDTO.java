@@ -6,16 +6,21 @@ import lombok.Setter;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.core.Relation;
 
+import java.math.BigDecimal;
+
 /**
  * @author Juliano Moser
  */
 @Relation(collectionRelation = "restaurantes")
 @Getter
 @Setter
-public class RestauranteResumoDTO extends RepresentationModel<RestauranteResumoDTO> {
+public class RestauranteBasicoDTO extends RepresentationModel<RestauranteBasicoDTO> {
 
     @ApiModelProperty(example = "1")
     private Long id;
     @ApiModelProperty(example = "Java Veg")
     private String nome;
+    @ApiModelProperty(example = "12.00")
+    private BigDecimal taxaFrete;
+    private CozinhaDTO cozinha;
 }

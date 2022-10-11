@@ -10,8 +10,6 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-
 /**
  * @author Juliano Moser
  */
@@ -34,15 +32,15 @@ public class PedidoDTOAssembler extends RepresentationModelAssemblerSupport<Pedi
 
         pedidoDTO.add(moserLinks.linkToPedidos());
 
-        if(pedido.podeSerConfimado()) {
+        if (pedido.podeSerConfimado()) {
             pedidoDTO.add(moserLinks.linkToConfimacaoPedido(pedido.getCodigo(), "confirmar"));
         }
 
-        if(pedido.podeSerCancelado()) {
+        if (pedido.podeSerCancelado()) {
             pedidoDTO.add(moserLinks.linkToCancelarPedido(pedido.getCodigo(), "cancelar"));
         }
 
-        if(pedido.podeSerEntregue()) {
+        if (pedido.podeSerEntregue()) {
             pedidoDTO.add(moserLinks.linkToEntregarPedido(pedido.getCodigo(), "entregar"));
         }
 
@@ -68,7 +66,7 @@ public class PedidoDTOAssembler extends RepresentationModelAssemblerSupport<Pedi
 
     @Override
     public CollectionModel<PedidoDTO> toCollectionModel(Iterable<? extends Pedido> entities) {
-        return super.toCollectionModel(entities).add(linkTo(PedidoController.class).withSelfRel());
+        return super.toCollectionModel(entities).add(moserLinks.linkToPedidos());
     }
 
 

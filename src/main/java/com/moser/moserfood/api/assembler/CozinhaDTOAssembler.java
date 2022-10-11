@@ -36,6 +36,6 @@ public class CozinhaDTOAssembler extends RepresentationModelAssemblerSupport<Coz
 
     @Override
     public CollectionModel<CozinhaDTO> toCollectionModel(Iterable<? extends Cozinha> entities) {
-        return super.toCollectionModel(entities).add(linkTo(CozinhaController.class).withSelfRel());
+        return super.toCollectionModel(entities).add(moserLinks.linkToCozinhas());
     }
 }

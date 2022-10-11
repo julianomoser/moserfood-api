@@ -17,7 +17,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(path = "/restaurantes/{restauranteId}/formas-pagamento", produces = MediaType.APPLICATION_JSON_VALUE)
-public class RestauranteFromaPagamentoController implements RestauranteFormaPagamentoControllerOpenApi {
+public class RestauranteFormaPagamentoController implements RestauranteFormaPagamentoControllerOpenApi {
 
     @Autowired
     private RestauranteService restauranteService;

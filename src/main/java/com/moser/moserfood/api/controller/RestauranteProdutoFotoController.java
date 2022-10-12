@@ -56,7 +56,7 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
 
         FotoProduto foto = createFotoProduto(fotoProdutoInput, produto, arquivo);
 
-        return fotoProdutoDTOAssembler.toDTO(catalagoFotoProdutoService.salvar(foto, arquivo.getInputStream()));
+        return fotoProdutoDTOAssembler.toModel(catalagoFotoProdutoService.salvar(foto, arquivo.getInputStream()));
     }
 
     private FotoProduto createFotoProduto(FotoProdutoInput fotoProdutoInput, Produto produto, MultipartFile arquivo) {
@@ -73,7 +73,7 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
     public FotoProdutoDTO buscar(@PathVariable Long restauranteId,
                                  @PathVariable Long produtoId) {
         FotoProduto foto = catalagoFotoProdutoService.findOrFail(restauranteId, produtoId);
-        return fotoProdutoDTOAssembler.toDTO(foto);
+        return fotoProdutoDTOAssembler.toModel(foto);
     }
 
     @GetMapping()
@@ -109,7 +109,7 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
     }
 
     public ResponseEntity<?> recuperarFoto(@PathVariable Long restauranteId,@PathVariable Long produtoId)  {
-        FotoProdutoDTO fotoProdutoModel = fotoProdutoDTOAssembler.toDTO(catalagoFotoProdutoService.findOrFail(restauranteId, produtoId));
+        FotoProdutoDTO fotoProdutoModel = fotoProdutoDTOAssembler.toModel(catalagoFotoProdutoService.findOrFail(restauranteId, produtoId));
         return ResponseEntity.ok(fotoProdutoModel);
     }
 

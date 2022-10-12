@@ -4,7 +4,7 @@ import com.moser.moserfood.api.controller.*;
 import org.springframework.hateoas.*;
 import org.springframework.stereotype.Component;
 
-import static org.springframework.hateoas.TemplateVariable.*;
+import static org.springframework.hateoas.TemplateVariable.VariableType;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
@@ -163,6 +163,15 @@ public class MoserLinks {
         return linkToProdutos(restauranteId, IanaLinkRelations.SELF.value());
     }
 
+    public Link linkToFotoProduto(Long restauranteId, Long produtoId, String rel) {
+        return linkTo(methodOn(RestauranteProdutoFotoController.class)
+                .buscar(restauranteId, produtoId)).withRel(rel);
+    }
+
+    public Link linkToFotoProduto(Long restauranteId, Long produtoId) {
+        return linkToFotoProduto(restauranteId, produtoId, IanaLinkRelations.SELF.value());
+    }
+
     public Link linkToCozinhas(String rel) {
         return linkTo(CozinhaController.class).withRel(rel);
     }
@@ -186,12 +195,12 @@ public class MoserLinks {
                 .listar(restauranteId)).withRel(rel);
     }
 
-    public Link linkToRestauranteFormasPagamentoDesassociacao(Long restauranteId, Long formaPagamentoId,String rel) {
+    public Link linkToRestauranteFormasPagamentoDesassociacao(Long restauranteId, Long formaPagamentoId, String rel) {
         return linkTo(methodOn(RestauranteFormaPagamentoController.class)
                 .desassociar(restauranteId, formaPagamentoId)).withRel(rel);
     }
 
-    public Link linkToRestauranteFormasPagamentoAssociacao(Long restauranteId,String rel) {
+    public Link linkToRestauranteFormasPagamentoAssociacao(Long restauranteId, String rel) {
         return linkTo(methodOn(RestauranteFormaPagamentoController.class)
                 .associar(restauranteId, null)).withRel(rel);
     }

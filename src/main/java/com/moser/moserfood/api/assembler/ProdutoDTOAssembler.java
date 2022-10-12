@@ -35,6 +35,8 @@ public class ProdutoDTOAssembler extends RepresentationModelAssemblerSupport<Pro
         ProdutoDTO produtoDTO = createModelWithId(produto.getId(), produto);
         modelMapper.map(produto, produtoDTO);
         produtoDTO.add(moserLinks.linkToProdutos(produto.getRestaurante().getId(), "produtos"));
+        produtoDTO.add(moserLinks.linkToFotoProduto(
+                produto.getRestaurante().getId(), produto.getId(),"produtos"));
         return produtoDTO;
     }
 }

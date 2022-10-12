@@ -2,13 +2,14 @@ package com.moser.moserfood.api.controller;
 
 import com.moser.moserfood.api.assembler.GrupoDTOAssembler;
 import com.moser.moserfood.api.assembler.GrupoInputDisassembler;
-import com.moser.moserfood.api.openapi.controller.GrupoControllerOpenApi;
 import com.moser.moserfood.api.model.GrupoDTO;
 import com.moser.moserfood.api.model.input.GrupoInput;
+import com.moser.moserfood.api.openapi.controller.GrupoControllerOpenApi;
 import com.moser.moserfood.domain.model.Grupo;
 import com.moser.moserfood.domain.repository.GrupoRepository;
 import com.moser.moserfood.domain.service.GrupoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -36,17 +37,17 @@ public class GrupoController implements GrupoControllerOpenApi {
     private GrupoInputDisassembler grupoInputDisassembler;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<GrupoDTO> listar() {
+    public CollectionModel<GrupoDTO> listar() {
         List<Grupo> todasGrupos = grupoRepository.findAll();
 
-        return grupoModelAssembler.toCollectionDTO(todasGrupos);
+        return grupoModelAssembler.toCollectionModel(todasGrupos);
     }
 
     @GetMapping(path = "/{grupoId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public GrupoDTO buscar(@PathVariable Long grupoId) {
         Grupo grupo = grupoService.findOrFail(grupoId);
 
-        return grupoModelAssembler.toDTO(grupo);
+        return grupoModelAssembler.toModel(grupo);
     }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
@@ -56,7 +57,7 @@ public class GrupoController implements GrupoControllerOpenApi {
 
         grupo = grupoService.salvar(grupo);
 
-        return grupoModelAssembler.toDTO(grupo);
+        return grupoModelAssembler.toModel(grupo);
     }
 
     @PutMapping(path = "/{grupoId}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -68,7 +69,7 @@ public class GrupoController implements GrupoControllerOpenApi {
 
         grupoAtual = grupoService.salvar(grupoAtual);
 
-        return grupoModelAssembler.toDTO(grupoAtual);
+        return grupoModelAssembler.toModel(grupoAtual);
     }
 
     @DeleteMapping("/{grupoId}")

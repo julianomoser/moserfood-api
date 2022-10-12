@@ -9,8 +9,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-
-import java.util.List;
+import org.springframework.hateoas.CollectionModel;
 
 /**
  * @author Juliano Moser
@@ -21,7 +20,7 @@ public interface UsuarioGrupoControllerOpenApi {
     @ApiOperation(value = "Lista os grupos associados a um usuário")
     @ApiResponse(responseCode = "404", description = "Usuário não encontrado", content = @Content(schema =
     @Schema(implementation = Problem.class)))
-    List<GrupoDTO> listar(@ApiParam(value = "ID do usuário", example = "1", required = true)
+    CollectionModel<GrupoDTO> listar(@ApiParam(value = "ID do usuário", example = "1", required = true)
                           Long usuarioId);
 
     @ApiOperation("Associação de grupo com usuário")

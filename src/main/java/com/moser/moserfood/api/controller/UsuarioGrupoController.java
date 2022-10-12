@@ -6,11 +6,10 @@ import com.moser.moserfood.api.openapi.controller.UsuarioGrupoControllerOpenApi;
 import com.moser.moserfood.domain.model.Usuario;
 import com.moser.moserfood.domain.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * @author Juliano Moser
@@ -26,9 +25,9 @@ public class UsuarioGrupoController implements UsuarioGrupoControllerOpenApi {
     private GrupoDTOAssembler grupoDTOAssembler;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<GrupoDTO> listar(@PathVariable Long usuarioId) {
+    public CollectionModel<GrupoDTO> listar(@PathVariable Long usuarioId) {
         Usuario usuario = usuarioService.findOrFail(usuarioId);
-        return grupoDTOAssembler.toCollectionDTO(usuario.getGrupos());
+        return grupoDTOAssembler.toCollectionModel(usuario.getGrupos());
     }
 
 

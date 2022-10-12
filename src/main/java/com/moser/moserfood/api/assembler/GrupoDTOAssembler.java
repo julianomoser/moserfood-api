@@ -1,31 +1,42 @@
 package com.moser.moserfood.api.assembler;
 
+import com.moser.moserfood.api.MoserLinks;
+import com.moser.moserfood.api.controller.GrupoController;
 import com.moser.moserfood.api.model.GrupoDTO;
 import com.moser.moserfood.domain.model.Grupo;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
-
-import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author Juliano Moser
  */
 @Component
-public class GrupoDTOAssembler {
+public class GrupoDTOAssembler extends RepresentationModelAssemblerSupport<Grupo, GrupoDTO> {
 
     @Autowired
     private ModelMapper modelMapper;
+    @Autowired
+    private MoserLinks moserLinks;
 
-    public GrupoDTO toDTO(Grupo grupo) {
-        return modelMapper.map(grupo, GrupoDTO.class);
+    public GrupoDTOAssembler() {
+        super(GrupoController.class, GrupoDTO.class);
     }
 
-    public List<GrupoDTO> toCollectionDTO(Collection<Grupo> grupos) {
-        return grupos.stream()
-                .map(this::toDTO)
-                .collect(Collectors.toList());
+    @Override
+    public GrupoDTO toModel(Grupo grupo) {
+        GrupoDTO grupoDTO = createModelWithId(grupo.getId(), grupo);
+        modelMapper.map(grupo, grupoDTO);
+        grupoDTO.add(moserLinks.linkToGrupos("grupos"));
+        grupoDTO.add(moserLinks.linkToGrupoPermissoes(grupo.getId(), "permissões"));
+        return grupoDTO;
+    }
+
+    @Override
+    public CollectionModel<GrupoDTO> toCollectionModel(Iterable<? extends Grupo> entities) {
+        return super.toCollectionModel(entities)
+                .add(moserLinks.linkToGrupos());
     }
 }

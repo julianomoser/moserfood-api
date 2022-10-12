@@ -55,8 +55,11 @@ public class RestauranteDTOAssembler extends RepresentationModelAssemblerSupport
 
         restauranteDTO.getCozinha().add(moserLinks.linkToCozinha(restaurante.getCozinha().getId()));
 
-        restauranteDTO.getEndereco().getCidade().add(
-                moserLinks.linkToCidade(restaurante.getEndereco().getCidade().getId()));
+        if (restauranteDTO.getEndereco() != null
+                && restauranteDTO.getEndereco().getCidade() != null) {
+            restauranteDTO.getEndereco().getCidade().add(
+                    moserLinks.linkToCidade(restaurante.getEndereco().getCidade().getId()));
+        }
 
         restauranteDTO.add(moserLinks.linkToFormaPagamento(restauranteDTO.getId(),
                 "formas-pagamento"));

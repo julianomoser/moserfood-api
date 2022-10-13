@@ -1,5 +1,6 @@
 package com.moser.moserfood.api.controller;
 
+import com.moser.moserfood.api.MoserLinks;
 import com.moser.moserfood.api.assembler.PermissaoDTOAssembler;
 import com.moser.moserfood.api.model.PermissaoDTO;
 import com.moser.moserfood.api.openapi.controller.GrupoPermissaoControllerOpenApi;
@@ -7,11 +8,11 @@ import com.moser.moserfood.domain.model.Grupo;
 import com.moser.moserfood.domain.service.GrupoService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * @author Juliano Moser
@@ -27,22 +28,38 @@ public class GrupoPermissaoController implements GrupoPermissaoControllerOpenApi
     @Autowired
     private PermissaoDTOAssembler permissaoModelAssembler;
 
+    @Autowired
+    private MoserLinks moserLinks;
+
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<PermissaoDTO> listar(@PathVariable Long grupoId) {
+    public CollectionModel<PermissaoDTO> listar(@PathVariable Long grupoId) {
         Grupo grupo = grupoService.findOrFail(grupoId);
 
-        return permissaoModelAssembler.toCollectionDTO(grupo.getPermissoes());
+        CollectionModel<PermissaoDTO> permissoesDTOS = permissaoModelAssembler.toCollectionModel(grupo.getPermissoes())
+                .removeLinks()
+                .add(moserLinks.linkToGrupoPermissoes(grupoId))
+                .add(moserLinks.linkToGrupoPermissaoAssociacao(grupoId, "associar"));
+
+        permissoesDTOS.getContent().forEach(permissaoDTO -> {
+            permissaoDTO.add(
+                    moserLinks.linkToGrupoPermissaoDesassociacao(grupoId, permissaoDTO.getId(), "desassociar"));
+        });
+
+
+        return permissoesDTOS;
     }
 
     @PutMapping("/{permissaoId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void associar(@PathVariable Long grupoId, @PathVariable Long permissaoId) {
+    public ResponseEntity<Void> associar(@PathVariable Long grupoId, @PathVariable Long permissaoId) {
         grupoService.associarPermissao(grupoId, permissaoId);
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{permissaoId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void desassociar(@PathVariable Long grupoId, @PathVariable Long permissaoId) {
+    public ResponseEntity<Void> desassociar(@PathVariable Long grupoId, @PathVariable Long permissaoId) {
         grupoService.desassociarPermissao(grupoId, permissaoId);
+        return ResponseEntity.noContent().build();
     }
 }

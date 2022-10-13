@@ -35,7 +35,6 @@ import java.net.URI;
 import java.net.URL;
 import java.net.URLStreamHandler;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -183,7 +182,8 @@ public class SpringFoxConfig {
                 new Tag("State", "Manage the states"),
                 new Tag("Statistic", "Manage the statistics"),
                 new Tag("User", "Manage the users"),
-                new Tag("User group", "Manage the users groups")
+                new Tag("User group", "Manage the users groups"),
+                new Tag("Permission", "Manage the permission")
         };
     }
 }

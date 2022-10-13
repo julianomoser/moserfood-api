@@ -5,6 +5,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.moser.moserfood.api.exceptionhandler.Problem;
 import com.moser.moserfood.api.model.CozinhaDTO;
 import com.moser.moserfood.api.model.PedidoResumoDTO;
+import com.moser.moserfood.api.openapi.model.LinksModelOpenApi;
 import com.moser.moserfood.api.openapi.model.PageableDTOOpenApi;
 import com.moser.moserfood.api.openapi.model.PagedModelOpenApi;
 import org.springframework.context.annotation.Bean;
@@ -13,6 +14,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.Links;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -78,6 +80,7 @@ public class SpringFoxConfig {
                 .ignoredParameterTypes(ServletWebRequest.class, URL.class, URI.class, URLStreamHandler.class, Resource.class,
                         File.class, InputStream.class)
                 .directModelSubstitute(Pageable.class, PageableDTOOpenApi.class)
+                .directModelSubstitute(Links.class, LinksModelOpenApi.class)
                 .alternateTypeRules(buildPageTypeRole(typeResolver, CozinhaDTO.class))
                 .alternateTypeRules(buildPageTypeRole(typeResolver, PedidoResumoDTO.class))
                 .apiInfo(apiInfo())

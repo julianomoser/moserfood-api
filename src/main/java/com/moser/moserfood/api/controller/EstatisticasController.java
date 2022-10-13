@@ -40,7 +40,7 @@ public class EstatisticasController implements EstatisticasControllerOpenApi {
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public EstatisticaDTO estatisticas() {
         var estatisticas = new EstatisticaDTO();
-        estatisticas.add(moserLinks.linkToEstatisticas("vendas-diárias"));
+        estatisticas.add(moserLinks.linkToEstatisticasVendasDiarias("vendas-diárias"));
         return estatisticas;
     }
 

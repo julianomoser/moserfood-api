@@ -30,6 +30,7 @@ public class RootEntryPointController {
         rootEntryPointModel.add(moserLinks.linkToFormasPagamento("formas-pagamento"));
         rootEntryPointModel.add(moserLinks.linkToEstados("estados"));
         rootEntryPointModel.add(moserLinks.linkToCidades("cidades"));
+        rootEntryPointModel.add(moserLinks.linkToEstatisticas("estatisticas"));
         return rootEntryPointModel;
     }
     private static class RootEntryPointModel extends RepresentationModel<RootEntryPointModel> {

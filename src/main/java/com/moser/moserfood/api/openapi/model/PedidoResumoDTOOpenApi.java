@@ -7,5 +7,5 @@ import io.swagger.annotations.ApiModel;
  * @author Juliano Moser
  */
 @ApiModel("PedidosResumoModel")
-public class PedidoResumoModelOpenApi extends PagedModelOpenApi<PedidoResumoDTO> {
+public class PedidoResumoDTOOpenApi extends PagedModelOpenApi<PedidoResumoDTO> {
 }

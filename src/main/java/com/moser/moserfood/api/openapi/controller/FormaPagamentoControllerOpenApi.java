@@ -3,6 +3,7 @@ package com.moser.moserfood.api.openapi.controller;
 import com.moser.moserfood.api.exceptionhandler.Problem;
 import com.moser.moserfood.api.model.FormaPagamentoDTO;
 import com.moser.moserfood.api.model.input.FormaPagamentoInput;
+import com.moser.moserfood.api.openapi.model.FormasPagamentoDTOOpenApi;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -18,9 +19,11 @@ import org.springframework.web.context.request.ServletWebRequest;
  * @author Juliano Moser
  */
 @Api(tags = "Payment method")
-public interface FromaPagamentoControllerOpenApi {
+public interface FormaPagamentoControllerOpenApi {
 
-    @ApiOperation("Lista as formas de pagamento")
+    @ApiOperation(value = "Lista as formas de pagamento")
+    @io.swagger.annotations.ApiResponses(value = {
+            @io.swagger.annotations.ApiResponse(code = 200, message = "OK", response = FormasPagamentoDTOOpenApi.class) })
     ResponseEntity<CollectionModel<FormaPagamentoDTO>> listar(ServletWebRequest request);
 
     @ApiOperation("Busca uma forma de pagamento por Id")

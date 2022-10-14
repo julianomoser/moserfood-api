@@ -3,10 +3,7 @@ package com.moser.moserfood.core.springfox;
 import com.fasterxml.classmate.TypeResolver;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.moser.moserfood.api.exceptionhandler.Problem;
-import com.moser.moserfood.api.model.CidadeDTO;
-import com.moser.moserfood.api.model.CozinhaDTO;
-import com.moser.moserfood.api.model.EstadoDTO;
-import com.moser.moserfood.api.model.PedidoResumoDTO;
+import com.moser.moserfood.api.model.*;
 import com.moser.moserfood.api.openapi.model.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,7 +20,6 @@ import org.springframework.http.MediaType;
 import org.springframework.web.context.request.ServletWebRequest;
 import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
 import springfox.documentation.builders.*;
-import springfox.documentation.schema.AlternateTypeRule;
 import springfox.documentation.schema.AlternateTypeRules;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
@@ -88,13 +84,16 @@ public class SpringFoxConfig {
                         CozinhasDTOpenApi.class))
                 .alternateTypeRules(AlternateTypeRules.newRule(
                         typeResolver.resolve(Page.class, PedidoResumoDTO.class),
-                        PedidoResumoModelOpenApi.class))
+                        PedidoResumoDTOOpenApi.class))
                 .alternateTypeRules(AlternateTypeRules.newRule(
                         typeResolver.resolve(CollectionModel.class, CidadeDTO.class),
                         CidadesModelOpenApi.class))
                 .alternateTypeRules(AlternateTypeRules.newRule(
                         typeResolver.resolve(CollectionModel.class, EstadoDTO.class),
-                        EstadosModelOpenApi.class))
+                        EstadosDTOOpenApi.class))
+                .alternateTypeRules(AlternateTypeRules.newRule(
+                        typeResolver.resolve(CollectionModel.class, FormaPagamentoDTO.class),
+                        FormasPagamentoDTOOpenApi.class))
                 .apiInfo(apiInfo())
                 .tags(tags()[0], tags());
     }

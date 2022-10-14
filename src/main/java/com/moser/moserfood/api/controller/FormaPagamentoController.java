@@ -4,7 +4,7 @@ import com.moser.moserfood.api.assembler.FormaPagamentoDTOAssembler;
 import com.moser.moserfood.api.assembler.FormaPagamentoInputDisassembler;
 import com.moser.moserfood.api.model.FormaPagamentoDTO;
 import com.moser.moserfood.api.model.input.FormaPagamentoInput;
-import com.moser.moserfood.api.openapi.controller.FromaPagamentoControllerOpenApi;
+import com.moser.moserfood.api.openapi.controller.FormaPagamentoControllerOpenApi;
 import com.moser.moserfood.domain.exception.EstadoNaoEncontradoException;
 import com.moser.moserfood.domain.exception.NegocioException;
 import com.moser.moserfood.domain.model.FormaPagamento;
@@ -30,7 +30,7 @@ import java.util.concurrent.TimeUnit;
  */
 @RestController
 @RequestMapping(path = "/formas-pagamento", produces = MediaType.APPLICATION_JSON_VALUE)
-public class FormaPagamentoController implements FromaPagamentoControllerOpenApi {
+public class FormaPagamentoController implements FormaPagamentoControllerOpenApi {
 
     @Autowired
     private FormaPagamentoRepository formaPagamentoRepository;
@@ -43,6 +43,7 @@ public class FormaPagamentoController implements FromaPagamentoControllerOpenApi
     @Autowired
     private FormaPagamentoInputDisassembler formaPagamentoInputDisassembler;
 
+    @Override
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CollectionModel<FormaPagamentoDTO>> listar(ServletWebRequest request) {
         ShallowEtagHeaderFilter.disableContentCaching(request.getRequest());
@@ -65,6 +66,7 @@ public class FormaPagamentoController implements FromaPagamentoControllerOpenApi
                 .body(formasPagamentoDTO);
     }
 
+    @Override
 
     @GetMapping(path = "/{formaPagamentoId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<FormaPagamentoDTO> buscar(@PathVariable Long formaPagamentoId,
@@ -98,6 +100,7 @@ public class FormaPagamentoController implements FromaPagamentoControllerOpenApi
         return eTag;
     }
 
+    @Override
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public FormaPagamentoDTO salvar(@RequestBody @Valid FormaPagamentoInput formaPagamentoInput) {
@@ -112,6 +115,7 @@ public class FormaPagamentoController implements FromaPagamentoControllerOpenApi
         }
     }
 
+    @Override
     @PutMapping(path = "/{formaPagamentoId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public FormaPagamentoDTO atualizar(@PathVariable Long formaPagamentoId,
                                        @RequestBody @Valid FormaPagamentoInput formaPagamentoInput) {
@@ -128,6 +132,7 @@ public class FormaPagamentoController implements FromaPagamentoControllerOpenApi
         }
     }
 
+    @Override
     @DeleteMapping("/{formaPagamentoId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void remover(@PathVariable Long formaPagamentoId) {

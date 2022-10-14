@@ -1,4 +1,4 @@
-package com.moser.moserfood.core.openapi;
+package com.moser.moserfood.core.springfox;
 
 import com.fasterxml.classmate.TypeResolver;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -6,10 +6,7 @@ import com.moser.moserfood.api.exceptionhandler.Problem;
 import com.moser.moserfood.api.model.CidadeDTO;
 import com.moser.moserfood.api.model.CozinhaDTO;
 import com.moser.moserfood.api.model.PedidoResumoDTO;
-import com.moser.moserfood.api.openapi.model.CidadesModelOpenApi;
-import com.moser.moserfood.api.openapi.model.LinksModelOpenApi;
-import com.moser.moserfood.api.openapi.model.PageableDTOOpenApi;
-import com.moser.moserfood.api.openapi.model.PagedModelOpenApi;
+import com.moser.moserfood.api.openapi.model.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -18,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Links;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -84,23 +82,17 @@ public class SpringFoxConfig {
                         File.class, InputStream.class)
                 .directModelSubstitute(Pageable.class, PageableDTOOpenApi.class)
                 .directModelSubstitute(Links.class, LinksModelOpenApi.class)
-                .alternateTypeRules(buildPageTypeRole(typeResolver, CozinhaDTO.class))
-                .alternateTypeRules(buildPageTypeRole(typeResolver, PedidoResumoDTO.class))
-                .alternateTypeRules(getAlternateTypeRuleCollectionModelCidade(typeResolver))
+                .alternateTypeRules(AlternateTypeRules.newRule(
+                        typeResolver.resolve(PagedModel.class, CozinhaDTO.class),
+                        CozinhasDTOpenApi.class))
+                .alternateTypeRules(AlternateTypeRules.newRule(
+                        typeResolver.resolve(Page.class, PedidoResumoDTO.class),
+                        PedidoResumoModelOpenApi.class))
+                .alternateTypeRules(AlternateTypeRules.newRule(
+                        typeResolver.resolve(CollectionModel.class, CidadeDTO.class),
+                        CidadesModelOpenApi.class))
                 .apiInfo(apiInfo())
                 .tags(tags()[0], tags());
-    }
-
-    private static AlternateTypeRule getAlternateTypeRuleCollectionModelCidade(TypeResolver typeResolver) {
-        return AlternateTypeRules.newRule(
-                typeResolver.resolve(CollectionModel.class, CidadeDTO.class),
-                CidadesModelOpenApi.class);
-    }
-
-    private static <T> AlternateTypeRule buildPageTypeRole(TypeResolver typeResolver, Class<T> classModel) {
-        return AlternateTypeRules.newRule(
-                typeResolver.resolve(Page.class, classModel),
-                typeResolver.resolve(PagedModelOpenApi.class, classModel));
     }
 
     private List<Response> globalGetResponseMessages() {

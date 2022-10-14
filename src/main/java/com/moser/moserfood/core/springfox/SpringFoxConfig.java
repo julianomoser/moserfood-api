@@ -5,6 +5,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.moser.moserfood.api.exceptionhandler.Problem;
 import com.moser.moserfood.api.model.CidadeDTO;
 import com.moser.moserfood.api.model.CozinhaDTO;
+import com.moser.moserfood.api.model.EstadoDTO;
 import com.moser.moserfood.api.model.PedidoResumoDTO;
 import com.moser.moserfood.api.openapi.model.*;
 import org.springframework.context.annotation.Bean;
@@ -91,6 +92,9 @@ public class SpringFoxConfig {
                 .alternateTypeRules(AlternateTypeRules.newRule(
                         typeResolver.resolve(CollectionModel.class, CidadeDTO.class),
                         CidadesModelOpenApi.class))
+                .alternateTypeRules(AlternateTypeRules.newRule(
+                        typeResolver.resolve(CollectionModel.class, EstadoDTO.class),
+                        EstadosModelOpenApi.class))
                 .apiInfo(apiInfo())
                 .tags(tags()[0], tags());
     }

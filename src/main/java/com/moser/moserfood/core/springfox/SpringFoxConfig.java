@@ -101,6 +101,9 @@ public class SpringFoxConfig {
                 .alternateTypeRules(AlternateTypeRules.newRule(
                         typeResolver.resolve(CollectionModel.class, PermissaoDTO.class),
                         PermissoesDTOOpenApi.class))
+                .alternateTypeRules(AlternateTypeRules.newRule(
+                        typeResolver.resolve(CollectionModel.class, ProdutoDTO.class),
+                        ProdutosDTOOpenApi.class))
                 .apiInfo(apiInfo())
                 .tags(tags()[0], tags());
     }

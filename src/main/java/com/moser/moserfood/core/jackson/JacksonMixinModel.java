@@ -1,9 +1,9 @@
 package com.moser.moserfood.core.jackson;
 
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.moser.moserfood.api.model.mixin.CidadeMixin;
-import com.moser.moserfood.api.model.mixin.CozinhaMixin;
-import com.moser.moserfood.api.model.mixin.UsuarioMixin;
+import com.moser.moserfood.api.v1.model.mixin.CidadeMixin;
+import com.moser.moserfood.api.v1.model.mixin.CozinhaMixin;
+import com.moser.moserfood.api.v1.model.mixin.UsuarioMixin;
 import com.moser.moserfood.domain.model.Cidade;
 import com.moser.moserfood.domain.model.Cozinha;
 import com.moser.moserfood.domain.model.Usuario;

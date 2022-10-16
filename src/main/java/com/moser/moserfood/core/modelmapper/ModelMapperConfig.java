@@ -1,7 +1,7 @@
 package com.moser.moserfood.core.modelmapper;
 
-import com.moser.moserfood.api.model.EnderecoDTO;
-import com.moser.moserfood.api.model.input.ItemPedidoInput;
+import com.moser.moserfood.api.v1.model.EnderecoDTO;
+import com.moser.moserfood.api.v1.model.input.ItemPedidoInput;
 import com.moser.moserfood.domain.model.Endereco;
 import com.moser.moserfood.domain.model.ItemPedido;
 import org.modelmapper.ModelMapper;

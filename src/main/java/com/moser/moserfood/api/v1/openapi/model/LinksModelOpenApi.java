@@ -1,0 +1,26 @@
+package com.moser.moserfood.api.v1.openapi.model;
+
+import io.swagger.annotations.ApiModel;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.web.bind.annotation.GetMapping;
+
+/**
+ * @author Juliano Moser
+ */
+@Getter
+@Setter
+@ApiModel("Links")
+public class LinksModelOpenApi {
+
+    private LinkModel rel;
+
+    @Getter
+    @Setter
+    @ApiModel("Link")
+    private static class LinkModel {
+        private String href;
+        private boolean templated;
+    }
+
+}

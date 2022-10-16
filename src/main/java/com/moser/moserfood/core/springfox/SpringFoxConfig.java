@@ -83,7 +83,7 @@ public class SpringFoxConfig {
                         typeResolver.resolve(PagedModel.class, CozinhaDTO.class),
                         CozinhasDTOpenApi.class))
                 .alternateTypeRules(AlternateTypeRules.newRule(
-                        typeResolver.resolve(Page.class, PedidoResumoDTO.class),
+                        typeResolver.resolve(PagedModel.class, PedidoResumoDTO.class),
                         PedidoResumoDTOOpenApi.class))
                 .alternateTypeRules(AlternateTypeRules.newRule(
                         typeResolver.resolve(CollectionModel.class, CidadeDTO.class),

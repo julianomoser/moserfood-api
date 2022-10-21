@@ -3,7 +3,6 @@ package com.moser.moserfood.core.springfox;
 import com.fasterxml.classmate.TypeResolver;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.moser.moserfood.api.exceptionhandler.Problem;
-import com.moser.moserfood.api.model.*;
 import com.moser.moserfood.api.v1.model.*;
 import com.moser.moserfood.api.v1.openapi.model.*;
 import org.springframework.context.annotation.Bean;

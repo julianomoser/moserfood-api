@@ -15,6 +15,7 @@ public class MoserfoodConfiguration {
     public HalConfiguration globalPolicy() {
         return new HalConfiguration()
                 .withMediaType(MediaType.APPLICATION_JSON)
-                .withMediaType(MoserMediaTypes.V1_APPLICATION_JSON);
+                .withMediaType(MoserMediaTypes.V1_APPLICATION_JSON)
+                .withMediaType(MoserMediaTypes.V2_APPLICATION_JSON);
     }
 }

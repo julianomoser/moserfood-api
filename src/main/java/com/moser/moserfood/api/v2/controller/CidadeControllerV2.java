@@ -1,0 +1,93 @@
+package com.moser.moserfood.api.v2.controller;
+
+import com.moser.moserfood.api.ResourceUriHelper;
+import com.moser.moserfood.api.v2.assembler.CidadeDTOAssemblerV2;
+import com.moser.moserfood.api.v2.assembler.CidadeInputDisassemblerV2;
+import com.moser.moserfood.api.v2.model.CidadeDTOV2;
+import com.moser.moserfood.api.v2.model.input.CidadeInputV2;
+import com.moser.moserfood.core.web.MoserMediaTypes;
+import com.moser.moserfood.domain.exception.EstadoNaoEncontradoException;
+import com.moser.moserfood.domain.exception.NegocioException;
+import com.moser.moserfood.domain.model.Cidade;
+import com.moser.moserfood.domain.repository.CidadeRepository;
+import com.moser.moserfood.domain.service.CidadeService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.util.List;
+
+/**
+ * @author Juliano Moser
+ */
+
+@RestController
+@RequestMapping(path = "/cidades")
+public class CidadeControllerV2 {
+
+    @Autowired
+    private CidadeRepository cidadeRepository;
+    @Autowired
+    private CidadeService cidadeService;
+
+    @Autowired
+    private CidadeDTOAssemblerV2 cidadeModelAssembler;
+
+    @Autowired
+    private CidadeInputDisassemblerV2 cidadeInputDisassembler;
+
+    @GetMapping(produces = MoserMediaTypes.V2_APPLICATION_JSON_VALUE)
+    public CollectionModel<CidadeDTOV2> listar() {
+        List<Cidade> todasCidades = cidadeRepository.findAll();
+        return cidadeModelAssembler.toCollectionModel(todasCidades);
+    }
+
+    @GetMapping(path = "/{cidadeId}", produces = MoserMediaTypes.V2_APPLICATION_JSON_VALUE)
+    public CidadeDTOV2 buscar(@PathVariable Long cidadeId) {
+        Cidade cidade = cidadeService.findOrFail(cidadeId);
+        return cidadeModelAssembler.toModel(cidade);
+    }
+
+    @PostMapping(produces = MoserMediaTypes.V2_APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.CREATED)
+    public CidadeDTOV2 salvar(@RequestBody @Valid CidadeInputV2 cidadeInput) {
+        try {
+            Cidade cidade = cidadeInputDisassembler.toDomainObject(cidadeInput);
+
+            cidade = cidadeService.salvar(cidade);
+
+            CidadeDTOV2 cidadeDTO = cidadeModelAssembler.toModel(cidade);
+
+            ResourceUriHelper.addUriInResponseHeader(cidadeDTO.getIdCidade());
+
+            return cidadeDTO;
+        } catch (EstadoNaoEncontradoException e) {
+            throw new NegocioException(e.getMessage(), e);
+        }
+    }
+
+    @PutMapping(path = "/{cidadeId}", produces = MoserMediaTypes.V2_APPLICATION_JSON_VALUE)
+    public CidadeDTOV2 atualizar(@PathVariable Long cidadeId,
+                                 @RequestBody @Valid CidadeInputV2 cidadeInput) {
+        try {
+            Cidade cidadeAtual = cidadeService.findOrFail(cidadeId);
+
+            cidadeInputDisassembler.copyToDomainObject(cidadeInput, cidadeAtual);
+
+            cidadeAtual = cidadeService.salvar(cidadeAtual);
+
+            return cidadeModelAssembler.toModel(cidadeAtual);
+        } catch (EstadoNaoEncontradoException e) {
+            throw new NegocioException(e.getMessage(), e);
+        }
+    }
+
+//  Não pode ser mapeado na mesma URL em um MediaType diferente, já que não aceita entrada e retorna void.
+//    @DeleteMapping("/{cidadeId}")
+//    @ResponseStatus(HttpStatus.NO_CONTENT)
+//    public void remover(@PathVariable Long cidadeId) {
+//        cidadeService.excluir(cidadeId);
+//    }
+}

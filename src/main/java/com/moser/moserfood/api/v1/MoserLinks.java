@@ -1,6 +1,5 @@
 package com.moser.moserfood.api.v1;
 
-import com.moser.moserfood.api.controller.*;
 import com.moser.moserfood.api.v1.controller.*;
 import org.springframework.hateoas.*;
 import org.springframework.stereotype.Component;

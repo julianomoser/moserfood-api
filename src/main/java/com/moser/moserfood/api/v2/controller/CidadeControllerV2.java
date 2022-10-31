@@ -5,7 +5,6 @@ import com.moser.moserfood.api.v2.assembler.CidadeDTOAssemblerV2;
 import com.moser.moserfood.api.v2.assembler.CidadeInputDisassemblerV2;
 import com.moser.moserfood.api.v2.model.CidadeDTOV2;
 import com.moser.moserfood.api.v2.model.input.CidadeInputV2;
-import com.moser.moserfood.core.web.MoserMediaTypes;
 import com.moser.moserfood.domain.exception.EstadoNaoEncontradoException;
 import com.moser.moserfood.domain.exception.NegocioException;
 import com.moser.moserfood.domain.model.Cidade;
@@ -14,6 +13,7 @@ import com.moser.moserfood.domain.service.CidadeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -24,7 +24,7 @@ import java.util.List;
  */
 
 @RestController
-@RequestMapping(path = "/cidades")
+@RequestMapping(path = "/v2/cidades")
 public class CidadeControllerV2 {
 
     @Autowired
@@ -38,19 +38,19 @@ public class CidadeControllerV2 {
     @Autowired
     private CidadeInputDisassemblerV2 cidadeInputDisassembler;
 
-    @GetMapping(produces = MoserMediaTypes.V2_APPLICATION_JSON_VALUE)
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public CollectionModel<CidadeDTOV2> listar() {
         List<Cidade> todasCidades = cidadeRepository.findAll();
         return cidadeModelAssembler.toCollectionModel(todasCidades);
     }
 
-    @GetMapping(path = "/{cidadeId}", produces = MoserMediaTypes.V2_APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/{cidadeId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public CidadeDTOV2 buscar(@PathVariable Long cidadeId) {
         Cidade cidade = cidadeService.findOrFail(cidadeId);
         return cidadeModelAssembler.toModel(cidade);
     }
 
-    @PostMapping(produces = MoserMediaTypes.V2_APPLICATION_JSON_VALUE)
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public CidadeDTOV2 salvar(@RequestBody @Valid CidadeInputV2 cidadeInput) {
         try {
@@ -68,7 +68,7 @@ public class CidadeControllerV2 {
         }
     }
 
-    @PutMapping(path = "/{cidadeId}", produces = MoserMediaTypes.V2_APPLICATION_JSON_VALUE)
+    @PutMapping(path = "/{cidadeId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public CidadeDTOV2 atualizar(@PathVariable Long cidadeId,
                                  @RequestBody @Valid CidadeInputV2 cidadeInput) {
         try {

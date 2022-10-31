@@ -22,7 +22,7 @@ import java.util.List;
  * @author Juliano Moser
  */
 @RestController
-@RequestMapping("/estatisticas")
+@RequestMapping("/v1/estatisticas")
 public class EstatisticasController implements EstatisticasControllerOpenApi {
 
     @Autowired

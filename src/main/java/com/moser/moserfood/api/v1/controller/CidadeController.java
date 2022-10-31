@@ -6,7 +6,6 @@ import com.moser.moserfood.api.v1.assembler.CidadeInputDisassembler;
 import com.moser.moserfood.api.v1.model.CidadeDTO;
 import com.moser.moserfood.api.v1.model.input.CidadeInput;
 import com.moser.moserfood.api.v1.openapi.controller.CidadeControllerOpenApi;
-import com.moser.moserfood.core.web.MoserMediaTypes;
 import com.moser.moserfood.domain.exception.EstadoNaoEncontradoException;
 import com.moser.moserfood.domain.exception.NegocioException;
 import com.moser.moserfood.domain.model.Cidade;
@@ -21,14 +20,12 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-
 /**
  * @author Juliano Moser
  */
 
 @RestController
-@RequestMapping(path = "/cidades")
+@RequestMapping(path = "/v1/cidades")
 public class CidadeController implements CidadeControllerOpenApi {
 
     @Autowired
@@ -42,19 +39,19 @@ public class CidadeController implements CidadeControllerOpenApi {
     @Autowired
     private CidadeInputDisassembler cidadeInputDisassembler;
 
-    @GetMapping(produces = MoserMediaTypes.V1_APPLICATION_JSON_VALUE)
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public CollectionModel<CidadeDTO> listar() {
         List<Cidade> todasCidades = cidadeRepository.findAll();
         return cidadeModelAssembler.toCollectionModel(todasCidades);
     }
 
-    @GetMapping(path = "/{cidadeId}", produces = MoserMediaTypes.V1_APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/{cidadeId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public CidadeDTO buscar(@PathVariable Long cidadeId) {
         Cidade cidade = cidadeService.findOrFail(cidadeId);
         return cidadeModelAssembler.toModel(cidade);
     }
 
-    @PostMapping(produces = MoserMediaTypes.V1_APPLICATION_JSON_VALUE)
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public CidadeDTO salvar(@RequestBody @Valid CidadeInput cidadeInput) {
         try {
@@ -72,7 +69,7 @@ public class CidadeController implements CidadeControllerOpenApi {
         }
     }
 
-    @PutMapping(path = "/{cidadeId}", produces = MoserMediaTypes.V1_APPLICATION_JSON_VALUE)
+    @PutMapping(path = "/{cidadeId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public CidadeDTO atualizar(@PathVariable Long cidadeId,
                                @RequestBody @Valid CidadeInput cidadeInput) {
         try {

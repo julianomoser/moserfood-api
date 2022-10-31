@@ -1,10 +1,12 @@
 package com.moser.moserfood.api.v2.controller;
 
 import com.moser.moserfood.api.ResourceUriHelper;
+import com.moser.moserfood.api.v1.openapi.controller.CidadeControllerOpenApi;
 import com.moser.moserfood.api.v2.assembler.CidadeDTOAssemblerV2;
 import com.moser.moserfood.api.v2.assembler.CidadeInputDisassemblerV2;
 import com.moser.moserfood.api.v2.model.CidadeDTOV2;
 import com.moser.moserfood.api.v2.model.input.CidadeInputV2;
+import com.moser.moserfood.api.v2.openapi.controller.CidadeControllerV2OpenApi;
 import com.moser.moserfood.domain.exception.EstadoNaoEncontradoException;
 import com.moser.moserfood.domain.exception.NegocioException;
 import com.moser.moserfood.domain.model.Cidade;
@@ -25,7 +27,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "/v2/cidades")
-public class CidadeControllerV2 {
+public class CidadeControllerV2 implements CidadeControllerV2OpenApi {
 
     @Autowired
     private CidadeRepository cidadeRepository;
@@ -84,10 +86,9 @@ public class CidadeControllerV2 {
         }
     }
 
-//  Não pode ser mapeado na mesma URL em um MediaType diferente, já que não aceita entrada e retorna void.
-//    @DeleteMapping("/{cidadeId}")
-//    @ResponseStatus(HttpStatus.NO_CONTENT)
-//    public void remover(@PathVariable Long cidadeId) {
-//        cidadeService.excluir(cidadeId);
-//    }
+    @DeleteMapping("/{cidadeId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void remover(@PathVariable Long cidadeId) {
+        cidadeService.excluir(cidadeId);
+    }
 }

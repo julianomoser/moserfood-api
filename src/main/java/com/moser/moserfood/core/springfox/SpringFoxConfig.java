@@ -5,6 +5,10 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.moser.moserfood.api.exceptionhandler.Problem;
 import com.moser.moserfood.api.v1.model.*;
 import com.moser.moserfood.api.v1.openapi.model.*;
+import com.moser.moserfood.api.v2.model.CidadeDTOV2;
+import com.moser.moserfood.api.v2.model.CozinhaDTOV2;
+import com.moser.moserfood.api.v2.openapi.model.CidadesDTOV2OpenApi;
+import com.moser.moserfood.api.v2.openapi.model.CozinhasDTOV2OpenApi;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -133,7 +137,16 @@ public class SpringFoxConfig {
                         File.class, InputStream.class)
                 .directModelSubstitute(Pageable.class, PageableDTOOpenApi.class)
                 .directModelSubstitute(Links.class, LinksModelOpenApi.class)
-                .apiInfo(apiInfoV2());
+                .alternateTypeRules(AlternateTypeRules.newRule(
+                        typeResolver.resolve(PagedModel.class, CozinhaDTOV2.class),
+                        CozinhasDTOV2OpenApi.class))
+
+                .alternateTypeRules(AlternateTypeRules.newRule(
+                        typeResolver.resolve(CollectionModel.class, CidadeDTOV2.class),
+                        CidadesDTOV2OpenApi.class))
+                .apiInfo(apiInfoV2())
+                .tags(new Tag("City", "Manage the cities"),
+                        new Tag("Cuisine", "Manage the cuisines"));
     }
 
     private List<Response> globalGetResponseMessages() {

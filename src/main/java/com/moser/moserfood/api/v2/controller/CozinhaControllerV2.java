@@ -4,6 +4,7 @@ import com.moser.moserfood.api.v2.assembler.CozinhaDTOAssemblerV2;
 import com.moser.moserfood.api.v2.assembler.CozinhaInputDisassemblerV2;
 import com.moser.moserfood.api.v2.model.CozinhaDTOV2;
 import com.moser.moserfood.api.v2.model.input.CozinhaInputV2;
+import com.moser.moserfood.api.v2.openapi.controller.CozinhaControllerV2OpenApi;
 import com.moser.moserfood.domain.model.Cozinha;
 import com.moser.moserfood.domain.repository.CozinhaRepository;
 import com.moser.moserfood.domain.service.CozinhaService;
@@ -24,7 +25,7 @@ import javax.validation.Valid;
  */
 @RestController
 @RequestMapping(path = "/v2/cozinhas", produces = MediaType.APPLICATION_JSON_VALUE)
-public class CozinhaControllerV2 {
+public class CozinhaControllerV2 implements CozinhaControllerV2OpenApi {
 
     @Autowired
     private CozinhaRepository cozinhaRepository;
@@ -52,7 +53,7 @@ public class CozinhaControllerV2 {
     }
 
     @GetMapping("/{cozinhaId}")
-    public CozinhaDTOV2 buscar(@PathVariable Long cozinhaId) {
+        public CozinhaDTOV2 buscar(@PathVariable Long cozinhaId) {
         Cozinha cozinha = cozinhaService.findOrFail(cozinhaId);
 
         return cozinhaModelAssembler.toModel(cozinha);

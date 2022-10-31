@@ -50,14 +50,14 @@ public class SpringFoxConfig {
     }
 
     @Bean
-    public Docket apiDocket() {
+    public Docket apiDocketV1() {
         var typeResolver = new TypeResolver();
 
         return new Docket(DocumentationType.OAS_30)
+                .groupName("V1")
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.moser.moserfood.api"))
-                .paths(PathSelectors.any())
-//                .paths(PathSelectors.ant("/restaurantes/*"))
+                .paths(PathSelectors.ant("/v1/**"))
                 .build()
                 .useDefaultResponseMessages(false)
                 .globalResponses(HttpMethod.GET, globalGetResponseMessages())
@@ -108,8 +108,32 @@ public class SpringFoxConfig {
                 .alternateTypeRules(AlternateTypeRules.newRule(
                         typeResolver.resolve(CollectionModel.class, UsuarioDTO.class),
                         UsuariosDTOOpenApi.class))
-                .apiInfo(apiInfo())
+                .apiInfo(apiInfoV1())
                 .tags(tags()[0], tags());
+    }
+
+    @Bean
+    public Docket apiDocketV2() {
+        var typeResolver = new TypeResolver();
+
+        return new Docket(DocumentationType.OAS_30)
+                .groupName("V2")
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("com.moser.moserfood.api"))
+                .paths(PathSelectors.ant("/v2/**"))
+                .build()
+                .useDefaultResponseMessages(false)
+                .globalResponses(HttpMethod.GET, globalGetResponseMessages())
+                .globalResponses(HttpMethod.POST, globalPostPutResponseMessages())
+                .globalResponses(HttpMethod.PUT, globalPostPutResponseMessages())
+                .globalResponses(HttpMethod.DELETE, globalDeleteResponseMessages())
+                .additionalModels(typeResolver.resolve(Problem.class))
+                .ignoredParameterTypes(ServletWebRequest.class,
+                        URL.class, URI.class, URLStreamHandler.class, Resource.class,
+                        File.class, InputStream.class)
+                .directModelSubstitute(Pageable.class, PageableDTOOpenApi.class)
+                .directModelSubstitute(Links.class, LinksModelOpenApi.class)
+                .apiInfo(apiInfoV2());
     }
 
     private List<Response> globalGetResponseMessages() {
@@ -171,13 +195,22 @@ public class SpringFoxConfig {
         );
     }
 
-    public ApiInfo apiInfo() {
+    public ApiInfo apiInfoV1() {
         return new ApiInfoBuilder()
                 .title("MoserFood API")
                 .description("API aberta para clientes e restaurantes")
                 .version("1")
                 .contact(new Contact(
                         "MoserFood", "https://www.moserfood.com.br", "moserfood@gmail.com"))
+                .build();
+    }
+
+    private ApiInfo apiInfoV2() {
+        return new ApiInfoBuilder()
+                .title("MoserFood API")
+                .description("API aberta para clientes e restaurantes")
+                .version("2")
+                .contact(new Contact("MoserFood", "https://www.moserfood.com.br", "moserfood@gmail.com"))
                 .build();
     }
 

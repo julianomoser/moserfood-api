@@ -53,7 +53,7 @@ public class SpringFoxConfig {
         return objectMapper -> objectMapper.registerModule(new JavaTimeModule());
     }
 
-    @Bean
+//    @Bean
     public Docket apiDocketV1() {
         var typeResolver = new TypeResolver();
 

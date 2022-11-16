@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +29,9 @@ public class UsuarioService {
 
     private final GrupoService grupoService;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Transactional
     public Usuario salvar(Usuario usuario) {
 
@@ -38,6 +42,11 @@ public class UsuarioService {
             throw new NegocioException(
                     String.format("Já existe um usuário cadastrado com email %s", usuario.getEmail()));
         }
+
+        if(usuario.isNovo()) {
+            usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
+        }
+
         return usuarioRepository.save(usuario);
     }
 
@@ -45,10 +54,10 @@ public class UsuarioService {
     public void alterarSenha(Long usuarioId, String senhaAtual, String novaSenha) {
         Usuario usuario = findOrFail(usuarioId);
 
-        if (usuario.senhaNaoCoincideCom(senhaAtual)) {
+        if (!passwordEncoder.matches(senhaAtual, usuario.getSenha())) {
             throw new NegocioException("Senha atual informada não coincide com a senha do usuário.");
         }
-        usuario.setSenha(novaSenha);
+        usuario.setSenha(passwordEncoder.encode(novaSenha));
     }
 
     @Transactional

@@ -10,6 +10,7 @@ import com.moser.moserfood.api.v1.model.input.PedidoInput;
 import com.moser.moserfood.api.v1.openapi.controller.PedidoControllerOpenApi;
 import com.moser.moserfood.core.data.PageWrapper;
 import com.moser.moserfood.core.data.PageableTranslator;
+import com.moser.moserfood.core.security.MoserSecurity;
 import com.moser.moserfood.domain.exception.EntidadeNaoEncontradaException;
 import com.moser.moserfood.domain.exception.NegocioException;
 import com.moser.moserfood.domain.filter.PedidoFilter;
@@ -52,6 +53,9 @@ public class PedidoController implements PedidoControllerOpenApi {
 
     @Autowired
     private PedidoInputDisassembler pedidoInputDisassembler;
+
+    @Autowired
+    private MoserSecurity moserSecurity;
 
     @Autowired
     private PagedResourcesAssembler<Pedido> pagedResourcesAssembler;
@@ -104,9 +108,8 @@ public class PedidoController implements PedidoControllerOpenApi {
         try {
             Pedido pedido = pedidoInputDisassembler.toDomainObject(pedidoInput);
 
-            //TODO pegar usuário autenticado
             pedido.setCliente(new Usuario());
-            pedido.getCliente().setId(1L);
+            pedido.getCliente().setId(moserSecurity.getUsuarioId());
 
             pedido = emissaoPedidoService.emitir(pedido);
 

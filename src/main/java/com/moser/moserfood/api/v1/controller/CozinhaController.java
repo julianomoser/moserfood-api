@@ -5,6 +5,7 @@ import com.moser.moserfood.api.v1.assembler.CozinhaInputDisassembler;
 import com.moser.moserfood.api.v1.model.CozinhaDTO;
 import com.moser.moserfood.api.v1.model.input.CozinhaInput;
 import com.moser.moserfood.api.v1.openapi.controller.CozinhaControllerOpenApi;
+import com.moser.moserfood.core.security.CheckSecurity;
 import com.moser.moserfood.domain.model.Cozinha;
 import com.moser.moserfood.domain.repository.CozinhaRepository;
 import com.moser.moserfood.domain.service.CozinhaService;
@@ -16,7 +17,6 @@ import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -44,7 +44,7 @@ public class CozinhaController implements CozinhaControllerOpenApi {
     @Autowired
     private PagedResourcesAssembler<Cozinha> pagedResourcesAssembler;
 
-    @PreAuthorize("isAuthenticated()")
+    @CheckSecurity.Cozinhas.PodeConsultar
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public PagedModel<CozinhaDTO> listar(@PageableDefault(size = 10) Pageable pageable) {
         Page<Cozinha> cozinhasPage = cozinhaRepository.findAll(pageable);
@@ -53,7 +53,7 @@ public class CozinhaController implements CozinhaControllerOpenApi {
                 .toModel(cozinhasPage, cozinhaModelAssembler);
     }
 
-    @PreAuthorize("isAuthenticated()")
+    @CheckSecurity.Cozinhas.PodeConsultar
     @GetMapping(path = "/{cozinhaId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public CozinhaDTO buscar(@PathVariable Long cozinhaId) {
         Cozinha cozinha = cozinhaService.findOrFail(cozinhaId);
@@ -61,7 +61,7 @@ public class CozinhaController implements CozinhaControllerOpenApi {
         return cozinhaModelAssembler.toModel(cozinha);
     }
 
-    @PreAuthorize("hasAnyAuthority('EDITAR_COZINHAS')")
+    @CheckSecurity.Cozinhas.PodeEditar
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public CozinhaDTO savlar(@RequestBody @Valid CozinhaInput cozinhaInput) {
@@ -71,7 +71,7 @@ public class CozinhaController implements CozinhaControllerOpenApi {
         return cozinhaModelAssembler.toModel(cozinha);
     }
 
-    @PreAuthorize("hasAnyAuthority('EDITAR_COZINHAS')")
+    @CheckSecurity.Cozinhas.PodeEditar
     @PutMapping(path = "/{cozinhaId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public CozinhaDTO atualizar(@PathVariable Long cozinhaId,
                                 @RequestBody @Valid CozinhaInput cozinhaInput) {
@@ -82,7 +82,7 @@ public class CozinhaController implements CozinhaControllerOpenApi {
         return cozinhaModelAssembler.toModel(cozinhaAtual);
     }
 
-    @PreAuthorize("hasAnyAuthority('EDITAR_COZINHAS')")
+    @CheckSecurity.Cozinhas.PodeEditar
     @DeleteMapping("/{cozinhaId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void remover(@PathVariable Long cozinhaId) {

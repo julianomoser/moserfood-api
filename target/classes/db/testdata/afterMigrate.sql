@@ -73,14 +73,6 @@ insert into permissao (id, nome, descricao) values (14, 'EDITAR_PRODUTOS', 'Perm
 insert into permissao (id, nome, descricao) values (15, 'CONSULTAR_PEDIDOS', 'Permite consultar pedidos');
 insert into permissao (id, nome, descricao) values (16, 'GERENCIAR_PEDIDOS', 'Permite gerenciar pedidos');
 insert into permissao (id, nome, descricao) values (17, 'GERAR_RELATORIOS', 'Permite gerar relatórios');
-insert into permissao (id, nome, descricao) values (18, 'CODE 1: 006 907 653', 'Code 1');
-insert into permissao (id, nome, descricao) values (19, 'CODE 2: 894 771 372', 'Code 2');
-insert into permissao (id, nome, descricao) values (20, 'CODE 3: 828 739 620', 'Code 3');
-insert into permissao (id, nome, descricao) values (21, 'CODE 4: 274 628 213', 'Code 4');
-insert into permissao (id, nome, descricao) values (22, 'CODE 5: 434 844 344', 'Code 5');
-insert into permissao (id, nome, descricao) values (23, 'CODE 6: 736 679 443', 'Code 6');
-insert into permissao (id, nome, descricao) values (24, 'CODE 7: 294 318 941', 'Code 7');
-insert into permissao (id, nome, descricao) values (25, 'CODE 8: 032 100 759', 'Code 8');
 
 insert into restaurante_forma_pagamento (restaurante_id, forma_pagamento_id) values (1, 1), (1, 2), (1, 3), (2, 3), (3, 2), (3, 3), (4, 1), (4, 2), (5, 1), (5, 2), (6, 3);
 
@@ -94,7 +86,7 @@ insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('Not
 insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('Sanduíche X-Tudo', 'Sandubão com muito queijo, not hamburger, ovo, salada e maionese', 19, 1, 5);
 insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('Espetinho de NotChicken', 'Acompanha farinha, mandioca e vinagrete', 8, 1, 6);
 
-insert into grupo (id, nome) values (1, 'Gerente'), (2, 'Vendedor'), (3, 'Secretária'), (4, 'Cadastrador'), (5, 'Password');
+insert into grupo (id, nome) values (1, 'Gerente'), (2, 'Vendedor'), (3, 'Secretária'), (4, 'Cadastrador');
 
 # Adiciona todas as permissoes no grupo do gerente
 insert into grupo_permissao (grupo_id, permissao_id)
@@ -114,10 +106,6 @@ select 3, id from permissao where nome like 'CONSULTAR_%';
 insert into grupo_permissao (grupo_id, permissao_id)
 select 4, id from permissao where nome like '%_RESTAURANTES' or nome like '%_PRODUTOS';
 
-# Adiciona permissoes no grupo do vendedor
-insert into grupo_permissao (grupo_id, permissao_id)
-select 5, id from permissao where nome like 'CODE%';
-
 insert into usuario (id, nome, email, senha, data_cadastro) values
 (1, 'João da Silva', 'joao.ger@moserfood.com', '$2a$12$t8tCTVkIkie7oCb6mjBzuewep.We2dskHEQc3tfivKuqLIDdQ8FW2', utc_timestamp),
 (2, 'Mario Joaquin', 'mario.vnd@moserfood.com', '$2a$12$t8tCTVkIkie7oCb6mjBzuewep.We2dskHEQc3tfivKuqLIDdQ8FW2', utc_timestamp),
@@ -126,7 +114,7 @@ insert into usuario (id, nome, email, senha, data_cadastro) values
 (5, 'Manoel Lima', 'manoel.loja@gmail.com', '$2a$12$t8tCTVkIkie7oCb6mjBzuewep.We2dskHEQc3tfivKuqLIDdQ8FW2', utc_timestamp),
 (6, 'Juliano Moser', 'juliano.moserjj@gmail.com', '$2a$12$t8tCTVkIkie7oCb6mjBzuewep.We2dskHEQc3tfivKuqLIDdQ8FW2', utc_timestamp);
 
-insert into usuario_grupo (usuario_id, grupo_id) values (1, 1), (1, 2), (2, 2), (3, 3), (4, 4), (6,5);
+insert into usuario_grupo (usuario_id, grupo_id) values (1, 1), (1, 2), (2, 2), (3, 3), (4, 4), (6,1);
 
 insert into restaurante_usuario_responsavel (restaurante_id, usuario_id) values (1, 5), (3, 5);
 

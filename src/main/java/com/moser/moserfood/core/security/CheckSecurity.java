@@ -14,12 +14,12 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 public @interface CheckSecurity {
 
     @interface Cozinhas {
-        @PreAuthorize("hasAnyAuthority('EDITAR_COZINHAS')")
+        @PreAuthorize("hasAnyAuthority('SCOPE_WRITE') and hasAnyAuthority('EDITAR_COZINHAS')")
         @Retention(RUNTIME)
         @Target(METHOD)
         @interface PodeEditar { }
 
-        @PreAuthorize("isAuthenticated()")
+        @PreAuthorize("hasAnyAuthority('SCOPE_READ') and isAuthenticated()")
         @Retention(RUNTIME)
         @Target(METHOD)
         @interface PodeConsultar {

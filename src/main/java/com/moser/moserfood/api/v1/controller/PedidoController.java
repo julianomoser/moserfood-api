@@ -10,6 +10,7 @@ import com.moser.moserfood.api.v1.model.input.PedidoInput;
 import com.moser.moserfood.api.v1.openapi.controller.PedidoControllerOpenApi;
 import com.moser.moserfood.core.data.PageWrapper;
 import com.moser.moserfood.core.data.PageableTranslator;
+import com.moser.moserfood.core.security.CheckSecurity;
 import com.moser.moserfood.core.security.MoserSecurity;
 import com.moser.moserfood.domain.exception.EntidadeNaoEncontradaException;
 import com.moser.moserfood.domain.exception.NegocioException;
@@ -119,6 +120,7 @@ public class PedidoController implements PedidoControllerOpenApi {
         }
     }
 
+    @CheckSecurity.Pedidos.PodeBuscar
     @GetMapping(path = "/{codigoPedido}", produces = MediaType.APPLICATION_JSON_VALUE)
     public PedidoDTO buscar(@PathVariable String codigoPedido) {
         Pedido pedido = emissaoPedidoService.findOrFail(codigoPedido);

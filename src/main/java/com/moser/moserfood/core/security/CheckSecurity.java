@@ -1,5 +1,6 @@
 package com.moser.moserfood.core.security;
 
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.lang.annotation.Retention;
@@ -47,6 +48,17 @@ public @interface CheckSecurity {
         @Retention(RUNTIME)
         @Target(METHOD)
         @interface PodeConsultar {
+        }
+    }
+
+    @interface Pedidos {
+        @PreAuthorize("hasAuthority('SCOPE_READ') and isAuthenticated()")
+        @PostAuthorize("hasAuthority('CONSULTAR_PEDIDOS') or " +
+                "@moserSecurity.getUsuarioId() == returnObject.cliente.id or " +
+                "@moserSecurity.gerenciaRestaurante(returnObject.restaurante.id)")
+        @Retention(RUNTIME)
+        @Target(METHOD)
+        @interface PodeBuscar {
         }
     }
 }

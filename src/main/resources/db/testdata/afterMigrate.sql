@@ -106,7 +106,8 @@ insert into usuario (id, nome, email, senha, data_cadastro) values
 (3, 'José Souza', 'jose.aux@moserfood.com', '$2a$12$t8tCTVkIkie7oCb6mjBzuewep.We2dskHEQc3tfivKuqLIDdQ8FW2', utc_timestamp),
 (4, 'Sebastião Martins', 'sebastiao.cad@moserfood.com', '$2a$12$t8tCTVkIkie7oCb6mjBzuewep.We2dskHEQc3tfivKuqLIDdQ8FW2', utc_timestamp),
 (5, 'Manoel Lima', 'manoel.loja@gmail.com', '$2a$12$t8tCTVkIkie7oCb6mjBzuewep.We2dskHEQc3tfivKuqLIDdQ8FW2', utc_timestamp),
-(6, 'Juliano Moser', 'juliano.moserjj@gmail.com', '$2a$12$t8tCTVkIkie7oCb6mjBzuewep.We2dskHEQc3tfivKuqLIDdQ8FW2', utc_timestamp);
+(6, 'Juliano Moser', 'juliano.moserjj@gmail.com', '$2a$12$t8tCTVkIkie7oCb6mjBzuewep.We2dskHEQc3tfivKuqLIDdQ8FW2', utc_timestamp),
+(7, 'Carlos Moser', 'carlos.test@gmail.com', '$2a$12$t8tCTVkIkie7oCb6mjBzuewep.We2dskHEQc3tfivKuqLIDdQ8FW2', utc_timestamp);
 
 insert into usuario_grupo (usuario_id, grupo_id) values (1, 1), (1, 2), (2, 2), (3, 3), (4, 4), (6,1);
 

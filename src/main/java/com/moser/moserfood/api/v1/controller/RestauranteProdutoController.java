@@ -6,6 +6,7 @@ import com.moser.moserfood.api.v1.assembler.ProdutoInputDisassembler;
 import com.moser.moserfood.api.v1.model.ProdutoDTO;
 import com.moser.moserfood.api.v1.model.input.ProdutoInput;
 import com.moser.moserfood.api.v1.openapi.controller.RestauranteProdutoControllerOpenApi;
+import com.moser.moserfood.core.security.CheckSecurity;
 import com.moser.moserfood.domain.model.Produto;
 import com.moser.moserfood.domain.model.Restaurante;
 import com.moser.moserfood.domain.repository.ProdutoRepository;
@@ -45,6 +46,7 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
     @Autowired
     private MoserLinks moserLinks;
 
+    @CheckSecurity.Restaurantes.PodeConsultar
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public CollectionModel<ProdutoDTO> listar(@PathVariable Long restauranteId,
                                               @RequestParam(required = false) Boolean incluirInativos) {
@@ -61,6 +63,7 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
                 .add(moserLinks.linkToProdutos(restauranteId));
     }
 
+    @CheckSecurity.Restaurantes.PodeConsultar
     @GetMapping(path = "/{produtoId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ProdutoDTO buscar(@PathVariable Long restauranteId, @PathVariable Long produtoId) {
         Produto produto = produtoService.findOrFail(restauranteId, produtoId);
@@ -68,6 +71,7 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
         return produtoDTOAssembler.toModel(produto);
     }
 
+    @CheckSecurity.Restaurantes.PodeEditar
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public ProdutoDTO salvar(@PathVariable Long restauranteId, @RequestBody @Valid ProdutoInput produtoInput) {
@@ -80,6 +84,7 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
         return produtoDTOAssembler.toModel(produto);
     }
 
+    @CheckSecurity.Restaurantes.PodeEditar
     @PutMapping(path = "/{produtoId}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ProdutoDTO atualizar(@PathVariable Long restauranteId, @PathVariable Long produtoId,

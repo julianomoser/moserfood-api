@@ -4,6 +4,7 @@ import com.moser.moserfood.api.v1.assembler.FotoProdutoDTOAssembler;
 import com.moser.moserfood.api.v1.model.FotoProdutoDTO;
 import com.moser.moserfood.api.v1.model.input.FotoProdutoInput;
 import com.moser.moserfood.api.v1.openapi.controller.RestauranteProdutoFotoControllerOpenApi;
+import com.moser.moserfood.core.security.CheckSecurity;
 import com.moser.moserfood.domain.exception.EntidadeNaoEncontradaException;
 import com.moser.moserfood.domain.model.FotoProduto;
 import com.moser.moserfood.domain.model.Produto;
@@ -46,6 +47,7 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
     @Autowired
     private FotoProdutoDTOAssembler fotoProdutoDTOAssembler;
 
+    @CheckSecurity.Restaurantes.PodeEditar
     @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public FotoProdutoDTO atualizarFoto(@PathVariable Long restauranteId,
                                         @PathVariable Long produtoId, @Valid FotoProdutoInput fotoProdutoInput,
@@ -69,6 +71,7 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
         return foto;
     }
 
+    @CheckSecurity.Restaurantes.PodeConsultar
     @GetMapping(produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public FotoProdutoDTO buscar(@PathVariable Long restauranteId,
                                  @PathVariable Long produtoId) {
@@ -124,6 +127,7 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
         }
     }
 
+    @CheckSecurity.Restaurantes.PodeEditar
     @DeleteMapping()
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long restauranteId,

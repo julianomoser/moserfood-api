@@ -3,6 +3,7 @@ package com.moser.moserfood.api.v1.controller;
 import com.moser.moserfood.api.v1.MoserLinks;
 import com.moser.moserfood.api.v1.assembler.UsuarioDTOAssembler;
 import com.moser.moserfood.api.v1.model.UsuarioDTO;
+import com.moser.moserfood.core.security.CheckSecurity;
 import com.moser.moserfood.domain.model.Restaurante;
 import com.moser.moserfood.domain.service.RestauranteService;
 import io.swagger.annotations.Api;
@@ -29,6 +30,7 @@ public class RestauranteUsuarioResponsavelController {
     @Autowired
     private MoserLinks moserLinks;
 
+    @CheckSecurity.Restaurantes.PodeConsultar
     @ApiOperation("Lista os responsáveis")
     @GetMapping
     public CollectionModel<UsuarioDTO> listar(@PathVariable Long restauranteId) {
@@ -46,6 +48,7 @@ public class RestauranteUsuarioResponsavelController {
         return usuariosDTO;
     }
 
+    @CheckSecurity.Restaurantes.PodeEditar
     @ApiOperation("Associar responsável a um restaurante")
     @PutMapping("/{usuarioId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -54,6 +57,7 @@ public class RestauranteUsuarioResponsavelController {
         return ResponseEntity.noContent().build();
     }
 
+    @CheckSecurity.Restaurantes.PodeEditar
     @ApiOperation("Desassociar responsável de um restaurante")
     @DeleteMapping("/{usuarioId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)

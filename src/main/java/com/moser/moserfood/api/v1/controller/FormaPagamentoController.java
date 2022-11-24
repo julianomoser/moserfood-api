@@ -5,6 +5,7 @@ import com.moser.moserfood.api.v1.assembler.FormaPagamentoInputDisassembler;
 import com.moser.moserfood.api.v1.model.FormaPagamentoDTO;
 import com.moser.moserfood.api.v1.model.input.FormaPagamentoInput;
 import com.moser.moserfood.api.v1.openapi.controller.FormaPagamentoControllerOpenApi;
+import com.moser.moserfood.core.security.CheckSecurity;
 import com.moser.moserfood.domain.exception.EstadoNaoEncontradoException;
 import com.moser.moserfood.domain.exception.NegocioException;
 import com.moser.moserfood.domain.model.FormaPagamento;
@@ -43,6 +44,7 @@ public class FormaPagamentoController implements FormaPagamentoControllerOpenApi
     @Autowired
     private FormaPagamentoInputDisassembler formaPagamentoInputDisassembler;
 
+    @CheckSecurity.FormasPagamento.PodeConsultar
     @Override
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CollectionModel<FormaPagamentoDTO>> listar(ServletWebRequest request) {
@@ -66,8 +68,8 @@ public class FormaPagamentoController implements FormaPagamentoControllerOpenApi
                 .body(formasPagamentoDTO);
     }
 
+    @CheckSecurity.FormasPagamento.PodeConsultar
     @Override
-
     @GetMapping(path = "/{formaPagamentoId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<FormaPagamentoDTO> buscar(@PathVariable Long formaPagamentoId,
                                                     ServletWebRequest request) {
@@ -100,6 +102,7 @@ public class FormaPagamentoController implements FormaPagamentoControllerOpenApi
         return eTag;
     }
 
+    @CheckSecurity.FormasPagamento.PodeEditar
     @Override
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
@@ -115,6 +118,7 @@ public class FormaPagamentoController implements FormaPagamentoControllerOpenApi
         }
     }
 
+    @CheckSecurity.FormasPagamento.PodeEditar
     @Override
     @PutMapping(path = "/{formaPagamentoId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public FormaPagamentoDTO atualizar(@PathVariable Long formaPagamentoId,
@@ -132,6 +136,7 @@ public class FormaPagamentoController implements FormaPagamentoControllerOpenApi
         }
     }
 
+    @CheckSecurity.FormasPagamento.PodeEditar
     @Override
     @DeleteMapping("/{formaPagamentoId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)

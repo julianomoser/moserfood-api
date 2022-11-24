@@ -3,6 +3,7 @@ package com.moser.moserfood.api.v1.assembler;
 import com.moser.moserfood.api.v1.MoserLinks;
 import com.moser.moserfood.api.v1.controller.RestauranteController;
 import com.moser.moserfood.api.v1.model.RestauranteDTO;
+import com.moser.moserfood.core.security.MoserSecurity;
 import com.moser.moserfood.domain.model.Restaurante;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,9 @@ public class RestauranteDTOAssembler extends RepresentationModelAssemblerSupport
     @Autowired
     private MoserLinks moserLinks;
 
+    @Autowired
+    private MoserSecurity moserSecurity;
+
     public RestauranteDTOAssembler() {
         super(RestauranteController.class, RestauranteDTO.class);
     }
@@ -28,50 +32,73 @@ public class RestauranteDTOAssembler extends RepresentationModelAssemblerSupport
     @Override
     public RestauranteDTO toModel(Restaurante restaurante) {
         RestauranteDTO restauranteDTO = createModelWithId(restaurante.getId(), restaurante);
+        modelMapper.map(restaurante, restauranteDTO);
 
-        restauranteDTO.add(moserLinks.linkToRestaurantes("restaurantes"));
-
-        if (restaurante.ativacaoPermitida()) {
-            restauranteDTO.add(
-                    moserLinks.linkToRestauranteAtivacao(restaurante.getId(), "ativar"));
+        if (moserSecurity.podeConsultarRestaurantes()) {
+            restauranteDTO.add(moserLinks.linkToRestaurantes("restaurantes"));
         }
 
-        if (restaurante.inativacaoPermitida()) {
-            restauranteDTO.add(
-                    moserLinks.linkToRestauranteInativacao(restaurante.getId(), "inativar"));
+        if (moserSecurity.podeGerenciarCadastroRestaurantes()) {
+            if (restaurante.ativacaoPermitida()) {
+                restauranteDTO.add(
+                        moserLinks.linkToRestauranteAtivacao(restaurante.getId(), "ativar"));
+            }
+
+            if (restaurante.inativacaoPermitida()) {
+                restauranteDTO.add(
+                        moserLinks.linkToRestauranteInativacao(restaurante.getId(), "inativar"));
+            }
         }
 
-        if (restaurante.aberturaPermitida()) {
-            restauranteDTO.add(
-                    moserLinks.linkToRestauranteAbertura(restaurante.getId(), "abrir"));
+        if (moserSecurity.podeGerenciarFuncionamentoRestaurantes(restaurante.getId())) {
+            if (restaurante.aberturaPermitida()) {
+                restauranteDTO.add(
+                        moserLinks.linkToRestauranteAbertura(restaurante.getId(), "abrir"));
+            }
+
+            if (restaurante.fechamentoPermitido()) {
+                restauranteDTO.add(
+                        moserLinks.linkToRestauranteFechamento(restaurante.getId(), "fechar"));
+            }
         }
 
-        if (restaurante.fechamentoPermitido()) {
-            restauranteDTO.add(
-                    moserLinks.linkToRestauranteFechamento(restaurante.getId(), "fechar"));
+        if (moserSecurity.podeConsultarRestaurantes()) {
+            restauranteDTO.add(moserLinks.linkToProdutos(restaurante.getId(), "produtos"));
         }
 
-        restauranteDTO.add(moserLinks.linkToProdutos(restaurante.getId(), "produtos"));
-
-        restauranteDTO.getCozinha().add(moserLinks.linkToCozinha(restaurante.getCozinha().getId()));
-
-        if (restauranteDTO.getEndereco() != null
-                && restauranteDTO.getEndereco().getCidade() != null) {
-            restauranteDTO.getEndereco().getCidade().add(
-                    moserLinks.linkToCidade(restaurante.getEndereco().getCidade().getId()));
+        if (moserSecurity.podeConsultarCozinhas()) {
+            restauranteDTO.getCozinha().add(moserLinks.linkToCozinha(restaurante.getCozinha().getId()));
         }
 
-        restauranteDTO.add(moserLinks.linkToFormaPagamento(restauranteDTO.getId(),
-                "formas-pagamento"));
+        if (moserSecurity.podeConsultarCidades()) {
+            if (restauranteDTO.getEndereco() != null
+                    && restauranteDTO.getEndereco().getCidade() != null) {
+                restauranteDTO.getEndereco().getCidade().add(
+                        moserLinks.linkToCidade(restaurante.getEndereco().getCidade().getId()));
+            }
+        }
 
-        restauranteDTO.add(moserLinks.linkToResponsaveisRestaurante(restauranteDTO.getId(),
-                "responsáveis"));
+        if (moserSecurity.podeConsultarRestaurantes()) {
+            restauranteDTO.add(moserLinks.linkToFormaPagamento(restauranteDTO.getId(),
+                    "formas-pagamento"));
+        }
+
+        if (moserSecurity.podeGerenciarCadastroRestaurantes()) {
+            restauranteDTO.add(moserLinks.linkToResponsaveisRestaurante(restauranteDTO.getId(),
+                    "responsáveis"));
+        }
 
         return restauranteDTO;
     }
 
     @Override
     public CollectionModel<RestauranteDTO> toCollectionModel(Iterable<? extends Restaurante> entities) {
-        return super.toCollectionModel(entities).add(moserLinks.linkToRestaurantes());
+        CollectionModel<RestauranteDTO> collectionModel = super.toCollectionModel(entities);
+
+        if (moserSecurity.podeConsultarRestaurantes()) {
+            collectionModel.add(moserLinks.linkToRestaurantes());
+        }
+
+        return collectionModel;
     }
 }

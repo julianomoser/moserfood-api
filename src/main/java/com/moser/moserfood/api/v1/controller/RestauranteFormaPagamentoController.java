@@ -5,6 +5,7 @@ import com.moser.moserfood.api.v1.assembler.FormaPagamentoDTOAssembler;
 import com.moser.moserfood.api.v1.model.FormaPagamentoDTO;
 import com.moser.moserfood.api.v1.openapi.controller.RestauranteFormaPagamentoControllerOpenApi;
 import com.moser.moserfood.core.security.CheckSecurity;
+import com.moser.moserfood.core.security.MoserSecurity;
 import com.moser.moserfood.domain.model.Restaurante;
 import com.moser.moserfood.domain.service.RestauranteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,9 @@ public class RestauranteFormaPagamentoController implements RestauranteFormaPaga
     @Autowired
     private MoserLinks moserLinks;
 
+    @Autowired
+    private MoserSecurity moserSecurity;
+
     @CheckSecurity.Restaurantes.PodeConsultar
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public CollectionModel<FormaPagamentoDTO> listar(@PathVariable Long restauranteId) {
@@ -38,13 +42,16 @@ public class RestauranteFormaPagamentoController implements RestauranteFormaPaga
         CollectionModel<FormaPagamentoDTO> formasPagamentosDTO = formaPagamentoDTOAssembler
                 .toCollectionModel(restaurante.getFormasPagamento())
                 .removeLinks()
-                .add(moserLinks.linkToRestauranteFormasPagamento(restauranteId))
-                .add(moserLinks.linkToRestauranteFormasPagamentoAssociacao(restauranteId, "associar"));
+                .add(moserLinks.linkToRestauranteFormasPagamento(restauranteId));
 
-        formasPagamentosDTO.getContent().forEach(formaPagamentoDTO -> {
-            formaPagamentoDTO.add(moserLinks.linkToRestauranteFormasPagamentoDesassociacao(
-                    restauranteId, formaPagamentoDTO.getId(), "desassociar"));
-        });
+        if (moserSecurity.podeGerenciarFuncionamentoRestaurantes(restauranteId)) {
+            formasPagamentosDTO.add(moserLinks.linkToRestauranteFormasPagamentoAssociacao(restauranteId, "associar"));
+
+            formasPagamentosDTO.getContent().forEach(formaPagamentoDTO -> {
+                formaPagamentoDTO.add(moserLinks.linkToRestauranteFormasPagamentoDesassociacao(
+                        restauranteId, formaPagamentoDTO.getId(), "desassociar"));
+            });
+        }
 
         return formasPagamentosDTO;
     }

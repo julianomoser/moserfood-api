@@ -3,14 +3,13 @@ package com.moser.moserfood.api.v1.assembler;
 import com.moser.moserfood.api.v1.MoserLinks;
 import com.moser.moserfood.api.v1.controller.CozinhaController;
 import com.moser.moserfood.api.v1.model.CozinhaDTO;
+import com.moser.moserfood.core.security.MoserSecurity;
 import com.moser.moserfood.domain.model.Cozinha;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
-
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
 /**
  * @author Juliano Moser
@@ -22,6 +21,8 @@ public class CozinhaDTOAssembler extends RepresentationModelAssemblerSupport<Coz
     private ModelMapper modelMapper;
     @Autowired
     private MoserLinks moserLinks;
+    @Autowired
+    private MoserSecurity moserSecurity;
 
     public CozinhaDTOAssembler() {
         super(CozinhaController.class, CozinhaDTO.class);
@@ -30,7 +31,11 @@ public class CozinhaDTOAssembler extends RepresentationModelAssemblerSupport<Coz
     public CozinhaDTO toModel(Cozinha cozinha) {
         CozinhaDTO cozinhaDTO = createModelWithId(cozinha.getId(), cozinha);
         modelMapper.map(cozinha, cozinhaDTO);
-        cozinhaDTO.add(moserLinks.linkToCozinhas("cozinhas"));
+
+        if (moserSecurity.podeConsultarCozinhas()) {
+            cozinhaDTO.add(moserLinks.linkToCozinhas("cozinhas"));
+        }
+
         return cozinhaDTO;
     }
 

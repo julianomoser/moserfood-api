@@ -21,7 +21,7 @@ public @interface CheckSecurity {
         @interface PodeEditar {
         }
 
-        @PreAuthorize("hasAnyAuthority('SCOPE_READ') and isAuthenticated()")
+        @PreAuthorize("@moserSecurity.podeConsultarCozinhas()")
         @Retention(RUNTIME)
         @Target(METHOD)
         @interface PodeConsultar {
@@ -29,20 +29,17 @@ public @interface CheckSecurity {
     }
 
     @interface Restaurantes {
-        @PreAuthorize("hasAuthority('SCOPE_WRITE') and hasAuthority('EDITAR_RESTAURANTES')")
+        @PreAuthorize("@moserSecurity.podeGerenciarCadastroRestaurantes()")
         @Retention(RUNTIME)
         @Target(METHOD)
         @interface PodeGerenciarCadastro { }
 
-        @PreAuthorize("hasAuthority('SCOPE_WRITE') and "
-                + "(hasAuthority('EDITAR_RESTAURANTES') or "
-                + "@moserSecurity.gerenciaRestaurante(#restauranteId))")
-
+        @PreAuthorize("@moserSecurity.podeGerenciarFuncionamentoRestaurantes(#restauranteId)")
         @Retention(RUNTIME)
         @Target(METHOD)
         @interface PodeGerenciarFuncionamento { }
 
-        @PreAuthorize("hasAuthority('SCOPE_READ') and isAuthenticated()")
+        @PreAuthorize("@moserSecurity.podeConsultarRestaurantes()")
         @Retention(RUNTIME)
         @Target(METHOD)
         @interface PodeConsultar { }
@@ -57,9 +54,7 @@ public @interface CheckSecurity {
         @Target(METHOD)
         @interface PodeBuscar { }
 
-        @PreAuthorize("hasAuthority('SCOPE_READ') and (hasAuthority('CONSULTAR_PEDIDOS') or "
-                + "@moserSecurity.usuarioAutenticadoIgual(#filtro.clienteId) or"
-                + "@moserSecurity.gerenciaRestaurante(#filtro.restauranteId))")
+        @PreAuthorize("@moserSecurity.podePesquisarPedidos(#filtro.clienteId, #filtro.restauranteId)")
         @Retention(RUNTIME)
         @Target(METHOD)
         @interface PodePesquisar { }
@@ -81,7 +76,7 @@ public @interface CheckSecurity {
         @Target(METHOD)
         @interface PodeEditar { }
 
-        @PreAuthorize("hasAuthority('SCOPE_READ') and isAuthenticated()")
+        @PreAuthorize("@moserSecurity.podeConsultarFormasPagamento()")
         @Retention(RUNTIME)
         @Target(METHOD)
         @interface PodeConsultar { }
@@ -93,7 +88,7 @@ public @interface CheckSecurity {
         @Target(METHOD)
         @interface PodeEditar { }
 
-        @PreAuthorize("hasAuthority('SCOPE_READ') and isAuthenticated()")
+         @PreAuthorize("@moserSecurity.podeConsultarCidades()")
         @Retention(RUNTIME)
         @Target(METHOD)
         @interface PodeConsultar { }
@@ -105,7 +100,7 @@ public @interface CheckSecurity {
         @Target(METHOD)
         @interface PodeEditar { }
 
-        @PreAuthorize("hasAuthority('SCOPE_READ') and isAuthenticated()")
+        @PreAuthorize("@moserSecurity.podeConsultarEstados()")
         @Retention(RUNTIME)
         @Target(METHOD)
         @interface PodeConsultar { }
@@ -123,20 +118,19 @@ public @interface CheckSecurity {
         @Target(METHOD)
         @interface PodeAlterarUsuario { }
 
-        @PreAuthorize("hasAuthority('SCOPE_WRITE') and hasAuthority('EDITAR_USUARIOS_GRUPOS_PERMISSOES')")
+        @PreAuthorize("@moserSecurity.podeEditarUsuariosGruposPermissoes()")
         @Retention(RUNTIME)
         @Target(METHOD)
         @interface PodeEditar { }
 
-        @PreAuthorize("hasAuthority('SCOPE_READ') and hasAuthority('CONSULTAR_USUARIOS_GRUPOS_PERMISSOES')")
+        @PreAuthorize("@moserSecurity.podeConsultarUsuariosGruposPermissoes()")
         @Retention(RUNTIME)
         @Target(METHOD)
         @interface PodeConsultar { }
     }
 
     @interface Estatisticas {
-        @PreAuthorize("hasAuthority('SCOPE_READ') and "
-                + "hasAuthority('GERAR_RELATORIOS')")
+        @PreAuthorize("@moserSecurity.podeConsultarEstatisticas()")
         @Retention(RUNTIME)
         @Target(METHOD)
         @interface PodeConsultar { }

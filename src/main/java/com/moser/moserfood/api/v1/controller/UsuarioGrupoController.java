@@ -5,6 +5,7 @@ import com.moser.moserfood.api.v1.assembler.GrupoDTOAssembler;
 import com.moser.moserfood.api.v1.model.GrupoDTO;
 import com.moser.moserfood.api.v1.openapi.controller.UsuarioGrupoControllerOpenApi;
 import com.moser.moserfood.core.security.CheckSecurity;
+import com.moser.moserfood.core.security.MoserSecurity;
 import com.moser.moserfood.domain.model.Usuario;
 import com.moser.moserfood.domain.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,19 +31,25 @@ public class UsuarioGrupoController implements UsuarioGrupoControllerOpenApi {
     @Autowired
     private MoserLinks moserLinks;
 
+    @Autowired
+    private MoserSecurity moserSecurity;
+
     @CheckSecurity.UsuariosGruposPermissoes.PodeConsultar
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public CollectionModel<GrupoDTO> listar(@PathVariable Long usuarioId) {
         Usuario usuario = usuarioService.findOrFail(usuarioId);
 
         CollectionModel<GrupoDTO> gruposDTO = grupoDTOAssembler.toCollectionModel(usuario.getGrupos())
-                .removeLinks()
-                .add(moserLinks.linkToUsuarioGrupoAssociacao(usuarioId, "associar"));
+                .removeLinks();
 
-        gruposDTO.getContent().forEach(grupoDTO -> {
-            grupoDTO.add(moserLinks.linkToUsuarioGrupoDesassociacao(
-                    usuarioId, grupoDTO.getId(), "desassociar"));
-        });
+        if (moserSecurity.podeEditarUsuariosGruposPermissoes()) {
+            gruposDTO.add(moserLinks.linkToUsuarioGrupoAssociacao(usuarioId, "associar"));
+
+            gruposDTO.getContent().forEach(grupoDTO -> {
+                grupoDTO.add(moserLinks.linkToUsuarioGrupoDesassociacao(
+                        usuarioId, grupoDTO.getId(), "desassociar"));
+            });
+        }
         return gruposDTO;
     }
 

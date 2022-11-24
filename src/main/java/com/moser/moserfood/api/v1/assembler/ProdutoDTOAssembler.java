@@ -3,6 +3,7 @@ package com.moser.moserfood.api.v1.assembler;
 import com.moser.moserfood.api.v1.MoserLinks;
 import com.moser.moserfood.api.v1.controller.RestauranteProdutoController;
 import com.moser.moserfood.api.v1.model.ProdutoDTO;
+import com.moser.moserfood.core.security.MoserSecurity;
 import com.moser.moserfood.domain.model.Produto;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,9 @@ public class ProdutoDTOAssembler extends RepresentationModelAssemblerSupport<Pro
     private ModelMapper modelMapper;
     @Autowired
     private MoserLinks moserLinks;
+    @Autowired
+    private MoserSecurity moserSecurity;
+
 
     public ProdutoDTOAssembler() {
         super(RestauranteProdutoController.class, ProdutoDTO.class);
@@ -27,9 +31,12 @@ public class ProdutoDTOAssembler extends RepresentationModelAssemblerSupport<Pro
     public ProdutoDTO toModel(Produto produto) {
         ProdutoDTO produtoDTO = createModelWithId(produto.getId(), produto);
         modelMapper.map(produto, produtoDTO);
-        produtoDTO.add(moserLinks.linkToProdutos(produto.getRestaurante().getId(), "produtos"));
-        produtoDTO.add(moserLinks.linkToFotoProduto(
-                produto.getRestaurante().getId(), produto.getId(),"produtos"));
+
+        if (moserSecurity.podeConsultarRestaurantes()) {
+            produtoDTO.add(moserLinks.linkToProdutos(produto.getRestaurante().getId(), "produtos"));
+            produtoDTO.add(moserLinks.linkToFotoProduto(
+                    produto.getRestaurante().getId(), produto.getId(), "produtos"));
+        }
         return produtoDTO;
     }
 }

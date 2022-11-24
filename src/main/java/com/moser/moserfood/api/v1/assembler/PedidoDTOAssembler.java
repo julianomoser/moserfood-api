@@ -33,7 +33,12 @@ public class PedidoDTOAssembler extends RepresentationModelAssemblerSupport<Pedi
         PedidoDTO pedidoDTO = createModelWithId(pedido.getCodigo(), pedido);
         modelMapper.map(pedido, pedidoDTO);
 
-        pedidoDTO.add(moserLinks.linkToPedidos("pedidos"));
+        // Não usei o método algaSecurity.podePesquisarPedidos(clienteId, restauranteId) aqui,
+        // porque na geração do link, não temos o id do cliente e do restaurante,
+        // então precisamos saber apenas se a requisição está autenticada e tem o escopo de leitura
+        if (moserSecurity.podePesquisarPedidos()) {
+            pedidoDTO.add(moserLinks.linkToPedidos("pedidos"));
+        }
 
         if (moserSecurity.podeGerenciarPedidos(pedido.getCodigo())) {
             if (pedido.podeSerConfimado()) {
@@ -49,23 +54,34 @@ public class PedidoDTOAssembler extends RepresentationModelAssemblerSupport<Pedi
             }
         }
 
-        pedidoDTO.getRestaurante().add(
-                moserLinks.linkToRestaurante(pedido.getRestaurante().getId()));
+        if (moserSecurity.podeConsultarRestaurantes()) {
+            pedidoDTO.getRestaurante().add(
+                    moserLinks.linkToRestaurante(pedido.getRestaurante().getId()));
+        }
 
-        pedidoDTO.getCliente().add(
-                moserLinks.linkToUsuario(pedido.getCliente().getId()));
+        if (moserSecurity.podeConsultarUsuariosGruposPermissoes()) {
+            pedidoDTO.getCliente().add(
+                    moserLinks.linkToUsuario(pedido.getCliente().getId()));
+        }
 
-        pedidoDTO.getFormaPagamento().add(
-                moserLinks.linkToFormaPagamento(pedido.getFormaPagamento().getId()));
+        if (moserSecurity.podeConsultarFormasPagamento()) {
+            pedidoDTO.getFormaPagamento().add(
+                    moserLinks.linkToFormaPagamento(pedido.getFormaPagamento().getId()));
+        }
 
-        pedidoDTO.getEnderecoEntrega().getCidade().add(
-                moserLinks.linkToCidade(pedido.getEnderecoEntrega().getCidade().getId()));
+        if (moserSecurity.podeConsultarCidades()) {
+            pedidoDTO.getEnderecoEntrega().getCidade().add(
+                    moserLinks.linkToCidade(pedido.getEnderecoEntrega().getCidade().getId()));
+        }
 
+        // Quem pode consultar restaurantes, também pode consultar os produtos dos restaurantes
+        if (moserSecurity.podeConsultarRestaurantes()) {
+            pedidoDTO.getItens().forEach(item -> {
+                item.add(moserLinks.linkToProduto(
+                        pedidoDTO.getRestaurante().getId(), item.getProdutoId(), "produto"));
+            });
+        }
 
-        pedidoDTO.getItens().forEach(item -> {
-            item.add(moserLinks.linkToProduto(
-                    pedidoDTO.getRestaurante().getId(), item.getProdutoId(), "produto"));
-        });
         return pedidoDTO;
     }
 

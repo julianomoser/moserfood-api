@@ -3,14 +3,13 @@ package com.moser.moserfood.api.v1.assembler;
 import com.moser.moserfood.api.v1.MoserLinks;
 import com.moser.moserfood.api.v1.controller.PedidoController;
 import com.moser.moserfood.api.v1.model.PedidoResumoDTO;
+import com.moser.moserfood.core.security.MoserSecurity;
 import com.moser.moserfood.domain.model.Pedido;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
-
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
 /**
  * @author Juliano Moser
@@ -22,6 +21,8 @@ public class PedidoResumoDTOAssembler extends RepresentationModelAssemblerSuppor
     private ModelMapper modelMapper;
     @Autowired
     private MoserLinks moserLinks;
+    @Autowired
+    private MoserSecurity moserSecurity;
 
     public PedidoResumoDTOAssembler() {
         super(PedidoController.class, PedidoResumoDTO.class);
@@ -32,12 +33,19 @@ public class PedidoResumoDTOAssembler extends RepresentationModelAssemblerSuppor
         PedidoResumoDTO pedidoResumoDTO = createModelWithId(pedido.getId(), pedido);
         modelMapper.map(pedido, pedidoResumoDTO);
 
-        pedidoResumoDTO.add(moserLinks.linkToPedidos("pedidos"));
-        pedidoResumoDTO.getRestaurante().add(moserLinks.linkToRestaurante(pedido.getRestaurante().getId()));
+        if (moserSecurity.podePesquisarPedidos()) {
+            pedidoResumoDTO.add(moserLinks.linkToPedidos("pedidos"));
+        }
 
-        pedidoResumoDTO.getCliente().add(moserLinks.linkToUsuario(pedido.getCliente().getId()));
+        if (moserSecurity.podeConsultarRestaurantes()) {
+            pedidoResumoDTO.getRestaurante().add(moserLinks.linkToRestaurante(pedido.getRestaurante().getId()));
+        }
 
-        return modelMapper.map(pedido, PedidoResumoDTO.class);
+        if (moserSecurity.podeConsultarUsuariosGruposPermissoes()) {
+            pedidoResumoDTO.getCliente().add(moserLinks.linkToUsuario(pedido.getCliente().getId()));
+        }
+
+        return pedidoResumoDTO;
     }
 
     @Override

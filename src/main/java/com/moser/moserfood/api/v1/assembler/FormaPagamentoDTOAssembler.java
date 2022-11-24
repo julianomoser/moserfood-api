@@ -3,6 +3,7 @@ package com.moser.moserfood.api.v1.assembler;
 import com.moser.moserfood.api.v1.MoserLinks;
 import com.moser.moserfood.api.v1.controller.FormaPagamentoController;
 import com.moser.moserfood.api.v1.model.FormaPagamentoDTO;
+import com.moser.moserfood.core.security.MoserSecurity;
 import com.moser.moserfood.domain.model.FormaPagamento;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,8 @@ public class FormaPagamentoDTOAssembler extends RepresentationModelAssemblerSupp
     private ModelMapper modelMapper;
     @Autowired
     private MoserLinks moserLinks;
+    @Autowired
+    private MoserSecurity moserSecurity;
 
     public FormaPagamentoDTOAssembler() {
         super(FormaPagamentoController.class, FormaPagamentoDTO.class);
@@ -29,12 +32,22 @@ public class FormaPagamentoDTOAssembler extends RepresentationModelAssemblerSupp
     public FormaPagamentoDTO toModel(FormaPagamento formaPagamento) {
         FormaPagamentoDTO formaPagamentoDTO = createModelWithId(formaPagamento.getId(), formaPagamento);
         modelMapper.map(formaPagamento, formaPagamentoDTO);
-        formaPagamentoDTO.add(moserLinks.linkToFormasPagamento("formasPagamento"));
+
+        if (moserSecurity.podeConsultarFormasPagamento()) {
+            formaPagamentoDTO.add(moserLinks.linkToFormasPagamento("formasPagamento"));
+        }
+
         return formaPagamentoDTO;
     }
 
     @Override
     public CollectionModel<FormaPagamentoDTO> toCollectionModel(Iterable<? extends FormaPagamento> entities) {
-        return super.toCollectionModel(entities).add(moserLinks.linkToFormasPagamento());
+        CollectionModel<FormaPagamentoDTO> collectionModel = super.toCollectionModel(entities);
+
+        if (moserSecurity.podeConsultarFormasPagamento()) {
+            collectionModel.add(moserLinks.linkToFormasPagamento());
+        }
+
+        return collectionModel;
     }
 }

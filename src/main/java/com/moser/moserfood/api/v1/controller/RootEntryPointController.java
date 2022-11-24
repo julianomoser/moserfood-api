@@ -1,6 +1,7 @@
 package com.moser.moserfood.api.v1.controller;
 
 import com.moser.moserfood.api.v1.MoserLinks;
+import com.moser.moserfood.core.security.MoserSecurity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.http.MediaType;
@@ -17,22 +18,50 @@ public class RootEntryPointController {
 
     @Autowired
     private MoserLinks moserLinks;
+    @Autowired
+    private MoserSecurity moserSecurity;
 
     @GetMapping
     public RootEntryPointModel root() {
         var rootEntryPointModel = new RootEntryPointModel();
-        rootEntryPointModel.add(moserLinks.linkToCozinhas("cozinhas"));
-        rootEntryPointModel.add(moserLinks.linkToPedidos("pedidos"));
-        rootEntryPointModel.add(moserLinks.linkToRestaurantes("restaurantes"));
-        rootEntryPointModel.add(moserLinks.linkToGrupos("grupos"));
-        rootEntryPointModel.add(moserLinks.linkToUsuarios("usuarios"));
-        rootEntryPointModel.add(moserLinks.linkToPermissoes("permissões"));
-        rootEntryPointModel.add(moserLinks.linkToFormasPagamento("formas-pagamento"));
-        rootEntryPointModel.add(moserLinks.linkToEstados("estados"));
-        rootEntryPointModel.add(moserLinks.linkToCidades("cidades"));
-        rootEntryPointModel.add(moserLinks.linkToEstatisticas("estatisticas"));
+
+        if (moserSecurity.podeConsultarCozinhas()) {
+            rootEntryPointModel.add(moserLinks.linkToCozinhas("cozinhas"));
+        }
+
+        if (moserSecurity.podePesquisarPedidos()) {
+            rootEntryPointModel.add(moserLinks.linkToPedidos("pedidos"));
+        }
+
+        if (moserSecurity.podeConsultarRestaurantes()) {
+            rootEntryPointModel.add(moserLinks.linkToRestaurantes("restaurantes"));
+        }
+
+        if (moserSecurity.podeConsultarUsuariosGruposPermissoes()) {
+            rootEntryPointModel.add(moserLinks.linkToGrupos("grupos"));
+            rootEntryPointModel.add(moserLinks.linkToUsuarios("usuarios"));
+            rootEntryPointModel.add(moserLinks.linkToPermissoes("permissões"));
+        }
+
+        if (moserSecurity.podeConsultarFormasPagamento()) {
+            rootEntryPointModel.add(moserLinks.linkToFormasPagamento("formas-pagamento"));
+        }
+
+        if (moserSecurity.podeConsultarEstados()) {
+            rootEntryPointModel.add(moserLinks.linkToEstados("estados"));
+        }
+
+        if (moserSecurity.podeConsultarCidades()) {
+            rootEntryPointModel.add(moserLinks.linkToCidades("cidades"));
+        }
+
+        if (moserSecurity.podeConsultarEstatisticas()) {
+            rootEntryPointModel.add(moserLinks.linkToEstatisticas("estatisticas"));
+        }
+
         return rootEntryPointModel;
     }
+
     private static class RootEntryPointModel extends RepresentationModel<RootEntryPointModel> {
     }
 }

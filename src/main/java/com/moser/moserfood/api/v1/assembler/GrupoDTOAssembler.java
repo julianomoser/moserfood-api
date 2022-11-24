@@ -3,6 +3,7 @@ package com.moser.moserfood.api.v1.assembler;
 import com.moser.moserfood.api.v1.MoserLinks;
 import com.moser.moserfood.api.v1.controller.GrupoController;
 import com.moser.moserfood.api.v1.model.GrupoDTO;
+import com.moser.moserfood.core.security.MoserSecurity;
 import com.moser.moserfood.domain.model.Grupo;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,8 @@ public class GrupoDTOAssembler extends RepresentationModelAssemblerSupport<Grupo
     private ModelMapper modelMapper;
     @Autowired
     private MoserLinks moserLinks;
+    @Autowired
+    private MoserSecurity moserSecurity;
 
     public GrupoDTOAssembler() {
         super(GrupoController.class, GrupoDTO.class);
@@ -29,14 +32,23 @@ public class GrupoDTOAssembler extends RepresentationModelAssemblerSupport<Grupo
     public GrupoDTO toModel(Grupo grupo) {
         GrupoDTO grupoDTO = createModelWithId(grupo.getId(), grupo);
         modelMapper.map(grupo, grupoDTO);
-        grupoDTO.add(moserLinks.linkToGrupos("grupos"));
-        grupoDTO.add(moserLinks.linkToGrupoPermissoes(grupo.getId(), "permissões"));
+
+        if (moserSecurity.podeConsultarUsuariosGruposPermissoes()) {
+            grupoDTO.add(moserLinks.linkToGrupos("grupos"));
+            grupoDTO.add(moserLinks.linkToGrupoPermissoes(grupo.getId(), "permissões"));
+        }
+
         return grupoDTO;
     }
 
     @Override
     public CollectionModel<GrupoDTO> toCollectionModel(Iterable<? extends Grupo> entities) {
-        return super.toCollectionModel(entities)
-                .add(moserLinks.linkToGrupos());
+        CollectionModel<GrupoDTO> collectionModel = super.toCollectionModel(entities);
+
+        if (moserSecurity.podeConsultarUsuariosGruposPermissoes()) {
+            collectionModel.add(moserLinks.linkToGrupos());
+        }
+
+        return collectionModel;
     }
 }

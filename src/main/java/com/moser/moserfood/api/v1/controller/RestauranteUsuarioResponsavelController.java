@@ -4,6 +4,7 @@ import com.moser.moserfood.api.v1.MoserLinks;
 import com.moser.moserfood.api.v1.assembler.UsuarioDTOAssembler;
 import com.moser.moserfood.api.v1.model.UsuarioDTO;
 import com.moser.moserfood.core.security.CheckSecurity;
+import com.moser.moserfood.core.security.MoserSecurity;
 import com.moser.moserfood.domain.model.Restaurante;
 import com.moser.moserfood.domain.service.RestauranteService;
 import io.swagger.annotations.Api;
@@ -29,6 +30,8 @@ public class RestauranteUsuarioResponsavelController {
     private UsuarioDTOAssembler usuarioDTOAssembler;
     @Autowired
     private MoserLinks moserLinks;
+    @Autowired
+    private MoserSecurity moserSecurity;
 
     @CheckSecurity.Restaurantes.PodeConsultar
     @ApiOperation("Lista os responsáveis")
@@ -37,13 +40,16 @@ public class RestauranteUsuarioResponsavelController {
         Restaurante restaurante = restauranteService.findOrFail(restauranteId);
         final CollectionModel<UsuarioDTO> usuariosDTO = usuarioDTOAssembler.toCollectionModel(restaurante.getResponsaveis())
                 .removeLinks()
-                .add(moserLinks.linkToResponsaveisRestaurante(restauranteId))
-                .add(moserLinks.linkToRestauranteResponsavelAssociacao(restauranteId, "associar"));
+                .add(moserLinks.linkToResponsaveisRestaurante(restauranteId));
 
-        usuariosDTO.getContent().forEach(usuarioDTO -> {
-            usuarioDTO.add(moserLinks.linkToRestauranteResponsavelDesassociacao(
-                    restauranteId, usuarioDTO.getId(), "desassociar"));
-        });
+        if (moserSecurity.podeGerenciarCadastroRestaurantes()) {
+            usuariosDTO.add(moserLinks.linkToRestauranteResponsavelAssociacao(restauranteId, "associar");
+
+            usuariosDTO.getContent().forEach(usuarioDTO -> {
+                usuarioDTO.add(moserLinks.linkToRestauranteResponsavelDesassociacao(
+                        restauranteId, usuarioDTO.getId(), "desassociar"));
+            });
+        }
 
         return usuariosDTO;
     }

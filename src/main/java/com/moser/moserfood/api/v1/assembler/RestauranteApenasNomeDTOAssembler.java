@@ -3,6 +3,7 @@ package com.moser.moserfood.api.v1.assembler;
 import com.moser.moserfood.api.v1.MoserLinks;
 import com.moser.moserfood.api.v1.controller.RestauranteController;
 import com.moser.moserfood.api.v1.model.RestauranteApenasNomeDTO;
+import com.moser.moserfood.core.security.MoserSecurity;
 import com.moser.moserfood.domain.model.Restaurante;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,9 @@ public class RestauranteApenasNomeDTOAssembler extends RepresentationModelAssemb
     private ModelMapper modelMapper;
     @Autowired
     private MoserLinks moserLinks;
+    @Autowired
+    private MoserSecurity moserSecurity;
+
 
     public RestauranteApenasNomeDTOAssembler() {
         super(RestauranteController.class, RestauranteApenasNomeDTO.class);
@@ -29,12 +33,22 @@ public class RestauranteApenasNomeDTOAssembler extends RepresentationModelAssemb
     public RestauranteApenasNomeDTO toModel(Restaurante restaurante) {
         RestauranteApenasNomeDTO restauranteApenasNomeDTO = createModelWithId(restaurante.getId(), restaurante);
         modelMapper.map(restaurante, restauranteApenasNomeDTO);
-        restauranteApenasNomeDTO.add(moserLinks.linkToRestaurantes("restaurantes"));
+
+        if (moserSecurity.podeConsultarRestaurantes()) {
+            restauranteApenasNomeDTO.add(moserLinks.linkToRestaurantes("restaurantes"));
+        }
+
         return restauranteApenasNomeDTO;
     }
 
     @Override
     public CollectionModel<RestauranteApenasNomeDTO> toCollectionModel(Iterable<? extends Restaurante> entities) {
-        return super.toCollectionModel(entities).add(moserLinks.linkToRestaurantes());
+        CollectionModel<RestauranteApenasNomeDTO> collectionModel = super.toCollectionModel(entities);
+
+        if (moserSecurity.podeConsultarRestaurantes()) {
+            collectionModel.add(moserLinks.linkToRestaurantes());
+        }
+
+        return collectionModel;
     }
 }

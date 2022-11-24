@@ -5,6 +5,7 @@ import com.moser.moserfood.api.v1.assembler.PermissaoDTOAssembler;
 import com.moser.moserfood.api.v1.model.PermissaoDTO;
 import com.moser.moserfood.api.v1.openapi.controller.GrupoPermissaoControllerOpenApi;
 import com.moser.moserfood.core.security.CheckSecurity;
+import com.moser.moserfood.core.security.MoserSecurity;
 import com.moser.moserfood.domain.model.Grupo;
 import com.moser.moserfood.domain.service.GrupoService;
 import io.swagger.annotations.Api;
@@ -32,21 +33,28 @@ public class GrupoPermissaoController implements GrupoPermissaoControllerOpenApi
     @Autowired
     private MoserLinks moserLinks;
 
+    @Autowired
+    private MoserSecurity moserSecurity;
+
     @CheckSecurity.UsuariosGruposPermissoes.PodeConsultar
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public CollectionModel<PermissaoDTO> listar(@PathVariable Long grupoId) {
         Grupo grupo = grupoService.findOrFail(grupoId);
 
-        CollectionModel<PermissaoDTO> permissoesDTOS = permissaoModelAssembler.toCollectionModel(grupo.getPermissoes())
-                .removeLinks()
-                .add(moserLinks.linkToGrupoPermissoes(grupoId))
-                .add(moserLinks.linkToGrupoPermissaoAssociacao(grupoId, "associar"));
+        CollectionModel<PermissaoDTO> permissoesDTOS
+                = permissaoModelAssembler.toCollectionModel(grupo.getPermissoes())
+                .removeLinks();
 
-        permissoesDTOS.getContent().forEach(permissaoDTO -> {
-            permissaoDTO.add(
-                    moserLinks.linkToGrupoPermissaoDesassociacao(grupoId, permissaoDTO.getId(), "desassociar"));
-        });
+        permissoesDTOS.add(moserLinks.linkToGrupoPermissoes(grupoId));
 
+        if (moserSecurity.podeEditarUsuariosGruposPermissoes()) {
+            permissoesDTOS.add(moserLinks.linkToGrupoPermissaoAssociacao(grupoId, "associar"));
+
+            permissoesDTOS.getContent().forEach(permissaoDTO -> {
+                permissaoDTO.add(moserLinks.linkToGrupoPermissaoDesassociacao(
+                        grupoId, permissaoDTO.getId(), "desassociar"));
+            });
+        }
 
         return permissoesDTOS;
     }

@@ -51,14 +51,14 @@ public @interface CheckSecurity {
     @interface Pedidos {
         @PreAuthorize("hasAuthority('SCOPE_READ') and isAuthenticated()")
         @PostAuthorize("hasAuthority('CONSULTAR_PEDIDOS') or " +
-                "@moserSecurity.getUsuarioId() == returnObject.cliente.id or " +
+                "@moserSecurity.usuarioAutenticadoIgual(returnObject.cliente.id) or " +
                 "@moserSecurity.gerenciaRestaurante(returnObject.restaurante.id)")
         @Retention(RUNTIME)
         @Target(METHOD)
         @interface PodeBuscar { }
 
         @PreAuthorize("hasAuthority('SCOPE_READ') and (hasAuthority('CONSULTAR_PEDIDOS') or "
-                + "@moserSecurity.getUsuarioId() == #filtro.clienteId or"
+                + "@moserSecurity.usuarioAutenticadoIgual(#filtro.clienteId) or"
                 + "@moserSecurity.gerenciaRestaurante(#filtro.restauranteId))")
         @Retention(RUNTIME)
         @Target(METHOD)
@@ -114,12 +114,12 @@ public @interface CheckSecurity {
 
     @interface UsuariosGruposPermissoes {
         @PreAuthorize("hasAuthority('SCOPE_WRITE') and "
-                + "@moserSecurity.getUsuarioId() == #usuarioId")
+                + "@moserSecurity.usuarioAutenticadoIgual(#usuarioId)")
         @Retention(RUNTIME)
         @Target(METHOD)
         @interface PodeAlterarPropriaSenha { }
         @PreAuthorize("hasAuthority('SCOPE_WRITE') and (hasAuthority('EDITAR_USUARIOS_GRUPOS_PERMISSOES') or "
-                + "@moserSecurity.getUsuarioId() == #usuarioId)")
+                + "@moserSecurity.usuarioAutenticadoIgual(#usuarioId))")
         @Retention(RUNTIME)
         @Target(METHOD)
         @interface PodeAlterarUsuario { }

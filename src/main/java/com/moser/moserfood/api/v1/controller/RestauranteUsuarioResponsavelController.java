@@ -43,7 +43,7 @@ public class RestauranteUsuarioResponsavelController {
                 .add(moserLinks.linkToResponsaveisRestaurante(restauranteId));
 
         if (moserSecurity.podeGerenciarCadastroRestaurantes()) {
-            usuariosDTO.add(moserLinks.linkToRestauranteResponsavelAssociacao(restauranteId, "associar");
+            usuariosDTO.add(moserLinks.linkToRestauranteResponsavelAssociacao(restauranteId, "associar"));
 
             usuariosDTO.getContent().forEach(usuarioDTO -> {
                 usuarioDTO.add(moserLinks.linkToRestauranteResponsavelDesassociacao(

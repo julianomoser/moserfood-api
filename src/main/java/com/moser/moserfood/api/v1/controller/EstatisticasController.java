@@ -2,6 +2,7 @@ package com.moser.moserfood.api.v1.controller;
 
 import com.moser.moserfood.api.v1.MoserLinks;
 import com.moser.moserfood.api.v1.openapi.controller.EstatisticasControllerOpenApi;
+import com.moser.moserfood.core.security.CheckSecurity;
 import com.moser.moserfood.domain.filter.VendaDiariaFilter;
 import com.moser.moserfood.domain.model.dto.VendaDiaria;
 import com.moser.moserfood.domain.service.VendaQueryService;
@@ -35,6 +36,7 @@ public class EstatisticasController implements EstatisticasControllerOpenApi {
     private MoserLinks moserLinks;
 
 
+    @CheckSecurity.Estatisticas.PodeConsultar
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public EstatisticaDTO estatisticas() {
         var estatisticas = new EstatisticaDTO();
@@ -42,12 +44,14 @@ public class EstatisticasController implements EstatisticasControllerOpenApi {
         return estatisticas;
     }
 
+    @CheckSecurity.Estatisticas.PodeConsultar
     @GetMapping(path = "/vendas-diarias", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<VendaDiaria> consultarVendasDiarias(VendaDiariaFilter filter,
             @RequestParam(required = false, defaultValue = "+00:00") String timeOffset) {
         return vendaQueryService.consultarVendasDiarias(filter, timeOffset);
     }
 
+    @CheckSecurity.Estatisticas.PodeConsultar
     @GetMapping(path = "/vendas-diarias", produces = MediaType.APPLICATION_PDF_VALUE)
     public ResponseEntity<byte[]> consultarVendasDiasriasPdf(VendaDiariaFilter filter,
              @RequestParam(required = false, defaultValue = "+00:00") String timeOffset) {

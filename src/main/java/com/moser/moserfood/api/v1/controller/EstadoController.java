@@ -5,6 +5,7 @@ import com.moser.moserfood.api.v1.assembler.EstadoInputDisassembler;
 import com.moser.moserfood.api.v1.model.EstadoDTO;
 import com.moser.moserfood.api.v1.model.input.EstadoInput;
 import com.moser.moserfood.api.v1.openapi.controller.EstadoControllerOpenApi;
+import com.moser.moserfood.core.security.CheckSecurity;
 import com.moser.moserfood.domain.model.Estado;
 import com.moser.moserfood.domain.repository.EstadoRepository;
 import com.moser.moserfood.domain.service.EstadoService;
@@ -35,18 +36,21 @@ public class EstadoController implements EstadoControllerOpenApi {
     @Autowired
     private EstadoInputDisassembler estadoInputDisassembler;
 
+    @CheckSecurity.Estados.PodeConsultar
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public CollectionModel<EstadoDTO> listar() {
         List<Estado> todosEstados = estadoRepository.findAll();
         return estadoModelAssembler.toCollectionModel(todosEstados);
     }
 
+    @CheckSecurity.Estados.PodeConsultar
     @GetMapping(path = "/{estadoId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public EstadoDTO buscar(@PathVariable Long estadoId) {
         Estado estado = estadoService.findOrFail(estadoId);
         return estadoModelAssembler.toModel(estado);
     }
 
+    @CheckSecurity.Estados.PodeEditar
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public EstadoDTO salvar(@RequestBody @Valid EstadoInput estadoInput) {
@@ -57,6 +61,7 @@ public class EstadoController implements EstadoControllerOpenApi {
         return estadoModelAssembler.toModel(estado);
     }
 
+    @CheckSecurity.Estados.PodeEditar
     @PutMapping(path = "/{estadoId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public EstadoDTO atualizar(@PathVariable Long estadoId,
                                @RequestBody @Valid EstadoInput estadoInput) {
@@ -69,6 +74,7 @@ public class EstadoController implements EstadoControllerOpenApi {
         return estadoModelAssembler.toModel(estadoAtual);
     }
 
+    @CheckSecurity.Estados.PodeEditar
     @DeleteMapping("/{estadoId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long estadoId) {

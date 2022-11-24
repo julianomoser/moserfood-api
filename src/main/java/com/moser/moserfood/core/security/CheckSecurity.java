@@ -69,8 +69,7 @@ public @interface CheckSecurity {
         @Target(METHOD)
         public @interface PodeCriar { }
 
-        @PreAuthorize("hasAuthority('SCOPE_WRITE') and (hasAuthority('GERENCIAR_PEDIDOS') or "
-                + "@moserSecurity.gerenciaRestauranteDoPedido(#codigoPedido))")
+        @PreAuthorize("@moserSecurity.podeGerenciarPedidos(#codigoPedido)")
         @Retention(RUNTIME)
         @Target(METHOD)
         @interface PodeGerenciarPedidos { }

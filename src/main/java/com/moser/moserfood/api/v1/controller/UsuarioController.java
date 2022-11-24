@@ -7,6 +7,7 @@ import com.moser.moserfood.api.v1.model.input.SenhaInput;
 import com.moser.moserfood.api.v1.model.input.UsuarioComSenhaInput;
 import com.moser.moserfood.api.v1.model.input.UsuarioInput;
 import com.moser.moserfood.api.v1.openapi.controller.UsuarioControllerOpenApi;
+import com.moser.moserfood.core.security.CheckSecurity;
 import com.moser.moserfood.domain.model.Usuario;
 import com.moser.moserfood.domain.repository.UsuarioRepository;
 import com.moser.moserfood.domain.service.UsuarioService;
@@ -37,6 +38,7 @@ public class UsuarioController implements UsuarioControllerOpenApi {
     @Autowired
     private UsuarioInputDisassembler usuarioInputDisassembler;
 
+    @CheckSecurity.UsuariosGruposPermissoes.PodeConsultar
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public CollectionModel<UsuarioDTO> listar() {
         List<Usuario> todasUsuarios = usuarioRepository.findAll();
@@ -44,6 +46,7 @@ public class UsuarioController implements UsuarioControllerOpenApi {
         return usuarioDTOAssembler.toCollectionModel(todasUsuarios);
     }
 
+    @CheckSecurity.UsuariosGruposPermissoes.PodeConsultar
     @GetMapping(path = "/{usuarioId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public UsuarioDTO buscar(@PathVariable Long usuarioId) {
         Usuario usuario = usuarioService.findOrFail(usuarioId);
@@ -61,6 +64,7 @@ public class UsuarioController implements UsuarioControllerOpenApi {
         return usuarioDTOAssembler.toModel(usuario);
     }
 
+    @CheckSecurity.UsuariosGruposPermissoes.PodeAlterarUsuario
     @PutMapping(path = "/{usuarioId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public UsuarioDTO atualizar(@PathVariable Long usuarioId,
                                 @RequestBody @Valid UsuarioInput usuarioInput) {
@@ -73,12 +77,14 @@ public class UsuarioController implements UsuarioControllerOpenApi {
         return usuarioDTOAssembler.toModel(usuarioAtual);
     }
 
+    @CheckSecurity.UsuariosGruposPermissoes.PodeAlterarPropriaSenha
     @PutMapping(path = "/{usuarioId}/senha", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void alterarSenha(@PathVariable Long usuarioId, @RequestBody @Valid SenhaInput senha) {
         usuarioService.alterarSenha(usuarioId, senha.getSenhaAtual(), senha.getNovaSenha());
     }
 
+    @CheckSecurity.UsuariosGruposPermissoes.PodeEditar
     @DeleteMapping("/{usuarioId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void remover(@PathVariable Long usuarioId) {

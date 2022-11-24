@@ -4,6 +4,7 @@ import com.moser.moserfood.api.v1.MoserLinks;
 import com.moser.moserfood.api.v1.assembler.GrupoDTOAssembler;
 import com.moser.moserfood.api.v1.model.GrupoDTO;
 import com.moser.moserfood.api.v1.openapi.controller.UsuarioGrupoControllerOpenApi;
+import com.moser.moserfood.core.security.CheckSecurity;
 import com.moser.moserfood.domain.model.Usuario;
 import com.moser.moserfood.domain.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,7 @@ public class UsuarioGrupoController implements UsuarioGrupoControllerOpenApi {
     @Autowired
     private MoserLinks moserLinks;
 
+    @CheckSecurity.UsuariosGruposPermissoes.PodeConsultar
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public CollectionModel<GrupoDTO> listar(@PathVariable Long usuarioId) {
         Usuario usuario = usuarioService.findOrFail(usuarioId);
@@ -44,7 +46,7 @@ public class UsuarioGrupoController implements UsuarioGrupoControllerOpenApi {
         return gruposDTO;
     }
 
-
+    @CheckSecurity.UsuariosGruposPermissoes.PodeEditar
     @PutMapping(path = "/{grupoId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> associar(@PathVariable Long usuarioId, @PathVariable Long grupoId) {
@@ -52,6 +54,7 @@ public class UsuarioGrupoController implements UsuarioGrupoControllerOpenApi {
         return ResponseEntity.noContent().build();
     }
 
+    @CheckSecurity.UsuariosGruposPermissoes.PodeEditar
     @DeleteMapping("/{grupoId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> desassociar(@PathVariable Long usuarioId, @PathVariable Long grupoId) {

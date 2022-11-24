@@ -5,6 +5,7 @@ import com.moser.moserfood.api.v1.assembler.GrupoInputDisassembler;
 import com.moser.moserfood.api.v1.model.GrupoDTO;
 import com.moser.moserfood.api.v1.model.input.GrupoInput;
 import com.moser.moserfood.api.v1.openapi.controller.GrupoControllerOpenApi;
+import com.moser.moserfood.core.security.CheckSecurity;
 import com.moser.moserfood.domain.model.Grupo;
 import com.moser.moserfood.domain.repository.GrupoRepository;
 import com.moser.moserfood.domain.service.GrupoService;
@@ -36,6 +37,7 @@ public class GrupoController implements GrupoControllerOpenApi {
     @Autowired
     private GrupoInputDisassembler grupoInputDisassembler;
 
+    @CheckSecurity.UsuariosGruposPermissoes.PodeConsultar
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public CollectionModel<GrupoDTO> listar() {
         List<Grupo> todasGrupos = grupoRepository.findAll();
@@ -43,6 +45,7 @@ public class GrupoController implements GrupoControllerOpenApi {
         return grupoModelAssembler.toCollectionModel(todasGrupos);
     }
 
+    @CheckSecurity.UsuariosGruposPermissoes.PodeConsultar
     @GetMapping(path = "/{grupoId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public GrupoDTO buscar(@PathVariable Long grupoId) {
         Grupo grupo = grupoService.findOrFail(grupoId);
@@ -50,6 +53,7 @@ public class GrupoController implements GrupoControllerOpenApi {
         return grupoModelAssembler.toModel(grupo);
     }
 
+    @CheckSecurity.UsuariosGruposPermissoes.PodeEditar
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public GrupoDTO salvar(@RequestBody @Valid GrupoInput grupoInput) {
@@ -60,6 +64,7 @@ public class GrupoController implements GrupoControllerOpenApi {
         return grupoModelAssembler.toModel(grupo);
     }
 
+    @CheckSecurity.UsuariosGruposPermissoes.PodeEditar
     @PutMapping(path = "/{grupoId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public GrupoDTO atualizar(@PathVariable Long grupoId,
                               @RequestBody @Valid GrupoInput grupoInput) {
@@ -72,6 +77,7 @@ public class GrupoController implements GrupoControllerOpenApi {
         return grupoModelAssembler.toModel(grupoAtual);
     }
 
+    @CheckSecurity.UsuariosGruposPermissoes.PodeEditar
     @DeleteMapping("/{grupoId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void remover(@PathVariable Long grupoId) {

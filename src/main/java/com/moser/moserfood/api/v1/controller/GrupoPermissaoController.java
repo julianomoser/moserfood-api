@@ -4,6 +4,7 @@ import com.moser.moserfood.api.v1.MoserLinks;
 import com.moser.moserfood.api.v1.assembler.PermissaoDTOAssembler;
 import com.moser.moserfood.api.v1.model.PermissaoDTO;
 import com.moser.moserfood.api.v1.openapi.controller.GrupoPermissaoControllerOpenApi;
+import com.moser.moserfood.core.security.CheckSecurity;
 import com.moser.moserfood.domain.model.Grupo;
 import com.moser.moserfood.domain.service.GrupoService;
 import io.swagger.annotations.Api;
@@ -31,6 +32,7 @@ public class GrupoPermissaoController implements GrupoPermissaoControllerOpenApi
     @Autowired
     private MoserLinks moserLinks;
 
+    @CheckSecurity.UsuariosGruposPermissoes.PodeConsultar
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public CollectionModel<PermissaoDTO> listar(@PathVariable Long grupoId) {
         Grupo grupo = grupoService.findOrFail(grupoId);
@@ -49,6 +51,7 @@ public class GrupoPermissaoController implements GrupoPermissaoControllerOpenApi
         return permissoesDTOS;
     }
 
+    @CheckSecurity.UsuariosGruposPermissoes.PodeEditar
     @PutMapping("/{permissaoId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> associar(@PathVariable Long grupoId, @PathVariable Long permissaoId) {
@@ -56,6 +59,7 @@ public class GrupoPermissaoController implements GrupoPermissaoControllerOpenApi
         return ResponseEntity.noContent().build();
     }
 
+    @CheckSecurity.UsuariosGruposPermissoes.PodeEditar
     @DeleteMapping("/{permissaoId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> desassociar(@PathVariable Long grupoId, @PathVariable Long permissaoId) {

@@ -3,6 +3,7 @@ package com.moser.moserfood.api.v1.controller;
 import com.moser.moserfood.api.v1.assembler.PermissaoDTOAssembler;
 import com.moser.moserfood.api.v1.model.PermissaoDTO;
 import com.moser.moserfood.api.v1.openapi.controller.PermissaoControllerOpenApi;
+import com.moser.moserfood.core.security.CheckSecurity;
 import com.moser.moserfood.domain.model.Permissao;
 import com.moser.moserfood.domain.repository.PermissaoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,7 @@ public class PermissaoController implements PermissaoControllerOpenApi {
     @Autowired
     private PermissaoDTOAssembler permissaoDTOAssembler;
 
+    @CheckSecurity.UsuariosGruposPermissoes.PodeConsultar
     @Override
     @GetMapping
     public CollectionModel<PermissaoDTO> listar() {

@@ -58,8 +58,8 @@ public @interface CheckSecurity {
         @interface PodeBuscar { }
 
         @PreAuthorize("hasAuthority('SCOPE_READ') and (hasAuthority('CONSULTAR_PEDIDOS') or "
-                + "@algaSecurity.getUsuarioId() == #filtro.clienteId or"
-                + "@algaSecurity.gerenciaRestaurante(#filtro.restauranteId))")
+                + "@moserSecurity.getUsuarioId() == #filtro.clienteId or"
+                + "@moserSecurity.gerenciaRestaurante(#filtro.restauranteId))")
         @Retention(RUNTIME)
         @Target(METHOD)
         @interface PodePesquisar { }
@@ -70,11 +70,10 @@ public @interface CheckSecurity {
         public @interface PodeCriar { }
 
         @PreAuthorize("hasAuthority('SCOPE_WRITE') and (hasAuthority('GERENCIAR_PEDIDOS') or "
-                + "@algaSecurity.gerenciaRestauranteDoPedido(#codigoPedido))")
+                + "@moserSecurity.gerenciaRestauranteDoPedido(#codigoPedido))")
         @Retention(RUNTIME)
         @Target(METHOD)
         @interface PodeGerenciarPedidos { }
-
     }
 
     @interface FormasPagamento {
@@ -99,18 +98,40 @@ public @interface CheckSecurity {
         @Retention(RUNTIME)
         @Target(METHOD)
         @interface PodeConsultar { }
-
     }
 
     @interface Estados {
         @PreAuthorize("hasAuthority('SCOPE_WRITE') and hasAuthority('EDITAR_ESTADOS')")
         @Retention(RUNTIME)
         @Target(METHOD)
-        public @interface PodeEditar { }
+        @interface PodeEditar { }
 
         @PreAuthorize("hasAuthority('SCOPE_READ') and isAuthenticated()")
         @Retention(RUNTIME)
         @Target(METHOD)
-        public @interface PodeConsultar { }
+        @interface PodeConsultar { }
+    }
+
+    @interface UsuariosGruposPermissoes {
+        @PreAuthorize("hasAuthority('SCOPE_WRITE') and "
+                + "@moserSecurity.getUsuarioId() == #usuarioId")
+        @Retention(RUNTIME)
+        @Target(METHOD)
+        @interface PodeAlterarPropriaSenha { }
+        @PreAuthorize("hasAuthority('SCOPE_WRITE') and (hasAuthority('EDITAR_USUARIOS_GRUPOS_PERMISSOES') or "
+                + "@moserSecurity.getUsuarioId() == #usuarioId)")
+        @Retention(RUNTIME)
+        @Target(METHOD)
+        @interface PodeAlterarUsuario { }
+
+        @PreAuthorize("hasAuthority('SCOPE_WRITE') and hasAuthority('EDITAR_USUARIOS_GRUPOS_PERMISSOES')")
+        @Retention(RUNTIME)
+        @Target(METHOD)
+        @interface PodeEditar { }
+
+        @PreAuthorize("hasAuthority('SCOPE_READ') and hasAuthority('CONSULTAR_USUARIOS_GRUPOS_PERMISSOES')")
+        @Retention(RUNTIME)
+        @Target(METHOD)
+        @interface PodeConsultar { }
     }
 }

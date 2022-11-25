@@ -12,6 +12,11 @@
       "sourceMethod": "getSandbox()"
     },
     {
+      "name": "moserfood.jwt.keystore",
+      "type": "com.moser.moserfood.core.security.authorizationserver.JwtKeyStoreProperties",
+      "sourceType": "com.moser.moserfood.core.security.authorizationserver.JwtKeyStoreProperties"
+    },
+    {
       "name": "moserfood.sms",
       "type": "com.moser.moserfood.core.sms.SmsProperties",
       "sourceType": "com.moser.moserfood.core.sms.SmsProperties"
@@ -55,6 +60,21 @@
       "name": "moserfood.email.sandbox.destinatario",
       "type": "java.lang.String",
       "sourceType": "com.moser.moserfood.core.email.EmailProperties$SandBox"
+    },
+    {
+      "name": "moserfood.jwt.keystore.jks-location",
+      "type": "org.springframework.core.io.Resource",
+      "sourceType": "com.moser.moserfood.core.security.authorizationserver.JwtKeyStoreProperties"
+    },
+    {
+      "name": "moserfood.jwt.keystore.keypair-alias",
+      "type": "java.lang.String",
+      "sourceType": "com.moser.moserfood.core.security.authorizationserver.JwtKeyStoreProperties"
+    },
+    {
+      "name": "moserfood.jwt.keystore.password",
+      "type": "java.lang.String",
+      "sourceType": "com.moser.moserfood.core.security.authorizationserver.JwtKeyStoreProperties"
     },
     {
       "name": "moserfood.sms.impl",

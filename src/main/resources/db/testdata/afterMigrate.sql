@@ -107,7 +107,7 @@ insert into usuario (id, nome, email, senha, data_cadastro) values
 (3, 'José Souza', 'jose.aux@moserfood.com', '$2a$12$t8tCTVkIkie7oCb6mjBzuewep.We2dskHEQc3tfivKuqLIDdQ8FW2', utc_timestamp),
 (4, 'Sebastião Martins', 'sebastiao.cad@moserfood.com', '$2a$12$t8tCTVkIkie7oCb6mjBzuewep.We2dskHEQc3tfivKuqLIDdQ8FW2', utc_timestamp),
 (5, 'Manoel Lima', 'manoel.loja@gmail.com', '$2a$12$t8tCTVkIkie7oCb6mjBzuewep.We2dskHEQc3tfivKuqLIDdQ8FW2', utc_timestamp),
-(6, 'Juliano Moser', 'juliano.moserjj@gmail.com', '$2a$12$t8tCTVkIkie7oCb6mjBzuewep.We2dskHEQc3tfivKuqLIDdQ8FW2', utc_timestamp),
+(6, 'Juliano Moser', 'juliano.moserjj@gmail.com', '$2a$12$NmMDqVVog.q6L/iTpJoklu.y6xU/QAt0P0FENlnRW2qdAL05MA5Om', utc_timestamp),
 (7, 'Carlos Moser', 'carlos.test@gmail.com', '$2a$12$t8tCTVkIkie7oCb6mjBzuewep.We2dskHEQc3tfivKuqLIDdQ8FW2', utc_timestamp);
 
 insert into usuario_grupo (usuario_id, grupo_id) values (1, 1), (1, 2), (2, 2), (3, 3), (4, 4), (6,1);
@@ -168,14 +168,14 @@ values (6, 5, 3, 1, 87.2, 87.2, null);
 insert into oauth_client_details (client_id, resource_ids, client_secret,
                                   scope, authorized_grant_types, web_server_redirect_uri, authorities,
                                   access_token_validity, refresh_token_validity, autoapprove)
-values ('moserfood-web', null, '$2y$12$w3igMjsfS5XoAYuowoH3C.54vRFWlcXSHLjX7MwF990Kc2KKKh72e',
+values ('moserfood-web', null, '$2a$12$zQxev05tlfUVaXziqO/t5ug1N.mnKa2fVI2.a.sceNIVegpSodmNu',
         'READ,WRITE', 'password', null, null,
         60 * 60 * 6, 60 * 24 * 60 * 60, null);
 
 insert into oauth_client_details (client_id, resource_ids, client_secret,
                                   scope, authorized_grant_types, web_server_redirect_uri, authorities,
                                   access_token_validity, refresh_token_validity, autoapprove)
-values ('foodanalytics', null, '$2y$12$fahbH37S2pyk1RPuIHKP.earzFmgAJJGo26rE.59vf4wwiiTKHnzO',
+values ('foodanalytics', null, '$2a$12$t8tCTVkIkie7oCb6mjBzuewep.We2dskHEQc3tfivKuqLIDdQ8FW2',
         'READ,WRITE', 'authorization_code', 'http://www.foodanalytics.local:8082', null,
         null, null, null);
 

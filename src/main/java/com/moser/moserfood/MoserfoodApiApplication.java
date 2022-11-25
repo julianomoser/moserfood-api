@@ -12,9 +12,9 @@ import java.util.TimeZone;
 //@EnableWebMvc
 public class MoserfoodApiApplication {
 
-	public static void main(String[] args) {
-		TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
-		SpringApplication.run(MoserfoodApiApplication.class, args);
-	}
+    public static void main(String[] args) {
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+        SpringApplication.run(MoserfoodApiApplication.class, args);
+    }
 
 }

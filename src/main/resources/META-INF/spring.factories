@@ -1,0 +1,1 @@
+org.springframework.context.ApplicationContextInitializer=com.moser.moserfood.core.io.Base64ProtocolResolver

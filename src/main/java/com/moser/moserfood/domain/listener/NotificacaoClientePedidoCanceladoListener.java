@@ -37,7 +37,7 @@ public class NotificacaoClientePedidoCanceladoListener {
     private static MensagemEmail getMensagemEmail(Pedido pedido) {
         return MensagemEmail.builder()
                 .assunto(pedido.getRestaurante().getNome() + " - Pedido cancelado")
-                .corpo("pedido-cancelado.html")
+                .corpo("emails/pedido-cancelado.html")
                 .variavel("pedido", pedido)
                 .destinatarios(Collections.singleton(pedido.getCliente().getEmail()))
                 .build();

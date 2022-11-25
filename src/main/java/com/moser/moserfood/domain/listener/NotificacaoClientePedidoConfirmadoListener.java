@@ -37,7 +37,7 @@ public class NotificacaoClientePedidoConfirmadoListener {
     private static MensagemEmail getMensagemEmail(Pedido pedido) {
         var mensagem = MensagemEmail.builder()
                 .assunto(pedido.getRestaurante().getNome() + " - Pedido confirmado")
-                .corpo("pedido-confirmado.html")
+                .corpo("emails/pedido-confirmado.html")
                 .variavel("pedido", pedido)
                 .destinatarios(Collections.singleton(pedido.getCliente().getEmail()))
                 .build();

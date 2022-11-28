@@ -96,6 +96,7 @@ com/moser/moserfood/api/v1/model/input/ItemPedidoInput.class
 com/moser/moserfood/api/v2/MoserLinksV2.class
 com/moser/moserfood/domain/event/PedidoConfirmadoEvent.class
 com/moser/moserfood/core/security/CheckSecurity$Pedidos$PodePesquisar.class
+com/moser/moserfood/api/HostCheckController.class
 com/moser/moserfood/domain/model/Produto.class
 com/moser/moserfood/api/exceptionhandler/Problem.class
 com/moser/moserfood/core/security/CheckSecurity$UsuariosGruposPermissoes$PodeAlterarPropriaSenha.class

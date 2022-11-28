@@ -98,6 +98,7 @@
 /Users/julianomoser/Development/Cursos/Especialista Spring Rest/ws-esr/moserfood-api/src/main/java/com/moser/moserfood/core/security/authorizationserver/AuthUser.java
 /Users/julianomoser/Development/Cursos/Especialista Spring Rest/ws-esr/moserfood-api/src/main/java/com/moser/moserfood/api/v1/openapi/controller/EstatisticasControllerOpenApi.java
 /Users/julianomoser/Development/Cursos/Especialista Spring Rest/ws-esr/moserfood-api/src/main/java/com/moser/moserfood/api/v1/openapi/model/CozinhasDTOpenApi.java
+/Users/julianomoser/Development/Cursos/Especialista Spring Rest/ws-esr/moserfood-api/src/main/java/com/moser/moserfood/api/HostCheckController.java
 /Users/julianomoser/Development/Cursos/Especialista Spring Rest/ws-esr/moserfood-api/src/main/java/com/moser/moserfood/core/email/EmailProperties.java
 /Users/julianomoser/Development/Cursos/Especialista Spring Rest/ws-esr/moserfood-api/src/main/java/com/moser/moserfood/api/v1/model/FormaPagamentoDTO.java
 /Users/julianomoser/Development/Cursos/Especialista Spring Rest/ws-esr/moserfood-api/src/main/java/com/moser/moserfood/domain/repository/ProdutoRepository.java

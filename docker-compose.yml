@@ -1,0 +1,34 @@
+version: "3.9"
+
+networks:
+  moserfood-network:
+    driver: bridge
+
+services:
+  moserfood-mysql:
+    platform: linux/x86_64
+    image: mysql/mysql-server:8.0.23
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_ROOT_PASSWORD: ""
+      MYSQL_ROOT_HOST: '%'
+      MYSQL_TCP_PORT: 3306
+    ports:
+      - "3306:3306"
+    expose:
+      - 3306
+    networks:
+      - moserfood-network
+
+  moserfood-api:
+    image: moserfood-api
+    command: ["/wait-for-it.sh", "moserfood-mysql:3306", "-t", "30", "--","java", "-jar", "api.jar"]
+    environment:
+      DB_HOST: moserfood-mysql
+    ports:
+      - 8081:8081
+    networks:
+      - moserfood-network
+    depends_on:
+      - moserfood-mysql

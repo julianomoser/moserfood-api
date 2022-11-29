@@ -21,6 +21,11 @@ services:
     networks:
       - moserfood-network
 
+  moserfood-redis:
+    image: amd64/redis:7.0.5-alpine
+    networks:
+      - moserfood-network
+
   moserfood-api:
     image: moserfood-api
     command: ["/wait-for-it.sh", "moserfood-mysql:3306", "-t", "30", "--","java", "-jar", "api.jar"]

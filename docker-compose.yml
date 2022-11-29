@@ -31,6 +31,8 @@ services:
     command: ["/wait-for-it.sh", "moserfood-mysql:3306", "-t", "30", "--","java", "-jar", "api.jar"]
     environment:
       DB_HOST: moserfood-mysql
+      SPRING_SESSION_STORE_TYPE: redis
+      SPRING_REDIS_HOST: moserfood-redis
     networks:
       - moserfood-network
     depends_on:

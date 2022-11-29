@@ -19,7 +19,6 @@ public class CorsConfig {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(false);
         config.setAllowedOrigins(Collections.singletonList("*"));
-        config.setAllowedOrigins(Arrays.asList("http://api.moserfood.local:8081", "http://www.foodanalytics.local:5500"));
         config.setAllowedMethods(Collections.singletonList("*"));
         config.setAllowedHeaders(Collections.singletonList("*"));
 

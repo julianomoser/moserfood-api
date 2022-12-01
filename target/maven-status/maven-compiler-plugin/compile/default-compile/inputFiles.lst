@@ -72,6 +72,7 @@
 /Users/julianomoser/Development/Cursos/Especialista Spring Rest/ws-esr/moserfood-api/src/main/java/com/moser/moserfood/domain/repository/PermissaoRepository.java
 /Users/julianomoser/Development/Cursos/Especialista Spring Rest/ws-esr/moserfood-api/src/main/java/com/moser/moserfood/api/v1/assembler/FormaPagamentoInputDisassembler.java
 /Users/julianomoser/Development/Cursos/Especialista Spring Rest/ws-esr/moserfood-api/src/main/java/com/moser/moserfood/jpa/BuscaRestauranteMain.java
+/Users/julianomoser/Development/Cursos/Especialista Spring Rest/ws-esr/moserfood-api/src/main/java/com/moser/moserfood/infrastructure/service/email/ProcessadorEmailTemplate.java
 /Users/julianomoser/Development/Cursos/Especialista Spring Rest/ws-esr/moserfood-api/src/main/java/com/moser/moserfood/api/v1/assembler/GrupoInputDisassembler.java
 /Users/julianomoser/Development/Cursos/Especialista Spring Rest/ws-esr/moserfood-api/src/main/java/com/moser/moserfood/api/v1/assembler/CozinhaDTOAssembler.java
 /Users/julianomoser/Development/Cursos/Especialista Spring Rest/ws-esr/moserfood-api/src/main/java/com/moser/moserfood/domain/filter/VendaDiariaFilter.java

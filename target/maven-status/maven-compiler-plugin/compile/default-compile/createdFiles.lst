@@ -173,6 +173,7 @@ com/moser/moserfood/core/validation/MultiploValidator.class
 com/moser/moserfood/core/sms/SmsConfig$1.class
 com/moser/moserfood/api/v2/model/input/CidadeInputV2.class
 com/moser/moserfood/core/email/EmailProperties$Implementacao.class
+com/moser/moserfood/infrastructure/service/email/ProcessadorEmailTemplate.class
 com/moser/moserfood/domain/exception/ProdutoNaoEncontradoException.class
 com/moser/moserfood/api/v2/openapi/model/CozinhasDTOV2OpenApi$CozinhasEmbeddedModelOpenApi.class
 com/moser/moserfood/domain/repository/PedidoRepository.class

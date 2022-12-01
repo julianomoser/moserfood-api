@@ -15,9 +15,9 @@ services:
       MYSQL_ROOT_HOST: '%'
       MYSQL_TCP_PORT: 3306
     ports:
-      - "3306:3306"
+      - "13306:3306"
     expose:
-      - 3306
+      - 13306
     networks:
       - moserfood-network
 
@@ -33,6 +33,7 @@ services:
       DB_HOST: moserfood-mysql
       SPRING_SESSION_STORE_TYPE: redis
       SPRING_REDIS_HOST: moserfood-redis
+      SPRING_PROFILES_ACTIVE: development
     networks:
       - moserfood-network
     depends_on:

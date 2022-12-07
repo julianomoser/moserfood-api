@@ -19,7 +19,6 @@ import com.moser.moserfood.domain.exception.RestauranteNaoEncontradaException;
 import com.moser.moserfood.domain.model.Restaurante;
 import com.moser.moserfood.domain.repository.RestauranteRepository;
 import com.moser.moserfood.domain.service.RestauranteService;
-import io.swagger.annotations.Api;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
@@ -45,7 +44,6 @@ import static com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKN
 /**
  * @author Juliano Moser
  */
-@Api(tags = "Restaurant")
 @RestController
 @RequestMapping(path = "/v1/restaurantes", produces = MediaType.APPLICATION_JSON_VALUE)
 public class RestauranteController implements RestauranteControllerOpenApi {

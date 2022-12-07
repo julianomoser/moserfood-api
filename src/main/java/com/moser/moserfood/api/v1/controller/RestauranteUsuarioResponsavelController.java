@@ -7,8 +7,6 @@ import com.moser.moserfood.core.security.CheckSecurity;
 import com.moser.moserfood.core.security.MoserSecurity;
 import com.moser.moserfood.domain.model.Restaurante;
 import com.moser.moserfood.domain.service.RestauranteService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
@@ -18,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 /**
  * @author Juliano Moser
  */
-@Api(tags = "Restaurant user")
 @RestController
 @RequestMapping("/v1/restaurantes/{restauranteId}/responsaveis")
 public class RestauranteUsuarioResponsavelController {
@@ -34,7 +31,6 @@ public class RestauranteUsuarioResponsavelController {
     private MoserSecurity moserSecurity;
 
     @CheckSecurity.Restaurantes.PodeConsultar
-    @ApiOperation("Lista os responsáveis")
     @GetMapping
     public CollectionModel<UsuarioDTO> listar(@PathVariable Long restauranteId) {
         Restaurante restaurante = restauranteService.findOrFail(restauranteId);
@@ -55,7 +51,6 @@ public class RestauranteUsuarioResponsavelController {
     }
 
     @CheckSecurity.Restaurantes.PodeGerenciarCadastro
-    @ApiOperation("Associar responsável a um restaurante")
     @PutMapping("/{usuarioId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> associar(@PathVariable Long restauranteId, @PathVariable Long usuarioId) {
@@ -64,7 +59,6 @@ public class RestauranteUsuarioResponsavelController {
     }
 
     @CheckSecurity.Restaurantes.PodeGerenciarCadastro
-    @ApiOperation("Desassociar responsável de um restaurante")
     @DeleteMapping("/{usuarioId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> desassociar(@PathVariable Long restauranteId, @PathVariable Long usuarioId) {

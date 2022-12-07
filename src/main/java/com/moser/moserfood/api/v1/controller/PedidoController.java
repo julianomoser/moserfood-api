@@ -20,7 +20,6 @@ import com.moser.moserfood.domain.model.Usuario;
 import com.moser.moserfood.domain.repository.PedidoRepository;
 import com.moser.moserfood.domain.service.EmissaoPedidoService;
 import com.moser.moserfood.infrastructure.repository.spec.PedidoSpecs;
-import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -36,7 +35,6 @@ import javax.validation.Valid;
 /**
  * @author Juliano Moser
  */
-@Api(tags = "Order")
 @RestController
 @RequestMapping(path = "/v1/pedidos", produces = MediaType.APPLICATION_JSON_VALUE)
 public class PedidoController implements PedidoControllerOpenApi {

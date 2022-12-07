@@ -1,6 +1,5 @@
 package com.moser.moserfood.api.v1.model;
 
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.hateoas.RepresentationModel;
@@ -16,16 +15,13 @@ import java.math.BigDecimal;
 @Setter
 public class RestauranteDTO extends RepresentationModel<RestauranteDTO> {
 
-    @ApiModelProperty(example = "1")
-//    @JsonView({ RestauranteView.Resumo.class, RestauranteView.ApenasNome.class })
+    //    @JsonView({ RestauranteView.Resumo.class, RestauranteView.ApenasNome.class })
     private Long id;
-    @ApiModelProperty(example = "Java Veg")
-//    @JsonView({ RestauranteView.Resumo.class, RestauranteView.ApenasNome.class })
+    //    @JsonView({ RestauranteView.Resumo.class, RestauranteView.ApenasNome.class })
     private String nome;
-    @ApiModelProperty(example = "12.00")
-//    @JsonView(RestauranteView.Resumo.class)
+    //    @JsonView(RestauranteView.Resumo.class)
     private BigDecimal taxaFrete;
-//    @JsonView(RestauranteView.Resumo.class)
+    //    @JsonView(RestauranteView.Resumo.class)
     private CozinhaDTO cozinha;
 
     private Boolean ativo;

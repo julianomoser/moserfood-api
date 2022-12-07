@@ -1,7 +1,6 @@
 package com.moser.moserfood.api.v1.openapi.model;
 
 import com.moser.moserfood.api.v1.model.PedidoResumoDTO;
-import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,7 +19,6 @@ public class PedidoResumoDTOOpenApi {
     private Links _links;
     private PageModelOpenApi page;
 
-    @ApiModel("PedidosResumoEmbeddedModel")
     @Data
     public static class PedidosResumoEmbeddedModelOpenApi {
 

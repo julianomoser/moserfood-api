@@ -11,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 /**
  * @author Juliano Moser
  */
-@SecurityRequirement(name = "security_auth")
+@SecurityRequirement(name = "security_oauth")
 public interface FluxoPedidoControllerOpenApi {
 
 

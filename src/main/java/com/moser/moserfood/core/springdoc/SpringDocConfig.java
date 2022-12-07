@@ -9,8 +9,12 @@ import io.swagger.v3.oas.models.ExternalDocumentation;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
+import io.swagger.v3.oas.models.tags.Tag;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * @author Juliano Moser
@@ -41,7 +45,19 @@ public class SpringDocConfig {
                         )
                 ).externalDocs(new ExternalDocumentation()
                         .description("MoserFood")
-                        .url("https://api.moserfood.com.br"));
-
+                        .url("https://api.moserfood.com.br"))
+                .tags(Arrays.asList(
+                        new Tag().name("Cidades").description("Gerencia as cidades"),
+                        new Tag().name("Grupos").description("Gerencia os grupos"),
+                        new Tag().name("Cozinhas").description("Gerencia as cozinhas"),
+                        new Tag().name("Formas de pagamento").description("Gerencia as formas de pagamento"),
+                        new Tag().name("Pedidos").description("Gerencia os pedidos"),
+                        new Tag().name("Restaurantes").description("Gerencia os restaurantes"),
+                        new Tag().name("Estados").description("Gerencia os estados"),
+                        new Tag().name("Produtos").description("Gerencia os produtos"),
+                        new Tag().name("Usuários").description("Gerencia os usuários"),
+                        new Tag().name("Permissões").description("Gerencia as permissões"),
+                        new Tag().name("Estatísticas").description("Estatísticas da MoserFood")
+                ));
     }
 }

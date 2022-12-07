@@ -13,7 +13,7 @@ import org.springframework.hateoas.CollectionModel;
 /**
  * @author Juliano Moser
  */
-@SecurityRequirement(name = "security_oauth")
+@SecurityRequirement(name = "security_auth")
 public interface CidadeControllerOpenApi {
 
     CollectionModel<CidadeDTO> listar();

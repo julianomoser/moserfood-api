@@ -6,12 +6,14 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.ResponseEntity;
 
 /**
  * @author Juliano Moser
  */
+@SecurityRequirement(name = "security_auth")
 public interface UsuarioGrupoControllerOpenApi {
 
     @ApiResponse(responseCode = "404", description = "Usuário não encontrado", content = @Content(schema =

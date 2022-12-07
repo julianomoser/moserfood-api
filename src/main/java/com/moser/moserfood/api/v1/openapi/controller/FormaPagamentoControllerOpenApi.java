@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.context.request.ServletWebRequest;
@@ -14,6 +15,7 @@ import org.springframework.web.context.request.ServletWebRequest;
 /**
  * @author Juliano Moser
  */
+@SecurityRequirement(name = "security_auth")
 public interface FormaPagamentoControllerOpenApi {
 
 

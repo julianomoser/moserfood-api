@@ -3,6 +3,7 @@ package com.moser.moserfood.api.v1.controller;
 import com.moser.moserfood.api.v1.MoserLinks;
 import com.moser.moserfood.api.v1.assembler.UsuarioDTOAssembler;
 import com.moser.moserfood.api.v1.model.UsuarioDTO;
+import com.moser.moserfood.api.v1.openapi.controller.RestauranteUsuarioResponsavelControllerOpenApi;
 import com.moser.moserfood.core.security.CheckSecurity;
 import com.moser.moserfood.core.security.MoserSecurity;
 import com.moser.moserfood.domain.model.Restaurante;
@@ -18,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/v1/restaurantes/{restauranteId}/responsaveis")
-public class RestauranteUsuarioResponsavelController {
+public class RestauranteUsuarioResponsavelController implements RestauranteUsuarioResponsavelControllerOpenApi {
 
     @Autowired
     private RestauranteService restauranteService;
@@ -30,6 +31,7 @@ public class RestauranteUsuarioResponsavelController {
     @Autowired
     private MoserSecurity moserSecurity;
 
+    @Override
     @CheckSecurity.Restaurantes.PodeConsultar
     @GetMapping
     public CollectionModel<UsuarioDTO> listar(@PathVariable Long restauranteId) {
@@ -50,6 +52,7 @@ public class RestauranteUsuarioResponsavelController {
         return usuariosDTO;
     }
 
+    @Override
     @CheckSecurity.Restaurantes.PodeGerenciarCadastro
     @PutMapping("/{usuarioId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -58,6 +61,7 @@ public class RestauranteUsuarioResponsavelController {
         return ResponseEntity.noContent().build();
     }
 
+    @Override
     @CheckSecurity.Restaurantes.PodeGerenciarCadastro
     @DeleteMapping("/{usuarioId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)

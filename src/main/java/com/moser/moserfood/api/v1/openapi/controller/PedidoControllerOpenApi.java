@@ -9,12 +9,14 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.PagedModel;
 
 /**
  * @author Juliano Moser
  */
+@SecurityRequirement(name = "security_auth")
 public interface PedidoControllerOpenApi {
 
     PagedModel<PedidoResumoDTO> pesquisar(PedidoFilter filtro, Pageable pageable);

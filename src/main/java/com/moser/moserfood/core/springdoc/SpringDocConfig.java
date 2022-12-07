@@ -16,7 +16,7 @@ import org.springframework.context.annotation.Configuration;
  * @author Juliano Moser
  */
 @Configuration
-@SecurityScheme(name = "security_oauth",
+@SecurityScheme(name = "security_auth",
         type = SecuritySchemeType.OAUTH2,
         flows = @OAuthFlows(authorizationCode = @OAuthFlow(
                 authorizationUrl = "${springdoc.oAuthFlow.authorizationUrl}",

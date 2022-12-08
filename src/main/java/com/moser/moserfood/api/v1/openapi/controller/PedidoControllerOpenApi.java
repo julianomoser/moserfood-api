@@ -3,6 +3,7 @@ package com.moser.moserfood.api.v1.openapi.controller;
 import com.moser.moserfood.api.v1.model.PedidoDTO;
 import com.moser.moserfood.api.v1.model.PedidoResumoDTO;
 import com.moser.moserfood.api.v1.model.input.PedidoInput;
+import com.moser.moserfood.core.springdoc.PageableParameter;
 import com.moser.moserfood.domain.filter.PedidoFilter;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -22,6 +23,7 @@ import org.springframework.hateoas.PagedModel;
 @Tag(name = "Pedidos")
 public interface PedidoControllerOpenApi {
 
+    @PageableParameter
     @Operation(summary = "Pesquisa os pedidos")
     PagedModel<PedidoResumoDTO> pesquisar(@Parameter(hidden = true) PedidoFilter filtro,
                                           @Parameter(hidden = true) Pageable pageable);

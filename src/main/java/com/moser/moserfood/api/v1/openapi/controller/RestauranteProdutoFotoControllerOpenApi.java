@@ -3,6 +3,7 @@ package com.moser.moserfood.api.v1.openapi.controller;
 import com.moser.moserfood.api.exceptionhandler.Problem;
 import com.moser.moserfood.api.v1.model.FotoProdutoDTO;
 import com.moser.moserfood.api.v1.model.input.FotoProdutoInput;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -20,6 +21,7 @@ import java.io.IOException;
 @Tag(name = "Produtos")
 public interface RestauranteProdutoFotoControllerOpenApi {
 
+    @Operation(summary = "Atualiza a foto do produto de um restaurante")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Foto do produto atualizada"),
             @ApiResponse(responseCode = "404", description = "Produto de restaurante não encontrado", content = @Content(schema =
@@ -27,6 +29,7 @@ public interface RestauranteProdutoFotoControllerOpenApi {
     FotoProdutoDTO atualizarFoto(Long restauranteId, Long produtoId, FotoProdutoInput fotoProdutoInput,
                                  MultipartFile arquivo) throws IOException;
 
+    @Operation(summary = "Busca a foto do produto de um restaurante")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema =
             @Schema(implementation = FotoProdutoDTO.class), mediaType = "application/json")),
@@ -43,6 +46,7 @@ public interface RestauranteProdutoFotoControllerOpenApi {
 //            throws HttpMediaTypeNotAcceptableException;
 //
 
+    @Operation(summary = "Exclui uma foto por Id")
     @ApiResponses({
             @ApiResponse(responseCode = "400", description = "ID da foto inválida", content = @Content(schema =
             @Schema(implementation = Problem.class))),

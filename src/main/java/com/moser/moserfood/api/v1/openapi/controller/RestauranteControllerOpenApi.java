@@ -5,6 +5,7 @@ import com.moser.moserfood.api.v1.model.RestauranteApenasNomeDTO;
 import com.moser.moserfood.api.v1.model.RestauranteBasicoDTO;
 import com.moser.moserfood.api.v1.model.RestauranteDTO;
 import com.moser.moserfood.api.v1.model.input.RestauranteInput;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -23,11 +24,13 @@ import java.util.List;
 @Tag(name = "Restaurantes")
 public interface RestauranteControllerOpenApi {
 
+    @Operation(summary = "Lista restaurantes")
     CollectionModel<RestauranteBasicoDTO> listar();
 
+    @Operation(summary = "Lista restaurantes")
     CollectionModel<RestauranteApenasNomeDTO> listarApenasNomes();
 
-
+    @Operation(summary = "Busca um restaurante por Id")
     @ApiResponses({
             @ApiResponse(responseCode = "400", description = "ID do restaurante inválido", content = @Content(schema =
             @Schema(implementation = Problem.class))),
@@ -35,15 +38,18 @@ public interface RestauranteControllerOpenApi {
             @Schema(implementation = Problem.class)))})
     RestauranteDTO buscar(Long restauranteId);
 
+    @Operation(summary = "Cadastra uma restaurante")
     @ApiResponses(@ApiResponse(responseCode = "201", description = "Restaurante cadastrada"))
     RestauranteDTO salvar(RestauranteInput restauranteInput);
 
+    @Operation(summary = "Atualiza uma restaurante por Id")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Restaurante atualizada"),
             @ApiResponse(responseCode = "404", description = "Restaurante não encontrada", content = @Content(schema =
             @Schema(implementation = Problem.class)))})
     RestauranteDTO atualizar(Long restauranteId, RestauranteInput restauranteInput);
 
+    @Operation(summary = "Exclui um restaurante por Id")
     @ApiResponses({
             @ApiResponse(responseCode = "400", description = "ID do resrautante inválido", content = @Content(schema =
             @Schema(implementation = Problem.class))),
@@ -51,34 +57,40 @@ public interface RestauranteControllerOpenApi {
             @Schema(implementation = Problem.class)))})
     void remover(Long restauranteId);
 
+    @Operation(summary = "Ativa um restaurante por ID")
     @ApiResponses({
             @ApiResponse(responseCode = "204", description = "Restaurante ativado com sucesso"),
             @ApiResponse(responseCode = "404", description = "Restaurante não encontrado", content = @Content(schema =
             @Schema(implementation = Problem.class)))})
     ResponseEntity<Void> ativar(Long restauranteId);
 
+    @Operation(summary = "Inativa um restaurante por ID")
     @ApiResponses({
             @ApiResponse(responseCode = "204", description = "Restaurante inativado com sucesso"),
             @ApiResponse(responseCode = "404", description = "Restaurante não encontrado", content = @Content(schema =
             @Schema(implementation = Problem.class)))})
     ResponseEntity<Void> inativar(Long restauranteId);
 
+    @Operation(summary = "Ativa múltiplos restaurantes")
     @ApiResponses({
             @ApiResponse(responseCode = "204", description = "Restaurantes ativados com sucesso")
     })
     void ativarMultiplos(List<Long> restauranteIds);
 
+    @Operation(summary = "Inativa múltiplos restaurantes")
     @ApiResponses({
             @ApiResponse(responseCode = "204", description = "Restaurantes inativados com sucesso")
     })
     void inativarMultiplos(List<Long> restauranteIds);
 
+    @Operation(summary = "Abre um restaurante por ID")
     @ApiResponses({
             @ApiResponse(responseCode = "204", description = "Restaurante aberto com sucesso"),
             @ApiResponse(responseCode = "404", description = "Restaurante não encontrado", content = @Content(schema =
             @Schema(implementation = Problem.class)))})
     ResponseEntity<Void> abrir(Long restauranteId);
 
+    @Operation(summary = "Fecha um restaurante por ID")
     @ApiResponses({
             @ApiResponse(responseCode = "204", description = "Restaurante fechado com sucesso"),
             @ApiResponse(responseCode = "404", description = "Restaurante não encontrado", content = @Content(schema =

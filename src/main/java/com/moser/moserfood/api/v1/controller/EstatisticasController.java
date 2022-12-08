@@ -66,6 +66,6 @@ public class EstatisticasController implements EstatisticasControllerOpenApi {
                 .body(bytesPdf);
     }
 
-    private static class EstatisticaDTO extends RepresentationModel<EstatisticaDTO> {
+    public static class EstatisticaDTO extends RepresentationModel<EstatisticaDTO> {
     }
 }

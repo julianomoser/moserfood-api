@@ -1,6 +1,7 @@
 package com.moser.moserfood.api.v1.openapi.controller;
 
 import com.moser.moserfood.api.exceptionhandler.Problem;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -16,19 +17,21 @@ import org.springframework.http.ResponseEntity;
 @Tag(name = "Pedidos")
 public interface FluxoPedidoControllerOpenApi {
 
-
+    @Operation(summary = "Confirmação de pedido")
     @ApiResponses({
             @ApiResponse(responseCode = "204", description = "Pedido confirnado com sucesso"),
             @ApiResponse(responseCode = "404", description = "Pedido não encontrado", content = @Content(schema =
             @Schema(implementation = Problem.class)))})
     ResponseEntity<Void> confirmar(String codigoPedido);
 
+    @Operation(summary = "Registrar entrega de pedido")
     @ApiResponses({
             @ApiResponse(responseCode = "204", description = "Entrega do pedido registrada com suscesso"),
             @ApiResponse(responseCode = "404", description = "Pedido não encontrado", content = @Content(schema =
             @Schema(implementation = Problem.class)))})
     ResponseEntity<Void> entregar(String codigoPedido);
 
+    @Operation(summary = "Cancelamento de pedido")
     @ApiResponses({
             @ApiResponse(responseCode = "204", description = "Pedido cancelado com sucesso"),
             @ApiResponse(responseCode = "404", description = "Pedido não encontrado", content = @Content(schema =

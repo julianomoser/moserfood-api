@@ -34,6 +34,12 @@ import java.util.Arrays;
         )))
 public class SpringDocConfig {
 
+    private static final String badRequestResponse = "BadRequestResponse";
+    private static final String notFoundResponse = "NotFoundResponse";
+    private static final String notAcceptableResponse = "NotAcceptableResponse";
+    private static final String internalServerErrorResponse = "InternalServerErrorResponse";
+
+
     @Bean
     public OpenAPI openAPI() {
         return new OpenAPI()
@@ -66,21 +72,30 @@ public class SpringDocConfig {
     @Bean
     public OpenApiCustomiser openApiCustomiser() {
         return openApi -> {
-            openApi.getPaths().values()
-                    .stream()
-                    .flatMap(pathItem -> pathItem.readOperations().stream())
-                    .forEach(operation -> {
-                        ApiResponses responses = operation.getResponses();
-
-                        ApiResponse apiResponseErrorInterno = new ApiResponse().description("Erro interno no servidor");
-                        ApiResponse apiResponseNaoEncontrado = new ApiResponse().description("Recurso não encontrado");
-                        ApiResponse apiResponseSemRepresentacao = new ApiResponse()
-                                .description("Recurso não possui uma representação que poderia ser aceita pelo consumidor");
-
-                        responses.addApiResponse("404", apiResponseNaoEncontrado);
-                        responses.addApiResponse("406", apiResponseSemRepresentacao);
-                        responses.addApiResponse("500", apiResponseErrorInterno);
-                    });
+            openApi.getPaths()
+                    .values()
+                    .forEach(pathItem -> pathItem.readOperationsMap()
+                            .forEach((httpMethod, operation) -> {
+                                ApiResponses responses = operation.getResponses();
+                                switch (httpMethod) {
+                                    case GET:
+                                        responses.addApiResponse("406", new ApiResponse().$ref(notAcceptableResponse));
+                                        responses.addApiResponse("500", new ApiResponse().$ref(internalServerErrorResponse));
+                                        break;
+                                    case POST:
+                                    case PUT:
+                                        responses.addApiResponse("400", new ApiResponse().$ref(badRequestResponse));
+                                        responses.addApiResponse("500", new ApiResponse().$ref(internalServerErrorResponse));
+                                        break;
+                                    case DELETE:
+                                        responses.addApiResponse("500", new ApiResponse().$ref(internalServerErrorResponse));
+                                        break;
+                                    default:
+                                        responses.addApiResponse("500", new ApiResponse().$ref(internalServerErrorResponse));
+                                        break;
+                                }
+                            })
+                    );
         };
     }
 }

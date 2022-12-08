@@ -24,12 +24,14 @@ public interface CidadeControllerOpenApi {
     @Operation(summary = "Lista as cidades")
     CollectionModel<CidadeDTO> listar();
 
-    @Operation(summary = "Busca uma cidade por Id")
-    @ApiResponses({
+    @Operation(summary = "Busca uma cidade por Id", responses = {
+            @ApiResponse(responseCode = "200"),
             @ApiResponse(responseCode = "400", description = "ID da cidade inválido", content = @Content(schema =
-            @Schema(implementation = Problem.class))),
+            @Schema(ref = "Problema"))),
             @ApiResponse(responseCode = "404", description = "Cidade não encontrada", content = @Content(schema =
-            @Schema(implementation = Problem.class)))})
+            @Schema(ref = "Problema"))
+            )
+    })
     CidadeDTO buscar(@Parameter(description = "ID de uma cidade", example = "1", required = true) Long cidadeId);
 
     @Operation(summary = "Cadastra uma cidade", description = "Cadastro de uma cidade, necessita de um estado e um nome válido")
@@ -37,20 +39,24 @@ public interface CidadeControllerOpenApi {
     CidadeDTO salvar(@RequestBody(description = "Representação de uma nova cidade", required = true)
                      CidadeInput cidadeInput);
 
-    @Operation(summary = "Atualiza uma cidade por Id")
-    @ApiResponses({
+    @Operation(summary = "Atualiza uma cidade por Id", responses = {
             @ApiResponse(responseCode = "200", description = "Cidade atualizada"),
+            @ApiResponse(responseCode = "400", description = "ID da cidade inválido", content = @Content(schema =
+            @Schema(ref = "Problema"))),
             @ApiResponse(responseCode = "404", description = "Cidade não encontrada", content = @Content(schema =
-            @Schema(implementation = Problem.class)))})
+            @Schema(implementation = Problem.class)))
+    })
     CidadeDTO atualizar(@Parameter(description = "ID de uma cidade", example = "1", required = true)
                         Long cidadeId,
                         @RequestBody(description = "Representação de uma nova cidade", required = true)
                         CidadeInput cidadeInput);
 
-    @Operation(summary = "Exclui uma cidade por Id")
-    @ApiResponses({
+    @Operation(summary = "Exclui uma cidade por Id", responses = {
             @ApiResponse(responseCode = "204", description = "Cidade excluída"),
+            @ApiResponse(responseCode = "400", description = "ID da cidade inválido", content = @Content(schema =
+            @Schema(ref = "Problema"))),
             @ApiResponse(responseCode = "404", description = "Cidade não encontrada", content = @Content(schema =
-            @Schema(implementation = Problem.class)))})
+            @Schema(implementation = Problem.class)))
+    })
     void remover(@Parameter(description = "ID de uma cidade", example = "1", required = true) Long cidadeId);
 }

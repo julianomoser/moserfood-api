@@ -3,6 +3,7 @@ package com.moser.moserfood.api.v1.openapi.controller;
 import com.moser.moserfood.api.exceptionhandler.Problem;
 import com.moser.moserfood.api.v1.model.FormaPagamentoDTO;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -23,21 +24,26 @@ public interface RestauranteFormaPagamentoControllerOpenApi {
     @ApiResponses({
             @ApiResponse(responseCode = "400", description = "ID do restaurante inválido", content = @Content(schema =
             @Schema(implementation = Problem.class)))})
-    CollectionModel<FormaPagamentoDTO> listar(Long restauranteId);
+    CollectionModel<FormaPagamentoDTO> listar(@Parameter(description = "ID do restaurante", example = "1", required = true)
+                                              Long restauranteId);
 
     @Operation(summary = "Associação de restaurante com forma de pagamento")
     @ApiResponses({
             @ApiResponse(responseCode = "204", description = "Associação realizada com sucesso"),
             @ApiResponse(responseCode = "404", description = "Restaurante ou forma de pagamento não encontrado", content = @Content(schema =
             @Schema(implementation = Problem.class)))})
-    ResponseEntity<Void> associar(Long restauranteId,
+    ResponseEntity<Void> associar(@Parameter(description = "ID do restaurante", example = "1", required = true)
+                                  Long restauranteId,
+                                  @Parameter(description = "ID da forma de pagamento", example = "1", required = true)
                                   Long formaPagamentoId);
     @Operation(summary = "Desassociação de restaurante com forma de pagamento")
     @ApiResponses({
             @ApiResponse(responseCode = "204", description = "Desssociação realizada com sucesso"),
             @ApiResponse(responseCode = "404", description = "Restaurante ou forma de pagamento não encontrado", content = @Content(schema =
             @Schema(implementation = Problem.class)))})
-    ResponseEntity<Void> desassociar(Long restauranteId, Long formaPagamentoId);
-
+    ResponseEntity<Void> desassociar(@Parameter(description = "ID do restaurante", example = "1", required = true)
+                                     Long restauranteId,
+                                     @Parameter(description = "ID da forma de pagamento", example = "1", required = true)
+                                     Long formaPagamentoId);
 
 }

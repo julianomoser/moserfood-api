@@ -6,8 +6,10 @@ import com.moser.moserfood.api.v1.model.PedidoResumoDTO;
 import com.moser.moserfood.api.v1.model.input.PedidoInput;
 import com.moser.moserfood.domain.filter.PedidoFilter;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -23,11 +25,13 @@ import org.springframework.hateoas.PagedModel;
 public interface PedidoControllerOpenApi {
 
     @Operation(summary = "Pesquisa os pedidos")
-    PagedModel<PedidoResumoDTO> pesquisar(PedidoFilter filtro, Pageable pageable);
+    PagedModel<PedidoResumoDTO> pesquisar(@Parameter(hidden = true) PedidoFilter filtro,
+                                          @Parameter(hidden = true) Pageable pageable);
 
     @Operation(summary = "Registra um pedido")
     @ApiResponses(@ApiResponse(responseCode = "201", description = "Pedido cadastrado"))
-    PedidoDTO adicionar(PedidoInput pedidoInput);
+    PedidoDTO adicionar(@RequestBody(description = "Representação de um novo pedido", required = true)
+                        PedidoInput pedidoInput);
 
     @Operation(summary = "Busca um pedido por Id")
     @ApiResponses({
@@ -35,5 +39,6 @@ public interface PedidoControllerOpenApi {
             @Schema(implementation = Problem.class))),
             @ApiResponse(responseCode = "404", description = "Pedido não encontrada", content = @Content(schema =
             @Schema(implementation = Problem.class)))})
-    PedidoDTO buscar(String codigoPedido);
+    PedidoDTO buscar(@Parameter(description = "Código de um pedido", example = "04813f77-79b5-11ec-9a17-0242ac1b0002",
+            required = true) String codigoPedido);
 }

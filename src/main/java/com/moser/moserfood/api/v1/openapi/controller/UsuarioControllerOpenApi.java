@@ -6,8 +6,10 @@ import com.moser.moserfood.api.v1.model.input.SenhaInput;
 import com.moser.moserfood.api.v1.model.input.UsuarioComSenhaInput;
 import com.moser.moserfood.api.v1.model.input.UsuarioInput;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -29,25 +31,29 @@ public interface UsuarioControllerOpenApi {
             @ApiResponse(responseCode = "200", description = "ID do usuário inválido"),
             @ApiResponse(responseCode = "404", description = "Usuário não encontrado", content = @Content(schema =
             @Schema(implementation = Problem.class)))})
-    UsuarioDTO buscar(Long usuarioId);
+    UsuarioDTO buscar(@Parameter(description = "ID do usuário", example = "1", required = true) Long usuarioId);
 
     @Operation(summary = "Cadastra um usuário")
     @ApiResponses(@ApiResponse(responseCode = "201", description = "Cozinha cadastrada"))
-    UsuarioDTO salvar(UsuarioComSenhaInput usuarioInput);
+    UsuarioDTO salvar(@RequestBody(description = "Representação de um novo usuário", required = true)
+                      UsuarioComSenhaInput usuarioInput);
 
     @Operation(summary = "Atualiza um usuário por ID")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Usuário atualizado"),
             @ApiResponse(responseCode = "404", description = "Usuário não encontrado", content = @Content(schema =
             @Schema(implementation = Problem.class)))})
-    UsuarioDTO atualizar(Long usuarioId, UsuarioInput usuarioInput);
+    UsuarioDTO atualizar(@Parameter(description = "ID do usuário", example = "1", required = true) Long usuarioId,
+                         @RequestBody(description = "Representação de um usuário com os novos dados", required = true)
+                         UsuarioInput usuarioInput);
 
     @Operation(summary = "Atualiza a senha de um usuário")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Senha alterada com sucesso"),
             @ApiResponse(responseCode = "404", description = "Usuário não encontrado", content = @Content(schema =
             @Schema(implementation = Problem.class)))})
-    void alterarSenha(Long usuarioId, SenhaInput senha);
+    void alterarSenha(@Parameter(description = "ID do usuário", example = "1", required = true) Long usuarioId,
+                      @RequestBody(description = "Representação de uma nova senha", required = true) SenhaInput senha);
 
     @Operation(summary = "Exclui um usuário por Id")
     @ApiResponses({
@@ -55,5 +61,5 @@ public interface UsuarioControllerOpenApi {
             @Schema(implementation = Problem.class))),
             @ApiResponse(responseCode = "404", description = "Usuário não encontrada", content = @Content(schema =
             @Schema(implementation = Problem.class)))})
-    void remover(Long usuarioId);
+    void remover(@Parameter(description = "ID do usuário", example = "1", required = true) Long usuarioId);
 }

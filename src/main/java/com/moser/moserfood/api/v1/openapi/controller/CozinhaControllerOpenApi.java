@@ -2,6 +2,7 @@ package com.moser.moserfood.api.v1.openapi.controller;
 
 import com.moser.moserfood.api.v1.model.CozinhaDTO;
 import com.moser.moserfood.api.v1.model.input.CozinhaInput;
+import com.moser.moserfood.core.springdoc.PageableParameter;
 import com.moser.moserfood.domain.model.Cozinha;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -24,8 +25,9 @@ import java.util.Optional;
 @Tag(name = "Cozinhas")
 public interface CozinhaControllerOpenApi {
 
-    @Operation(summary = "Lista as cozinhas com paginação")
-    PagedModel<CozinhaDTO> listar(Pageable pageable);
+    @PageableParameter
+    @Operation(summary = "Lista as cozinhas com paginação" )
+    PagedModel<CozinhaDTO> listar(@Parameter(hidden = true) Pageable pageable);
 
     @Operation(summary = "Busca uma cozinha por ID", responses = {
             @ApiResponse(responseCode = "200"),

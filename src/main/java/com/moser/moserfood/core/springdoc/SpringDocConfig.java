@@ -9,11 +9,13 @@ import io.swagger.v3.oas.models.ExternalDocumentation;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
+import io.swagger.v3.oas.models.responses.ApiResponse;
+import io.swagger.v3.oas.models.responses.ApiResponses;
 import io.swagger.v3.oas.models.tags.Tag;
+import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
@@ -59,5 +61,26 @@ public class SpringDocConfig {
                         new Tag().name("Permissões").description("Gerencia as permissões"),
                         new Tag().name("Estatísticas").description("Estatísticas da MoserFood")
                 ));
+    }
+
+    @Bean
+    public OpenApiCustomiser openApiCustomiser() {
+        return openApi -> {
+            openApi.getPaths().values()
+                    .stream()
+                    .flatMap(pathItem -> pathItem.readOperations().stream())
+                    .forEach(operation -> {
+                        ApiResponses responses = operation.getResponses();
+
+                        ApiResponse apiResponseErrorInterno = new ApiResponse().description("Erro interno no servidor");
+                        ApiResponse apiResponseNaoEncontrado = new ApiResponse().description("Recurso não encontrado");
+                        ApiResponse apiResponseSemRepresentacao = new ApiResponse()
+                                .description("Recurso não possui uma representação que poderia ser aceita pelo consumidor");
+
+                        responses.addApiResponse("404", apiResponseNaoEncontrado);
+                        responses.addApiResponse("406", apiResponseSemRepresentacao);
+                        responses.addApiResponse("500", apiResponseErrorInterno);
+                    });
+        };
     }
 }

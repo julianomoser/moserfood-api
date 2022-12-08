@@ -1,5 +1,6 @@
 package com.moser.moserfood.api.v1.model;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.hateoas.RepresentationModel;
@@ -15,13 +16,16 @@ import java.math.BigDecimal;
 @Setter
 public class RestauranteDTO extends RepresentationModel<RestauranteDTO> {
 
-    //    @JsonView({ RestauranteView.Resumo.class, RestauranteView.ApenasNome.class })
+    @Schema(example = "1")
+//    @JsonView({ RestauranteView.Resumo.class, RestauranteView.ApenasNome.class })
     private Long id;
-    //    @JsonView({ RestauranteView.Resumo.class, RestauranteView.ApenasNome.class })
+    @Schema(example = "Java Veg")
+//    @JsonView({ RestauranteView.Resumo.class, RestauranteView.ApenasNome.class })
     private String nome;
-    //    @JsonView(RestauranteView.Resumo.class)
+    @Schema(example = "12.00")
+//    @JsonView(RestauranteView.Resumo.class)
     private BigDecimal taxaFrete;
-    //    @JsonView(RestauranteView.Resumo.class)
+//    @JsonView(RestauranteView.Resumo.class)
     private CozinhaDTO cozinha;
 
     private Boolean ativo;

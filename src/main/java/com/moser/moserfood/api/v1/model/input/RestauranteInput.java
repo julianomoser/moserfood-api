@@ -1,5 +1,6 @@
 package com.moser.moserfood.api.v1.model.input;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,8 +17,10 @@ import java.math.BigDecimal;
 @Getter
 public class RestauranteInput {
 
+    @Schema(example = "Java Veg", required = true)
     @NotBlank
     private String nome;
+    @Schema(example = "12.00", required = true)
     @NotNull
     @PositiveOrZero
     private BigDecimal taxaFrete;

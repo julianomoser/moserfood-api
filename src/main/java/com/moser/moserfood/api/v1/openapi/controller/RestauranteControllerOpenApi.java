@@ -6,6 +6,7 @@ import com.moser.moserfood.api.v1.model.RestauranteDTO;
 import com.moser.moserfood.api.v1.model.input.RestauranteInput;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
@@ -24,7 +25,14 @@ import java.util.List;
 @Tag(name = "Restaurantes")
 public interface RestauranteControllerOpenApi {
 
-    @Operation(summary = "Lista restaurantes")
+    @Operation(summary = "Lista restaurantes", parameters = {
+            @Parameter(name = "projecao",
+                       description = "Nome da projeção",
+                       example = "apenas-nome",
+                       in = ParameterIn.QUERY,
+                       required = true
+            )
+    })
     CollectionModel<RestauranteBasicoDTO> listar();
 
     @Operation(hidden = true)

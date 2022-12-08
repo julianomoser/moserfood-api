@@ -1,6 +1,5 @@
 package com.moser.moserfood.api.v1.openapi.controller;
 
-import com.moser.moserfood.api.exceptionhandler.Problem;
 import com.moser.moserfood.api.v1.model.GrupoDTO;
 import com.moser.moserfood.api.v1.model.input.GrupoInput;
 import io.swagger.v3.oas.annotations.Operation;
@@ -24,32 +23,35 @@ public interface GrupoControllerOpenApi {
     @Operation(summary = "Lista os grupos")
     CollectionModel<GrupoDTO> listar();
 
-    @Operation(summary = "Busca um grupo por Id")
-    @ApiResponses({
-            @ApiResponse(responseCode = "400", description = "ID do grupo inválido", content = @Content(schema =
-            @Schema(implementation = Problem.class))),
-            @ApiResponse(responseCode = "404", description = "Grupo não encontrada", content = @Content(schema =
-            @Schema(implementation = Problem.class)))})
+    @Operation(summary = "Busca um grupo por Id", responses = {
+            @ApiResponse(responseCode = "200"),
+            @ApiResponse(responseCode = "400", description = "ID do grupo inválido", content = {@Content(schema =
+            @Schema(ref = "Problema"))}),
+            @ApiResponse(responseCode = "404", description = "Grupo não encontrado", content = {@Content(schema =
+            @Schema(ref = "Problema"))}),
+    })
     GrupoDTO buscar(@Parameter(description = "ID de um grupo", example = "1", required = true) Long grupoId);
 
     @Operation(summary = "Cadastra um grupo")
     @ApiResponses(@ApiResponse(responseCode = "201", description = "Grupo cadastrado"))
     GrupoDTO salvar(@RequestBody(description = "Representação de um novo grupo", required = true) GrupoInput grupoInput);
 
-    @Operation(summary = "Atualiza um grupo por Id")
-    @ApiResponses({
+    @Operation(summary = "Atualiza um grupo por Id", responses = {
             @ApiResponse(responseCode = "200", description = "Grupo atualizado"),
-            @ApiResponse(responseCode = "404", description = "Grupo não encontrado", content = @Content(schema =
-            @Schema(implementation = Problem.class)))})
+            @ApiResponse(responseCode = "404", description = "Grupo não encontrado", content = {@Content(schema =
+            @Schema(ref = "Problema"))
+            }),
+    })
     GrupoDTO atualizar(@Parameter(description = "ID de um grupo", example = "1", required = true) Long grupoId,
                        @RequestBody(description = "Representação de um novo grupo", required = true)
                        GrupoInput grupoInput);
 
-    @Operation(summary = "Exclui um grupo por Id")
-    @ApiResponses({
+    @Operation(summary = "Exclui um grupo por Id", responses = {
             @ApiResponse(responseCode = "204", description = "Grupo excluído"),
-            @ApiResponse(responseCode = "404", description = "Grupo não encontrada", content = @Content(schema =
-            @Schema(implementation = Problem.class)))})
+            @ApiResponse(responseCode = "404", description = "Grupo não encontrado", content = {@Content(schema =
+            @Schema(ref = "Problema"))
+            }),
+    })
     void remover(@Parameter(description = "ID de um grupo", example = "1", required = true) Long grupoId);
 
 }

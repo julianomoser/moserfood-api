@@ -1,6 +1,5 @@
 package com.moser.moserfood.api.v1.openapi.controller;
 
-import com.moser.moserfood.api.exceptionhandler.Problem;
 import com.moser.moserfood.api.v1.model.EstadoDTO;
 import com.moser.moserfood.api.v1.model.input.EstadoInput;
 import io.swagger.v3.oas.annotations.Operation;
@@ -24,12 +23,13 @@ public interface EstadoControllerOpenApi {
     @Operation(summary = "Lista os estado")
     CollectionModel<EstadoDTO> listar();
 
-    @Operation(summary = "Busca um estado por Id")
-    @ApiResponses({
-            @ApiResponse(responseCode = "400", description = "ID do estado inválido", content = @Content(schema =
-            @Schema(implementation = Problem.class))),
-            @ApiResponse(responseCode = "404", description = "Estado não encontrado", content = @Content(schema =
-            @Schema(implementation = Problem.class)))})
+    @Operation(summary = "Busca um estado por Id", responses = {
+            @ApiResponse(responseCode = "200"),
+            @ApiResponse(responseCode = "400", description = "ID do estado inválido", content = {@Content(schema =
+            @Schema(ref = "Problema"))}),
+            @ApiResponse(responseCode = "404", description = "Estado não encontrado", content = {@Content(schema =
+            @Schema(ref = "Problema"))})
+    })
     EstadoDTO buscar(@Parameter(description = "ID de um estado", example = "1", required = true) Long estadoId);
 
     @Operation(summary = "Cadastra um estado")
@@ -37,21 +37,21 @@ public interface EstadoControllerOpenApi {
     EstadoDTO salvar(@RequestBody(description = "Representação de um novo estado", required = true)
                      EstadoInput estadoInput);
 
-    @Operation(summary = "Atualiza um estado por Id")
-    @ApiResponses({
+    @Operation(summary = "Atualiza um estado por Id", responses = {
             @ApiResponse(responseCode = "200", description = "Estado atualizado"),
-            @ApiResponse(responseCode = "404", description = "Estado não encontrado", content = @Content(schema =
-            @Schema(implementation = Problem.class)))})
+            @ApiResponse(responseCode = "404", description = "Estado não encontrado", content = {@Content(schema =
+            @Schema(ref = "Problema"))})
+    })
     EstadoDTO atualizar(@Parameter(description = "ID de um estado", example = "1", required = true)
                         Long estadoId,
                         @RequestBody(description = "Representação de um novo estado", required = true)
                         EstadoInput estadoInput);
 
-    @Operation(summary = "Exclui um estado por Id")
-    @ApiResponses({
+    @Operation(summary = "Exclui um estado por Id", responses = {
             @ApiResponse(responseCode = "204", description = "Estado excluído"),
-            @ApiResponse(responseCode = "404", description = "Estado não encontrada", content = @Content(schema =
-            @Schema(implementation = Problem.class)))})
+            @ApiResponse(responseCode = "404", description = "Estado não encontrado", content = {@Content(schema =
+            @Schema(ref = "Problema"))})
+    })
     void delete(@Parameter(description = "ID de um estado", example = "1", required = true) Long estadoId);
 
 }

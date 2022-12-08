@@ -1,6 +1,5 @@
 package com.moser.moserfood.api.v1.openapi.controller;
 
-import com.moser.moserfood.api.exceptionhandler.Problem;
 import com.moser.moserfood.api.v1.model.FormaPagamentoDTO;
 import com.moser.moserfood.api.v1.model.input.FormaPagamentoInput;
 import io.swagger.v3.oas.annotations.Operation;
@@ -27,12 +26,13 @@ public interface FormaPagamentoControllerOpenApi {
     @Operation(summary = "Lista as formas de pagamento")
     ResponseEntity<CollectionModel<FormaPagamentoDTO>> listar(@Parameter(hidden = true) ServletWebRequest request);
 
-    @Operation(summary = "Busca uma forma de pagamento por Id")
-    @ApiResponses({
-            @ApiResponse(responseCode = "400", description = "ID da forma de pagamento inválido", content = @Content(schema =
-            @Schema(implementation = Problem.class))),
-            @ApiResponse(responseCode = "404", description = "Forma de pagamento não encontrada", content = @Content(schema =
-            @Schema(implementation = Problem.class)))})
+    @Operation(summary = "Busca uma forma de pagamento por Id", responses = {
+            @ApiResponse(responseCode = "200"),
+            @ApiResponse(responseCode = "400", description = "ID da forma de pagamento inválido", content = {@Content(schema =
+            @Schema(ref = "Problema"))}),
+            @ApiResponse(responseCode = "404", description = "Forma de pagamento não encontrada", content = {@Content(schema =
+            @Schema(ref = "Problema"))})
+    })
     ResponseEntity<FormaPagamentoDTO> buscar(@Parameter(description = "ID de uma forma de pagamento", example = "1", required = true)
                                              Long formaPagamentoId,
                                              @Parameter(hidden = true)
@@ -43,21 +43,21 @@ public interface FormaPagamentoControllerOpenApi {
     FormaPagamentoDTO salvar(@RequestBody(description = "Representação de uma nova forma de pagamento", required = true)
                              FormaPagamentoInput formaPagamentoInput);
 
-    @Operation(summary = "Atualiza uma forma de pagamento por Id")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "FormaPagamentoDTO atualizado"),
-            @ApiResponse(responseCode = "404", description = "FormaPagamentoDTO não encontrado", content = @Content(schema =
-            @Schema(implementation = Problem.class)))})
+    @Operation(summary = "Atualiza uma forma de pagamento por Id", responses = {
+            @ApiResponse(responseCode = "200", description = "Forma de pagamento atualizada"),
+            @ApiResponse(responseCode = "404", description = "Forma de pagamento não encontrada", content = {@Content(schema =
+            @Schema(ref = "Problema"))})
+    })
     FormaPagamentoDTO atualizar(@Parameter(description = "ID de uma forma de pagamento", example = "1", required = true)
                                 Long formaPagamentoId,
                                 @RequestBody(description = "Representação de uma nova forma de pagamento", required = true)
                                 FormaPagamentoInput formaPagamentoInput);
 
-    @Operation(summary = "Exclui uma forma de pagamento por Id")
-    @ApiResponses({
-            @ApiResponse(responseCode = "204", description = "FormaPagamentoDTO excluído"),
-            @ApiResponse(responseCode = "404", description = "FormaPagamentoDTO não encontrada", content = @Content(schema =
-            @Schema(implementation = Problem.class)))})
+    @Operation(summary = "Exclui uma forma de pagamento por Id", responses = {
+            @ApiResponse(responseCode = "204", description = "Forma de pagamento excluída"),
+            @ApiResponse(responseCode = "404", description = "Forma de pagamento não encontrada", content = {@Content(schema =
+            @Schema(ref = "Problema"))})
+    })
     void remover(@Parameter(description = "ID de uma forma de pagamento", example = "1", required = true)
                  Long formaPagamentoId);
 

@@ -2,6 +2,7 @@ package com.moser.moserfood.api.v1.controller;
 
 import com.moser.moserfood.api.v1.MoserLinks;
 import com.moser.moserfood.core.security.MoserSecurity;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.http.MediaType;
@@ -22,6 +23,7 @@ public class RootEntryPointController {
     private MoserSecurity moserSecurity;
 
     @GetMapping
+    @Operation(hidden = true)
     public RootEntryPointModel root() {
         var rootEntryPointModel = new RootEntryPointModel();
 

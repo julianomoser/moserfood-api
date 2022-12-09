@@ -72,14 +72,14 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
     }
 
     @CheckSecurity.Restaurantes.PodeConsultar
-    @GetMapping(produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping()
     public FotoProdutoDTO buscar(@PathVariable Long restauranteId,
                                  @PathVariable Long produtoId) {
         FotoProduto foto = catalagoFotoProdutoService.findOrFail(restauranteId, produtoId);
         return fotoProdutoDTOAssembler.toModel(foto);
     }
 
-    @GetMapping()
+    @GetMapping(produces = MediaType.ALL_VALUE)
     public ResponseEntity<?> servir(@PathVariable Long restauranteId,
                                     @PathVariable Long produtoId,
                                     @RequestHeader(name = "accept") String acceptHeader)

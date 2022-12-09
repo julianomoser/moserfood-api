@@ -9,7 +9,7 @@ import org.springframework.hateoas.server.core.Relation;
 /**
  * @author Juliano Moser
  */
-@Relation("fotos")
+@Relation(collectionRelation = "fotos")
 @Getter
 @Setter
 public class FotoProdutoDTO extends RepresentationModel<FotoProdutoDTO> {

@@ -1,5 +1,4 @@
 com/moser/moserfood/domain/service/EnvioSmsService.class
-com/moser/moserfood/core/security/authorizationserver/JwkSetController.class
 com/moser/moserfood/api/v1/assembler/PermissaoDTOAssembler.class
 com/moser/moserfood/api/v1/model/input/UsuarioComSenhaInput.class
 com/moser/moserfood/core/security/CheckSecurity$Cidades$PodeConsultar.class
@@ -46,7 +45,6 @@ com/moser/moserfood/domain/service/VendaReportService.class
 com/moser/moserfood/core/security/CorsConfig.class
 com/moser/moserfood/core/validation/FileSize.class
 com/moser/moserfood/jpa/ExclusaoCozinhaMain.class
-com/moser/moserfood/core/security/authorizationserver/JwtCustomClaimsTokenEnhancer.class
 com/moser/moserfood/api/v1/assembler/RestauranteBasicoDTOAssembler.class
 com/moser/moserfood/api/v1/openapi/model/FormasPagamentoDTOOpenApi.class
 com/moser/moserfood/core/storage/StorageProperties$S3.class
@@ -70,6 +68,7 @@ com/moser/moserfood/domain/repository/UsuarioRepository.class
 com/moser/moserfood/domain/service/EnvioEmailService.class
 com/moser/moserfood/jpa/BuscaCozinhaMain.class
 com/moser/moserfood/api/v1/controller/RootEntryPointController$RootEntryPointModel.class
+com/moser/moserfood/core/security/authorizationserver/MoserFoodSecurityProperties.class
 com/moser/moserfood/core/validation/Groups$CozinhaId.class
 com/moser/moserfood/api/v1/model/input/RestauranteIdInput.class
 com/moser/moserfood/core/security/CheckSecurity$Restaurantes$PodeConsultar.class
@@ -133,7 +132,6 @@ com/moser/moserfood/api/v1/controller/EstatisticasController.class
 com/moser/moserfood/api/v1/openapi/controller/CozinhaControllerOpenApi.class
 com/moser/moserfood/core/web/ApiRetirementHandler.class
 com/moser/moserfood/api/v1/openapi/controller/PermissaoControllerOpenApi.class
-com/moser/moserfood/core/security/authorizationserver/PkceAuthorizationCodeTokenGranter.class
 com/moser/moserfood/core/security/CheckSecurity$FormasPagamento$PodeEditar.class
 com/moser/moserfood/api/v2/assembler/CozinhaInputDisassemblerV2.class
 com/moser/moserfood/core/security/CheckSecurity$Cidades$PodeEditar.class
@@ -143,7 +141,6 @@ com/moser/moserfood/core/validation/FileContentType.class
 com/moser/moserfood/api/v2/controller/CozinhaControllerV2.class
 com/moser/moserfood/infrastructure/storage/S3FotoStorageService.class
 com/moser/moserfood/api/v2/openapi/model/PageDTOV2OpenApi.class
-com/moser/moserfood/core/security/ResourceServerConfig.class
 com/moser/moserfood/api/v1/openapi/model/PageableDTOOpenApi.class
 com/moser/moserfood/domain/exception/RestauranteNaoEncontradaException.class
 com/moser/moserfood/api/v1/model/input/FotoProdutoInput.class
@@ -155,7 +152,6 @@ com/moser/moserfood/api/v1/openapi/model/FormasPagamentoDTOOpenApi$FormasPagamen
 com/moser/moserfood/api/v1/model/input/FormaPagamentoIdInput.class
 com/moser/moserfood/api/v1/model/input/CidadeIdInput.class
 com/moser/moserfood/core/security/CheckSecurity$Estatisticas$PodeConsultar.class
-com/moser/moserfood/core/security/authorizationserver/SecurityController.class
 com/moser/moserfood/api/v1/controller/EstadoController.class
 com/moser/moserfood/api/v1/model/input/ProdutoInput.class
 com/moser/moserfood/api/v1/openapi/model/PermissoesDTOOpenApi$PermissoesEmbeddedModelOpenApi.class

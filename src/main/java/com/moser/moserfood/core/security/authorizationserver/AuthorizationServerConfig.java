@@ -1,5 +1,7 @@
 package com.moser.moserfood.core.security.authorizationserver;
 
+import com.moser.moserfood.domain.model.Usuario;
+import com.moser.moserfood.domain.repository.UsuarioRepository;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
@@ -14,6 +16,9 @@ import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
@@ -26,12 +31,17 @@ import org.springframework.security.oauth2.server.authorization.client.Registere
 import org.springframework.security.oauth2.server.authorization.config.ClientSettings;
 import org.springframework.security.oauth2.server.authorization.config.ProviderSettings;
 import org.springframework.security.oauth2.server.authorization.config.TokenSettings;
+import org.springframework.security.oauth2.server.authorization.token.JwtEncodingContext;
+import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenCustomizer;
 import org.springframework.security.web.SecurityFilterChain;
 
 import java.io.InputStream;
 import java.security.KeyStore;
 import java.time.Duration;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * @author Juliano Moser
@@ -130,5 +140,23 @@ public class AuthorizationServerConfig {
         RSAKey rsaKey = RSAKey.load(keyStore, keypairAlias, keyStorePass);
 
         return new ImmutableJWKSet<>(new JWKSet(rsaKey));
+    }
+
+    @Bean
+    public OAuth2TokenCustomizer<JwtEncodingContext> jwtCustomizer(UsuarioRepository usuarioRepository) {
+        return context -> {
+            Authentication authentication = context.getPrincipal();
+            if(authentication.getPrincipal() instanceof User) {
+                User user = (User) authentication.getPrincipal();
+
+                Usuario usuario = usuarioRepository.findByEmail(user.getUsername()).orElseThrow();
+
+                Set<String> authorities = user.getAuthorities().stream()
+                        .map(GrantedAuthority::getAuthority).collect(Collectors.toSet());
+
+                context.getClaims().claim("usuario_id", usuario.getId().toString());
+                context.getClaims().claim("authorities", authorities);
+            }
+        };
     }
 }

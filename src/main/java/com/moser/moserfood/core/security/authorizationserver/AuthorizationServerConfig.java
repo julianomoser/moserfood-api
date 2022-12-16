@@ -7,6 +7,7 @@ import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
@@ -26,6 +27,7 @@ import org.springframework.security.oauth2.core.OAuth2TokenFormat;
 import org.springframework.security.oauth2.server.authorization.JdbcOAuth2AuthorizationService;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
 import org.springframework.security.oauth2.server.authorization.client.InMemoryRegisteredClientRepository;
+import org.springframework.security.oauth2.server.authorization.client.JdbcRegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.config.ClientSettings;
@@ -49,6 +51,9 @@ import java.util.stream.Collectors;
 @Configuration
 public class AuthorizationServerConfig {
 
+    @Autowired
+    private JdbcOperations jdbcOperations;
+
     @Bean
     @Order(Ordered.HIGHEST_PRECEDENCE)
     public SecurityFilterChain authFilterChain(HttpSecurity http) throws Exception {
@@ -65,60 +70,7 @@ public class AuthorizationServerConfig {
 
     @Bean
     public RegisteredClientRepository registeredClientRepository(PasswordEncoder passwordEncoder) {
-        RegisteredClient moserfoodBackend = RegisteredClient
-                .withId("1")
-                .clientId("moserfood-backend")
-                .clientSecret(passwordEncoder.encode("backend123"))
-                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
-                .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
-                .scope("READ")
-                .tokenSettings(TokenSettings.builder()
-                        .accessTokenFormat(OAuth2TokenFormat.SELF_CONTAINED)
-                        .accessTokenTimeToLive(Duration.ofMinutes(30))
-                        .build())
-                .build();
-
-        RegisteredClient moserfoodWeb = RegisteredClient
-                .withId("2")
-                .clientId("moserfood-web")
-                .clientSecret(passwordEncoder.encode("web123"))
-                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
-                .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-                .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-                .scope("READ")
-                .scope("WRITE")
-                .tokenSettings(TokenSettings.builder()
-                        .accessTokenFormat(OAuth2TokenFormat.SELF_CONTAINED)
-                        .accessTokenTimeToLive(Duration.ofMinutes(15))
-                        .reuseRefreshTokens(false)
-                        .refreshTokenTimeToLive(Duration.ofDays(1))
-                        .build())
-                .redirectUri("http://www.foodanalytics.local:8081/authorized")
-                .redirectUri("http://www.foodanalytics.local:8081/swagger-ui/oauth2-redirect.html")
-                .clientSettings(ClientSettings.builder()
-                        .requireAuthorizationConsent(true)
-                        .build())
-                .build();
-
-        RegisteredClient foodanalytics = RegisteredClient
-                .withId("3")
-                .clientId("foodanalytics")
-                .clientSecret(passwordEncoder.encode("web123"))
-                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
-                .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-                .scope("READ")
-                .scope("WRITE")
-                .tokenSettings(TokenSettings.builder()
-                        .accessTokenFormat(OAuth2TokenFormat.SELF_CONTAINED)
-                        .accessTokenTimeToLive(Duration.ofMinutes(30))
-                        .build())
-                .redirectUri("http://www.foodanalytics.local:8082")
-                .clientSettings(ClientSettings.builder()
-                        .requireAuthorizationConsent(false)
-                        .build())
-                .build();
-
-        return new InMemoryRegisteredClientRepository(Arrays.asList(moserfoodBackend, moserfoodWeb, foodanalytics));
+        return new JdbcRegisteredClientRepository(jdbcOperations);
     }
 
     @Bean

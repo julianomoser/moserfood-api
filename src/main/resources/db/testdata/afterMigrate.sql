@@ -294,7 +294,7 @@ INSERT INTO oauth2_registered_client
 (id, client_id, client_id_issued_at, client_secret, client_secret_expires_at, client_name,
  client_authentication_methods, authorization_grant_types, redirect_uris, scopes, client_settings, token_settings)
 VALUES ('1', 'moserfood-backend', '2022-12-15 19:11:55', '$2a$10$5JoRSLOVkOUZmZn6F2yyl.wS49tFYMJO4S507Uq7.zndWy5d9rRCu',
-        NULL, '1', 'client_secret_basic', 'client_credentials', '', 'READ',
+        NULL, 'MoserFood Backend', 'client_secret_basic', 'client_credentials', '', 'READ',
         '{"@class":"java.util.Collections$UnmodifiableMap","settings.client.require-proof-key":false,"settings.client.require-authorization-consent":false}',
         '{"@class":"java.util.Collections$UnmodifiableMap","settings.token.reuse-refresh-tokens":true,"settings.token.id-token-signature-algorithm":["org.springframework.security.oauth2.jose.jws.SignatureAlgorithm","RS256"],"settings.token.access-token-time-to-live":["java.time.Duration",1800.000000000],"settings.token.access-token-format":{"@class":"org.springframework.security.oauth2.core.OAuth2TokenFormat","value":"self-contained"},"settings.token.refresh-token-time-to-live":["java.time.Duration",3600.000000000]}');
 
@@ -302,7 +302,7 @@ INSERT INTO oauth2_registered_client
 (id, client_id, client_id_issued_at, client_secret, client_secret_expires_at, client_name,
  client_authentication_methods, authorization_grant_types, redirect_uris, scopes, client_settings, token_settings)
 VALUES ('2', 'moserfood-web', '2022-12-15 19:11:55', '$2a$10$vxdI/zY0tBxXJ/NqHKljweCfvplnHBwr6eqbbHnmW2.Rt6PesEJNS',
-        NULL, '2', 'client_secret_basic', 'refresh_token,authorization_code',
+        NULL, 'MoserFood Web', 'client_secret_basic', 'refresh_token,authorization_code',
         'http://www.foodanalytics.local:8081/authorized,http://www.foodanalytics.local:8081/swagger-ui/oauth2-redirect.html',
         'READ,WRITE',
         '{"@class":"java.util.Collections$UnmodifiableMap","settings.client.require-proof-key":false,"settings.client.require-authorization-consent":true}',
@@ -312,7 +312,7 @@ INSERT INTO oauth2_registered_client
 (id, client_id, client_id_issued_at, client_secret, client_secret_expires_at, client_name,
  client_authentication_methods, authorization_grant_types, redirect_uris, scopes, client_settings, token_settings)
 VALUES ('3', 'foodanalytics', '2022-12-15 19:11:55', '$2a$10$93.7Qw3HDvoUd5hk511kFuE1yAlB9TyzzX5jn0Z89XcRhTN8Y68ji',
-        NULL, '3', 'client_secret_basic', 'authorization_code', 'http://www.foodanalytics.local:8082', 'READ,WRITE',
+        NULL, 'Food Analytics', 'client_secret_basic', 'authorization_code', 'http://www.foodanalytics.local:8082', 'READ,WRITE',
         '{"@class":"java.util.Collections$UnmodifiableMap","settings.client.require-proof-key":false,"settings.client.require-authorization-consent":false}',
         '{"@class":"java.util.Collections$UnmodifiableMap","settings.token.reuse-refresh-tokens":true,"settings.token.id-token-signature-algorithm":["org.springframework.security.oauth2.jose.jws.SignatureAlgorithm","RS256"],"settings.token.access-token-time-to-live":["java.time.Duration",1800.000000000],"settings.token.access-token-format":{"@class":"org.springframework.security.oauth2.core.OAuth2TokenFormat","value":"self-contained"},"settings.token.refresh-token-time-to-live":["java.time.Duration",3600.000000000]}');
 unlock tables;

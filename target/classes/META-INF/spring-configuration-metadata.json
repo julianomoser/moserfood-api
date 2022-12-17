@@ -1,6 +1,11 @@
 {
   "groups": [
     {
+      "name": "moserfood.auth",
+      "type": "com.moser.moserfood.core.security.authorizationserver.MoserFoodSecurityProperties",
+      "sourceType": "com.moser.moserfood.core.security.authorizationserver.MoserFoodSecurityProperties"
+    },
+    {
       "name": "moserfood.email",
       "type": "com.moser.moserfood.core.email.EmailProperties",
       "sourceType": "com.moser.moserfood.core.email.EmailProperties"
@@ -46,6 +51,11 @@
     }
   ],
   "properties": [
+    {
+      "name": "moserfood.auth.provider-url",
+      "type": "java.lang.String",
+      "sourceType": "com.moser.moserfood.core.security.authorizationserver.MoserFoodSecurityProperties"
+    },
     {
       "name": "moserfood.email.impl",
       "type": "com.moser.moserfood.core.email.EmailProperties$Implementacao",

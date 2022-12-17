@@ -2,7 +2,6 @@
 /Users/julianomoser/Development/Cursos/Especialista Spring Rest/ws-esr/moserfood-api/src/main/java/com/moser/moserfood/api/v1/openapi/model/LinksModelOpenApi.java
 /Users/julianomoser/Development/Cursos/Especialista Spring Rest/ws-esr/moserfood-api/src/main/java/com/moser/moserfood/domain/event/PedidoConfirmadoEvent.java
 /Users/julianomoser/Development/Cursos/Especialista Spring Rest/ws-esr/moserfood-api/src/main/java/com/moser/moserfood/domain/event/PedidoCanceladoEvent.java
-/Users/julianomoser/Development/Cursos/Especialista Spring Rest/ws-esr/moserfood-api/src/main/java/com/moser/moserfood/core/security/ResourceServerConfig.java
 /Users/julianomoser/Development/Cursos/Especialista Spring Rest/ws-esr/moserfood-api/src/main/java/com/moser/moserfood/core/squiggly/TomcatCustomizer.java
 /Users/julianomoser/Development/Cursos/Especialista Spring Rest/ws-esr/moserfood-api/src/main/java/com/moser/moserfood/domain/model/Cidade.java
 /Users/julianomoser/Development/Cursos/Especialista Spring Rest/ws-esr/moserfood-api/src/main/java/com/moser/moserfood/core/modelmapper/ModelMapperConfig.java
@@ -76,7 +75,6 @@
 /Users/julianomoser/Development/Cursos/Especialista Spring Rest/ws-esr/moserfood-api/src/main/java/com/moser/moserfood/api/v1/assembler/GrupoInputDisassembler.java
 /Users/julianomoser/Development/Cursos/Especialista Spring Rest/ws-esr/moserfood-api/src/main/java/com/moser/moserfood/api/v1/assembler/CozinhaDTOAssembler.java
 /Users/julianomoser/Development/Cursos/Especialista Spring Rest/ws-esr/moserfood-api/src/main/java/com/moser/moserfood/domain/filter/VendaDiariaFilter.java
-/Users/julianomoser/Development/Cursos/Especialista Spring Rest/ws-esr/moserfood-api/src/main/java/com/moser/moserfood/core/security/authorizationserver/JwkSetController.java
 /Users/julianomoser/Development/Cursos/Especialista Spring Rest/ws-esr/moserfood-api/src/main/java/com/moser/moserfood/domain/model/Permissao.java
 /Users/julianomoser/Development/Cursos/Especialista Spring Rest/ws-esr/moserfood-api/src/main/java/com/moser/moserfood/api/v1/assembler/CidadeInputDisassembler.java
 /Users/julianomoser/Development/Cursos/Especialista Spring Rest/ws-esr/moserfood-api/src/main/java/com/moser/moserfood/domain/exception/NegocioException.java
@@ -103,7 +101,6 @@
 /Users/julianomoser/Development/Cursos/Especialista Spring Rest/ws-esr/moserfood-api/src/main/java/com/moser/moserfood/core/email/EmailProperties.java
 /Users/julianomoser/Development/Cursos/Especialista Spring Rest/ws-esr/moserfood-api/src/main/java/com/moser/moserfood/api/v1/model/FormaPagamentoDTO.java
 /Users/julianomoser/Development/Cursos/Especialista Spring Rest/ws-esr/moserfood-api/src/main/java/com/moser/moserfood/domain/repository/ProdutoRepository.java
-/Users/julianomoser/Development/Cursos/Especialista Spring Rest/ws-esr/moserfood-api/src/main/java/com/moser/moserfood/core/security/authorizationserver/JwtCustomClaimsTokenEnhancer.java
 /Users/julianomoser/Development/Cursos/Especialista Spring Rest/ws-esr/moserfood-api/src/main/java/com/moser/moserfood/api/v1/model/RestauranteBasicoDTO.java
 /Users/julianomoser/Development/Cursos/Especialista Spring Rest/ws-esr/moserfood-api/src/main/java/com/moser/moserfood/api/v2/assembler/CidadeDTOAssemblerV2.java
 /Users/julianomoser/Development/Cursos/Especialista Spring Rest/ws-esr/moserfood-api/src/main/java/com/moser/moserfood/api/v1/controller/PedidoController.java
@@ -123,7 +120,6 @@
 /Users/julianomoser/Development/Cursos/Especialista Spring Rest/ws-esr/moserfood-api/src/main/java/com/moser/moserfood/domain/exception/CidadeNaoEncontradaException.java
 /Users/julianomoser/Development/Cursos/Especialista Spring Rest/ws-esr/moserfood-api/src/main/java/com/moser/moserfood/jpa/BuscaCozinhaMain.java
 /Users/julianomoser/Development/Cursos/Especialista Spring Rest/ws-esr/moserfood-api/src/main/java/com/moser/moserfood/domain/exception/FotoProdutoNaoEncontradaException.java
-/Users/julianomoser/Development/Cursos/Especialista Spring Rest/ws-esr/moserfood-api/src/main/java/com/moser/moserfood/core/security/authorizationserver/SecurityController.java
 /Users/julianomoser/Development/Cursos/Especialista Spring Rest/ws-esr/moserfood-api/src/main/java/com/moser/moserfood/core/validation/ValorZeroIncluiDescricao.java
 /Users/julianomoser/Development/Cursos/Especialista Spring Rest/ws-esr/moserfood-api/src/main/java/com/moser/moserfood/api/v2/openapi/model/CidadesDTOV2OpenApi.java
 /Users/julianomoser/Development/Cursos/Especialista Spring Rest/ws-esr/moserfood-api/src/main/java/com/moser/moserfood/core/validation/Groups.java
@@ -227,7 +223,6 @@
 /Users/julianomoser/Development/Cursos/Especialista Spring Rest/ws-esr/moserfood-api/src/main/java/com/moser/moserfood/core/jackson/JacksonMixinModel.java
 /Users/julianomoser/Development/Cursos/Especialista Spring Rest/ws-esr/moserfood-api/src/main/java/com/moser/moserfood/api/v1/assembler/ProdutoInputDisassembler.java
 /Users/julianomoser/Development/Cursos/Especialista Spring Rest/ws-esr/moserfood-api/src/main/java/com/moser/moserfood/domain/repository/EstadoRepository.java
-/Users/julianomoser/Development/Cursos/Especialista Spring Rest/ws-esr/moserfood-api/src/main/java/com/moser/moserfood/core/security/authorizationserver/PkceAuthorizationCodeTokenGranter.java
 /Users/julianomoser/Development/Cursos/Especialista Spring Rest/ws-esr/moserfood-api/src/main/java/com/moser/moserfood/api/v1/openapi/model/RestaurantesBasicoDTOOpenApi.java
 /Users/julianomoser/Development/Cursos/Especialista Spring Rest/ws-esr/moserfood-api/src/main/java/com/moser/moserfood/api/v1/model/PedidoResumoDTO.java
 /Users/julianomoser/Development/Cursos/Especialista Spring Rest/ws-esr/moserfood-api/src/main/java/com/moser/moserfood/api/v1/openapi/model/FormasPagamentoDTOOpenApi.java
@@ -263,6 +258,7 @@
 /Users/julianomoser/Development/Cursos/Especialista Spring Rest/ws-esr/moserfood-api/src/main/java/com/moser/moserfood/api/v2/controller/CozinhaControllerV2.java
 /Users/julianomoser/Development/Cursos/Especialista Spring Rest/ws-esr/moserfood-api/src/main/java/com/moser/moserfood/api/v1/openapi/model/RestauranteBasicoDTOOpenApi.java
 /Users/julianomoser/Development/Cursos/Especialista Spring Rest/ws-esr/moserfood-api/src/main/java/com/moser/moserfood/api/v1/model/input/EstadoIdInput.java
+/Users/julianomoser/Development/Cursos/Especialista Spring Rest/ws-esr/moserfood-api/src/main/java/com/moser/moserfood/core/security/authorizationserver/MoserFoodSecurityProperties.java
 /Users/julianomoser/Development/Cursos/Especialista Spring Rest/ws-esr/moserfood-api/src/main/java/com/moser/moserfood/api/v2/openapi/controller/CidadeControllerV2OpenApi.java
 /Users/julianomoser/Development/Cursos/Especialista Spring Rest/ws-esr/moserfood-api/src/main/java/com/moser/moserfood/api/v1/model/UsuarioDTO.java
 /Users/julianomoser/Development/Cursos/Especialista Spring Rest/ws-esr/moserfood-api/src/main/java/com/moser/moserfood/domain/listener/NotificacaoClientePedidoCanceladoListener.java

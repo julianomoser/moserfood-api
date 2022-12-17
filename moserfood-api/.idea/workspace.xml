@@ -4,7 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="74e2a82d-d3e6-45ef-b5f0-319a63ba76de" name="Changes" comment="" />
+    <list default="true" id="74e2a82d-d3e6-45ef-b5f0-319a63ba76de" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../src/main/java/com/moser/moserfood/core/security/authorizationserver/AuthorizationServerConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../src/main/java/com/moser/moserfood/core/security/authorizationserver/MoserFoodSecurityProperties.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/application-development.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/resources/application-development.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/application-production.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../src/main/resources/application-production.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/classes/META-INF/spring-configuration-metadata.json" beforeDir="false" afterPath="$PROJECT_DIR$/../target/classes/META-INF/spring-configuration-metadata.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/classes/com/moser/moserfood/core/security/ResourceServerConfig.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/../target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/../target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -19,6 +29,9 @@
         <option value="Class" />
       </list>
     </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="JpbToolWindowState">
     <option name="myId2FirstActivated">
@@ -56,7 +69,8 @@
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2",
     "settings.editor.selected.configurable": "spring.boot",
-    "spring.configuration.checksum": "cd480698c74ddcf72737ecfce8909d9b"
+    "spring.configuration.checksum": "cd480698c74ddcf72737ecfce8909d9b",
+    "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
   <component name="RecentsManager">
@@ -87,6 +101,7 @@
       <updated>1653608383245</updated>
       <workItem from="1653608386101" duration="4610000" />
       <workItem from="1653677120583" duration="19627000" />
+      <workItem from="1670989554602" duration="15000" />
     </task>
     <servers />
   </component>

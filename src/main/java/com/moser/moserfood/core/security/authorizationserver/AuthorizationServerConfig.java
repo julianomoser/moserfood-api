@@ -20,7 +20,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.server.authorization.*;
+import org.springframework.security.oauth2.server.authorization.JdbcOAuth2AuthorizationConsentService;
+import org.springframework.security.oauth2.server.authorization.JdbcOAuth2AuthorizationService;
+import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationConsentService;
+import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
 import org.springframework.security.oauth2.server.authorization.client.JdbcRegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.config.ProviderSettings;
@@ -122,7 +125,8 @@ public class AuthorizationServerConfig {
     }
 
     @Bean
-    public OAuth2AuthorizationQueryService authorizationQueryService(JdbcOperations jdbcOperations) {
-        return new JdbcOAuth2AuthorizationQueryService(jdbcOperations);
+    public OAuth2AuthorizationQueryService authorizationQueryService(JdbcOperations jdbcOperations,
+                                                                     RegisteredClientRepository registeredClientRepository) {
+        return new JdbcOAuth2AuthorizationQueryService(jdbcOperations, registeredClientRepository);
     }
 }

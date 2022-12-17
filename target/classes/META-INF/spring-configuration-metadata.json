@@ -13,8 +13,7 @@
     {
       "name": "moserfood.email.sandbox",
       "type": "com.moser.moserfood.core.email.EmailProperties$SandBox",
-      "sourceType": "com.moser.moserfood.core.email.EmailProperties",
-      "sourceMethod": "getSandbox()"
+      "sourceType": "com.moser.moserfood.core.email.EmailProperties"
     },
     {
       "name": "moserfood.jwt.keystore",
@@ -29,8 +28,7 @@
     {
       "name": "moserfood.sms.twilio",
       "type": "com.moser.moserfood.core.sms.SmsProperties$Twilio",
-      "sourceType": "com.moser.moserfood.core.sms.SmsProperties",
-      "sourceMethod": "getTwilio()"
+      "sourceType": "com.moser.moserfood.core.sms.SmsProperties"
     },
     {
       "name": "moserfood.storage",
@@ -40,14 +38,12 @@
     {
       "name": "moserfood.storage.local",
       "type": "com.moser.moserfood.core.storage.StorageProperties$Local",
-      "sourceType": "com.moser.moserfood.core.storage.StorageProperties",
-      "sourceMethod": "getLocal()"
+      "sourceType": "com.moser.moserfood.core.storage.StorageProperties"
     },
     {
       "name": "moserfood.storage.s3",
       "type": "com.moser.moserfood.core.storage.StorageProperties$S3",
-      "sourceType": "com.moser.moserfood.core.storage.StorageProperties",
-      "sourceMethod": "getS3()"
+      "sourceType": "com.moser.moserfood.core.storage.StorageProperties"
     }
   ],
   "properties": [

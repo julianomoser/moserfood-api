@@ -23,56 +23,55 @@ import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource("/application-test.properties")
 class CozinhaIntegrationIT {
 
-	@LocalServerPort
-	private int port = 8081;
+    @LocalServerPort
+    private int port = 8081;
 
-	private static final int COZINHA_ID_INEXISTENTE = 100;
+    private static final int COZINHA_ID_INEXISTENTE = 100;
 
 
-	private Cozinha cozinhaAmericana;
-	private int countRegisteredKitchen;
-	private String jsonCorretoCozinhaChinesa;
+    private Cozinha cozinhaAmericana;
+    private int countRegisteredKitchen;
+    private String jsonCorretoCozinhaChinesa;
 
-	@Autowired
-	private DatabaseCleaner databaseCleaner;
+    @Autowired
+    private DatabaseCleaner databaseCleaner;
 
-	@Autowired
-	private CozinhaRepository cozinhaRepository;
+    @Autowired
+    private CozinhaRepository cozinhaRepository;
 
-	@BeforeEach
+    @BeforeEach
     public void setUp() {
         enableLoggingOfRequestAndResponseIfValidationFails();
         RestAssured.port = port;
         RestAssured.basePath = "/cozinhas";
 
-		jsonCorretoCozinhaChinesa = ResourceUtils.getContentFromResource(
-				"/json/correto/cozinha-chinesa.json");
+        jsonCorretoCozinhaChinesa = ResourceUtils.getContentFromResource(
+                "/json/correto/cozinha-chinesa.json");
 
-		databaseCleaner.clearTables();
-		setUpData();
-	}
+        databaseCleaner.clearTables();
+        setUpData();
+    }
 
-	@Autowired
-	private CozinhaService cozinhaService;
+    @Autowired
+    private CozinhaService cozinhaService;
 
-	@DisplayName("Teste salvar cozinha.")
-	@Test
-	public void shouldSaveEntity() {
-		Cozinha cozinha = new Cozinha();
-		cozinha.setNome("Chinesa");
+    @DisplayName("Teste salvar cozinha.")
+    @Test
+    public void shouldSaveEntity() {
+        Cozinha cozinha = new Cozinha();
+        cozinha.setNome("Chinesa");
 
-		cozinha = cozinhaService.salvar(cozinha);
+        cozinha = cozinhaService.salvar(cozinha);
 
-		assertThat(cozinha).isNotNull();
-		assertThat(cozinha.getId()).isNotNull();
-	}
+        assertThat(cozinha).isNotNull();
+        assertThat(cozinha.getId()).isNotNull();
+    }
 
 //	@DisplayName("Teste salvar cozinha sem nome.")
 //	@Test
@@ -102,17 +101,17 @@ class CozinhaIntegrationIT {
 //				"quando tentar deletar uma cozinha inexistente");
 //	}
 
-	@DisplayName("Teste retorno status 200 de cozinhas.")
-	@Test
-	public void shouldReturnStatus200_WhenCallGetKitchens() {
+    @DisplayName("Teste retorno status 200 de cozinhas.")
+    @Test
+    public void shouldReturnStatus200_WhenCallGetKitchens() {
 
-		given()
-				.accept(ContentType.JSON)
-		.when()
-				.get()
-		.then()
-				.statusCode(HttpStatus.OK.value());
-	}
+        given()
+                .accept(ContentType.JSON)
+                .when()
+                .get()
+                .then()
+                .statusCode(HttpStatus.OK.value());
+    }
 
     @DisplayName("Teste retorno com quantidade corretas de cozinhas.")
     @Test
@@ -120,60 +119,60 @@ class CozinhaIntegrationIT {
 
         given()
                 .accept(ContentType.JSON)
-        .when()
+                .when()
                 .get()
-        .then()
+                .then()
                 .body("", hasSize(countRegisteredKitchen));
     }
 
-	@DisplayName("Teste retorno status 201 de cozinhas.")
-	@Test
-	public void shouldReturnStatus201_WhenSaveNewKitchen() {
+    @DisplayName("Teste retorno status 201 de cozinhas.")
+    @Test
+    public void shouldReturnStatus201_WhenSaveNewKitchen() {
 
-		given()
-				.body(jsonCorretoCozinhaChinesa)
-				.contentType(ContentType.JSON)
-				.accept(ContentType.JSON)
-		.when()
-				.post()
-		.then()
-				.statusCode(HttpStatus.CREATED.value());
-	}
+        given()
+                .body(jsonCorretoCozinhaChinesa)
+                .contentType(ContentType.JSON)
+                .accept(ContentType.JSON)
+                .when()
+                .post()
+                .then()
+                .statusCode(HttpStatus.CREATED.value());
+    }
 
-	@DisplayName("Teste retorno 404 para cozinha inexistente.")
-	@Test
-	public void shouldReturnStatus404_WhenGetNonExistingKitchenById() {
-		given()
-				.pathParams("cozinhaId", COZINHA_ID_INEXISTENTE)
-				.accept(ContentType.JSON)
-		.when()
-				.get("/{cozinhaId}")
-		.then()
-				.statusCode(HttpStatus.NOT_FOUND.value());
-	}
+    @DisplayName("Teste retorno 404 para cozinha inexistente.")
+    @Test
+    public void shouldReturnStatus404_WhenGetNonExistingKitchenById() {
+        given()
+                .pathParams("cozinhaId", COZINHA_ID_INEXISTENTE)
+                .accept(ContentType.JSON)
+                .when()
+                .get("/{cozinhaId}")
+                .then()
+                .statusCode(HttpStatus.NOT_FOUND.value());
+    }
 
-	@DisplayName("Teste retorar resposta e estatus corretos.")
-	@Test
-	public void shouldReturnCorrectResponseAndStatus_WhenGetExistingKitchenById() {
-		given()
-				.pathParams("cozinhaId", cozinhaAmericana.getId())
-				.accept(ContentType.JSON)
-		.when()
-				.get("/{cozinhaId}")
-		.then()
-				.statusCode(HttpStatus.OK.value())
-				.body("nome", equalTo(cozinhaAmericana.getNome()));
-	}
+    @DisplayName("Teste retorar resposta e estatus corretos.")
+    @Test
+    public void shouldReturnCorrectResponseAndStatus_WhenGetExistingKitchenById() {
+        given()
+                .pathParams("cozinhaId", cozinhaAmericana.getId())
+                .accept(ContentType.JSON)
+                .when()
+                .get("/{cozinhaId}")
+                .then()
+                .statusCode(HttpStatus.OK.value())
+                .body("nome", equalTo(cozinhaAmericana.getNome()));
+    }
 
-	private void setUpData() {
-		Cozinha cozinhaTailandesa = new Cozinha();
-		cozinhaTailandesa.setNome("Tailandesa");
-		cozinhaRepository.save(cozinhaTailandesa);
+    private void setUpData() {
+        Cozinha cozinhaTailandesa = new Cozinha();
+        cozinhaTailandesa.setNome("Tailandesa");
+        cozinhaRepository.save(cozinhaTailandesa);
 
-		cozinhaAmericana = new Cozinha();
-		cozinhaAmericana.setNome("Americana");
-		cozinhaRepository.save(cozinhaAmericana);
+        cozinhaAmericana = new Cozinha();
+        cozinhaAmericana.setNome("Americana");
+        cozinhaRepository.save(cozinhaAmericana);
 
-		countRegisteredKitchen = (int) cozinhaRepository.count();
-	}
+        countRegisteredKitchen = (int) cozinhaRepository.count();
+    }
 }

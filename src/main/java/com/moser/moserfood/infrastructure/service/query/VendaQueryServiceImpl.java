@@ -7,11 +7,11 @@ import com.moser.moserfood.domain.model.enums.StatusPedido;
 import com.moser.moserfood.domain.service.VendaQueryService;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -55,7 +55,7 @@ public class VendaQueryServiceImpl implements VendaQueryService {
         var predicates = new ArrayList<Predicate>();
 
         if (filter.getRestauranteId() != null) {
-            predicates.add(builder.equal(root.get("restaurante"), filter.getRestauranteId()));
+            predicates.add(builder.equal(root.get("restaurante").get("id"), filter.getRestauranteId()));
         }
 
         if (filter.getDataCriacaoInicio() != null) {

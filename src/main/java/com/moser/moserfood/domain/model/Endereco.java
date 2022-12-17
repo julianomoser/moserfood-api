@@ -2,7 +2,7 @@ package com.moser.moserfood.domain.model;
 
 import lombok.Data;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 /**
  * @author Juliano Moser

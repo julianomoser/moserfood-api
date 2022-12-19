@@ -19,10 +19,12 @@
         <modelmapper.version>3.0.0</modelmapper.version>
         <jasperreports.version>6.19.1</jasperreports.version>
         <aws-java-sdk-s3.version>1.12.204</aws-java-sdk-s3.version>
+        <twilio.version>8.31.1</twilio.version>
         <logback-ext-loggly.version>0.1.5</logback-ext-loggly.version>
         <dockerfile-maven-version>1.4.13</dockerfile-maven-version>
         <springdoc.version>2.0.0</springdoc.version>
-        <springauthserver.version>0.3.1</springauthserver.version>
+        <springauthserver.version>1.0.0</springauthserver.version>
+        <guava.version>31.0.1-jre</guava.version>
     </properties>
 
     <dependencies>
@@ -162,6 +164,18 @@
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
             <version>${springdoc.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.twilio.sdk</groupId>
+            <artifactId>twilio</artifactId>
+            <version>${twilio.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${guava.version}</version>
         </dependency>
     </dependencies>
 
